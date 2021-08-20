@@ -3,13 +3,12 @@ package Web;
 import Database.UserDAO;
 import Domain.User;
 import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @WebServlet(name = "Login", urlPatterns = {"/Login"})
 public class Login extends HttpServlet {
@@ -18,30 +17,40 @@ public class Login extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
+        // DATA ACCES OBJECT
         User user = new UserDAO().selectUser(request.getParameter("user"));
 
+        // validate user
         if (user != null) {
             // user found
-            if (user.getName().equals(request.getParameter("user").trim()) && user.getPassword().equals(request.getParameter("password").trim())) {
+            if (userOK(user.getName(), request.getParameter("user").trim())
+                    && passwordOK(user.getPassword(), request.getParameter("password").trim())) {
+                HttpSession session = request.getSession();
+
                 // user auth
-                RequestDispatcher rd;
+                String URL = null;
                 switch (user.getAreaCode()) {
-                    // note: if i delete Dashboard and type just Factory is working
                     case 1:
-                        response.sendRedirect(request.getContextPath() + "/Dashboards/Factory-Panel.jsp");
+                        configSession(session, user, URL);
+                        response.sendRedirect(URL);
                         break;
                     case 2:
-                        response.sendRedirect(request.getContextPath() + "/Dashboards/Sale-Point-Panel.jsp");
+                        URL = request.getContextPath() + "/Dashboards/Sale-Point-Panel.jsp";
+                        configSession(session, user, URL);
+                        response.sendRedirect(URL);
                         break;
                     case 3:
-                        response.sendRedirect(request.getContextPath() + "/Dashboards/Fin-Admin-Panel.jsp");
+                        URL = request.getContextPath() + "/Dashboards/Fin-Admin-Panel.jsp";
+                        configSession(session, user, URL);
+                        response.sendRedirect(URL);
                         break;
                     default:
                         response.sendRedirect(request.getContextPath());
                         break;
                 }
+            } else {
+                response.sendRedirect(request.getContextPath());
             }
-
         } else {
             response.sendRedirect(request.getContextPath());
         }
@@ -64,4 +73,18 @@ public class Login extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    private boolean userOK(String userIn, String userLog) {
+        return userIn.equals(userLog);
+    }
+
+    private boolean passwordOK(String passIn, String passLog) {
+        return passIn.equals(passLog);
+    }
+
+    private void configSession(HttpSession session, User user, String URL) {
+        session.setAttribute("area", String.valueOf(user.getAreaCode()));
+        session.setAttribute("loged", "true");
+        session.setAttribute("panelUrl", URL);
+        session.setAttribute("usr", user);
+    }
 }

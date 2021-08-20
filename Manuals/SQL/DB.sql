@@ -41,7 +41,9 @@ DROP TABLE IF EXISTS `Client`;
 CREATE TABLE `Client` (
   `nit` varchar(12) NOT NULL,
   `name` varchar(75) NOT NULL,
-  `adress` varchar(120) DEFAULT NULL,
+  `adress` varchar(120) NOT NULL,
+  `municipality` VARCHAR(100) NULL,
+  `department` VARCHAR(100) NULL,
   PRIMARY KEY (`NIT`)
 );
 
@@ -123,3 +125,6 @@ CREATE TABLE `Refund` (
     ON DELETE NO ACTION
     ON UPDATE CASCADE
 );
+
+-- DEFAULT USER area 3 for data insert by file
+INSERT INTO `User` VALUES ('admin', 'admin' '3');

@@ -31,6 +31,7 @@ public class Login extends HttpServlet {
                 String URL = null;
                 switch (user.getAreaCode()) {
                     case 1:
+                        URL = request.getContextPath() + "/Dashboards/Factory-Panel.jsp";
                         configSession(session, user, URL);
                         response.sendRedirect(URL);
                         break;
@@ -45,6 +46,7 @@ public class Login extends HttpServlet {
                         response.sendRedirect(URL);
                         break;
                     default:
+                        session.invalidate();
                         response.sendRedirect(request.getContextPath());
                         break;
                 }
@@ -73,18 +75,37 @@ public class Login extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    /**
+     * searches for match between user on DB an user typed
+     * @param userIn user in DB
+     * @param userLog user on <input>
+     * @return match?
+     */
     private boolean userOK(String userIn, String userLog) {
         return userIn.equals(userLog);
     }
 
+    /**
+     * searches for match between user password and password on database
+     * @param passIn password on database
+     * @param passLog password on <input>
+     * @return 
+     */
     private boolean passwordOK(String passIn, String passLog) {
         return passIn.equals(passLog);
     }
 
+    /**
+     * 
+     * @param session
+     * @param user
+     * @param URL 
+     */
     private void configSession(HttpSession session, User user, String URL) {
         session.setAttribute("area", String.valueOf(user.getAreaCode()));
-        session.setAttribute("loged", "true");
+        session.setAttribute("loged", "true"); // I want it to use as a redirect value if session is created
         session.setAttribute("panelUrl", URL);
         session.setAttribute("usr", user);
+        session.setMaxInactiveInterval(1*3600);// 1 hour * 3600 seconds = > 3600ms -> 1 hour 
     }
 }

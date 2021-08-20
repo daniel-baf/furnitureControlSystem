@@ -45,40 +45,40 @@ public class UserDAO {
         }
     }
 
-//    public int insert(User user) {
-//        try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_INSERT_USER)) {
-//            ps.setString(1, user.getName());
-//            ps.setString(2, user.getPassword());
-//            ps.setShort(3, user.getAreaCode());
-//            int reg = ps.executeUpdate();
-//            return reg;
-//        } catch (Exception e) {
-//            // error on insrt, Servlet create table
-//            return 0;
-//        }
-//    }
-//
-//    public int update(User user) {
-//        try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_UPDATE_USER)) {
-//            ps.setString(1, user.getPassword());
-//            ps.setShort(2, user.getAreaCode());
-//            ps.setString(3, user.getName());
-//            int reg = ps.executeUpdate();
-//            return reg;
-//        } catch (Exception e) {
-//            // error on update, Servlet create table
-//            return 0;
-//        }
-//    }
-//
-//    public int delete(User user) {
-//        try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_DELETE_USER)) {
-//            ps.setString(1, user.getName());
-//            int reg = ps.executeUpdate();
-//            return reg;
-//        } catch (Exception e) {
-//            // error on update, Servlet create table
-//            return 0;
-//        }
-//    }
+    public int insert(User user) {
+        try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_INSERT_USER)) {
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getPassword());
+            ps.setShort(3, user.getAreaCode());
+            int reg = ps.executeUpdate();
+            return reg;
+        } catch (Exception e) {
+            // error on insrt, Servlet create table
+            return 0;
+        }
+    }
+
+    public int update(User user) {
+        try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_UPDATE_USER)) {
+            ps.setString(1, user.getPassword());
+            ps.setShort(2, user.getAreaCode());
+            ps.setString(3, user.getName());
+            int reg = ps.executeUpdate();
+            return reg;
+        } catch (Exception e) {
+            // error on update, Servlet create table
+            return 0;
+        }
+    }
+
+    public int delete(User user) {
+        try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_DELETE_USER)) {
+            ps.setString(1, user.getName());
+            int reg = ps.executeUpdate();
+            return reg;
+        } catch (Exception e) {
+            // error on update, Servlet create table
+            return 0;
+        }
+    }
 }

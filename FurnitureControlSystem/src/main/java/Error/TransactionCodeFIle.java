@@ -5,6 +5,23 @@ public class TransactionCodeFIle {
     private String sentece;
     private String values;
     private String status; // 0 = no error
+    private String[] valuesSplited;
+
+    public int getLineError() {
+        return lineError;
+    }
+
+    public void setLineError(int lineError) {
+        this.lineError = lineError;
+    }
+
+    public String[] getValuesSplited() {
+        return valuesSplited;
+    }
+
+    public void setValuesSplited(String[] valuesSplited) {
+        this.valuesSplited = valuesSplited;
+    }
 
     public TransactionCodeFIle() {
     }
@@ -18,14 +35,6 @@ public class TransactionCodeFIle {
         this.sentece = sentece;
         this.values = values;
         this.status = error;
-    }
-
-    public int getLine() {
-        return lineError;
-    }
-
-    public void setLine(int line) {
-        this.lineError = line;
     }
 
     public String getSentece() {

@@ -4,6 +4,7 @@ import Error.TransactionCodeFIle;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -114,7 +115,7 @@ public class FileUpload extends HttpServlet {
                     object.setStatus("Instrucción desconocida: " + object.getSentece());
             }
             return insertStatus;
-        } catch (Exception e) {
+        } catch (IOException | ClassNotFoundException | SQLException e) {
             object.setStatus("Error inesperado, revida la sintaxis para " + object.getSentece());
             return false;
         }

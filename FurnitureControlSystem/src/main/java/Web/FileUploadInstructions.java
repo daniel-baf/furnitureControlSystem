@@ -13,6 +13,7 @@ import Domain.User;
 import Error.TransactionCodeFIle;
 import java.io.IOException;
 import java.sql.SQLException;
+import javax.servlet.http.HttpServletResponse;
 
 public class FileUploadInstructions {
 
@@ -67,14 +68,11 @@ public class FileUploadInstructions {
             object.setStatus("0");
             vals = object.getValuesSplited();
 
-            UserDAO uDao = new UserDAO();
-
-            if (uDao.insert(new User(vals[0], vals[1], Short.valueOf(vals[2].trim()))) != 0) {
+            if (new UserDAO().insert(new User(vals[0], vals[1], Short.valueOf(vals[2].trim()))) != 0) {
                 object.setStatus("0");
                 return true;
             } else {
                 object.setStatus("Insert rechazado por Base de datos, posible duplicado");
-                return false;
             }
         }
         return false;
@@ -87,14 +85,11 @@ public class FileUploadInstructions {
             object.setStatus("0");
             vals = object.getValuesSplited();
 
-            FurniturePieceDAO pieceDAO = new FurniturePieceDAO();
-
-            if (pieceDAO.insert(new FurniturePiece(vals[0], Double.valueOf(vals[1].trim()))) != 0) {
+            if (new FurniturePieceDAO().insert(new FurniturePiece(vals[0], Double.valueOf(vals[1].trim()))) != 0) {
                 object.setStatus("0");
                 return true;
             } else {
                 object.setStatus("Insert rechazado por Base de datos, posible duplicado");
-                return false;
             }
         }
         return false;
@@ -107,22 +102,20 @@ public class FileUploadInstructions {
             object.setStatus("0");
             vals = object.getValuesSplited();
 
-            FurnitureDAO furnitureDAO = new FurnitureDAO();
-
-            if (furnitureDAO.insert(new Furniture(vals[0], Double.valueOf(vals[1].trim()))) != 0) {
+            if (new FurnitureDAO().insert(new Furniture(vals[0], Double.valueOf(vals[1].trim()))) != 0) {
                 object.setStatus("0");
                 return true;
             } else {
                 object.setStatus("Insert rechazado por Base de datos, posible duplicado");
-                return false;
             }
         }
         return false;
     }
 
     public boolean insertPieceAssembly(TransactionCodeFIle object) throws IOException, SQLException, ClassNotFoundException {
-        //ENSAMBLE_PIEZAS)
+        //ENSAMBLE_PIEZAS("nombre muble", "nombre pieza", 1)
         String[] vals = object.getValues().split(",");
+
         if (insertCommonTask(vals, 3, object, "ENSAMBLE_PIEZAS", new int[]{0, 1})) {
             object.setStatus("0");
             vals = object.getValuesSplited();
@@ -132,39 +125,36 @@ public class FileUploadInstructions {
                 return true;
             } else {
                 object.setStatus("Insert rechazado por Base de datos, posible duplicado");
-                return false;
             }
         }
         return false;
     }
 
     public boolean insertClient(TransactionCodeFIle object) throws IOException, SQLException, ClassNotFoundException {
-        //ENSAMBLE_PIEZAS)
+        //CLIENTE("nombre","NIT","direccion","municipio","departamento") --> puede venir sin departamento y municipio
         String[] vals = object.getValues().split(",");
-        TransactionCodeFIle objectBakcup = object;
-        boolean long5NoMatch = false;
+        boolean success = false;
 
-        if (insertCommonTask(vals, 5, object, "CLIENTE", new int[]{0, 1, 2, 3, 4})) {
-            long5NoMatch =  subActionInsertClientCommon(object, vals);
-        } else if (!long5NoMatch && insertCommonTask(vals, 3, object, "CLIENTE", new int[]{0, 1, 2})) {
-            return subActionInsertClientCommon(object, vals);
+        switch (vals.length) {
+            case 3:
+                if (insertCommonTask(vals, 3, object, "CLIENTE", new int[]{0, 1, 2})) {
+                    if (new ClientDAO().insert(new Client(vals[1], vals[0], vals[2]), 0) != 0) {
+                        object.setStatus("0");
+                        success = true;
+                    }
+                }
+                break;
+            case 5:
+                if (insertCommonTask(vals, 5, object, "CLIENTE", new int[]{0, 1, 2, 3, 4})) {
+                    if (new ClientDAO().insert(new Client(vals[1], vals[0], vals[2], vals[3], vals[4]), 1) != 0) {
+                        object.setStatus("0");
+                        success = true;
+                    }
+                }
+                break;
+            default:
+                object.setStatus("EL numero de argumentos no es el esperado");
         }
-
-        return false;
-    }
-
-    public boolean subActionInsertClientCommon(TransactionCodeFIle object, String[] vals) {
-        object.setStatus("0");
-        vals = object.getValuesSplited();
-        String tmp = vals.length == 5 ? vals[3] : null;
-        String tmp1 = vals.length == 5 ? vals[4] : null;
-
-        if (new ClientDAO().insert(new Client(vals[0], vals[1], vals[2], tmp, tmp1)) != 0) {
-            object.setStatus("0");
-            return true;
-        } else {
-            object.setStatus("Insert rechazado por Base de datos, posible duplicado");
-            return false;
-        }
+        return success;
     }
 }

@@ -15,7 +15,7 @@
 
         <fieldset>
             <h3>Cargar datos</h3>
-            <form action="../FileUpload" method="POST" enctype="multipart/form-data">
+            <form action="../FileUpload" method="POST" enctype="multipart/form-data" target="_blank">
                 <input type="file" name="file" value="Buscar">
                 <input type="submit" value="Actualiar BD">
             </form>

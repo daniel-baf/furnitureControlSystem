@@ -7,7 +7,7 @@ import java.sql.PreparedStatement;
 public class FurnitureDAO {
 
     private final String SQL_INSERT_FURNITURE = "INSERT INTO `Furniture` VALUES (?, ?)";
-    
+
     public int insert(Furniture furniture) {
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_INSERT_FURNITURE)) {
             // validate exist the piece name

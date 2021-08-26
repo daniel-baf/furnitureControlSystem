@@ -25,35 +25,34 @@ public class UserDAO {
             while (rs.next()) {
                 users.add(new User(rs.getString("name"), rs.getString("password"), rs.getShort("areaCode")));
             }
-            return users;
-        } catch (Exception e) {
-            return null;
+        } catch (Exception e) { // error catch
         }
+        return users;
     }
 
     public User selectUser(String username) {
+        User user = new User();
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_SELECT_A_USER)) {
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return new User(rs.getString("name"), rs.getString("password"), rs.getShort("areaCode"));
-            } else {
-                return null;
+                user = new User(rs.getString("name"), rs.getString("password"), rs.getShort("areaCode"));
             }
         } catch (Exception e) {
-            return null;
         }
+        return user;
     }
 
     public int insert(User user) {
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_INSERT_USER)) {
+            if (user.getName().trim().equals("") || user.getName() == null) {
+                return 0;
+            }
             ps.setString(1, user.getName());
             ps.setString(2, user.getPassword());
             ps.setShort(3, user.getAreaCode());
-            int reg = ps.executeUpdate();
-            return reg;
+            return ps.executeUpdate();
         } catch (Exception e) {
-            // error on insrt, Servlet create table
             return 0;
         }
     }
@@ -63,10 +62,8 @@ public class UserDAO {
             ps.setString(1, user.getPassword());
             ps.setShort(2, user.getAreaCode());
             ps.setString(3, user.getName());
-            int reg = ps.executeUpdate();
-            return reg;
+            return ps.executeUpdate();
         } catch (Exception e) {
-            // error on update, Servlet create table
             return 0;
         }
     }
@@ -74,10 +71,8 @@ public class UserDAO {
     public int delete(User user) {
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_DELETE_USER)) {
             ps.setString(1, user.getName());
-            int reg = ps.executeUpdate();
-            return reg;
+            return ps.executeUpdate();
         } catch (Exception e) {
-            // error on update, Servlet create table
             return 0;
         }
     }

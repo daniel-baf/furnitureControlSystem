@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class FurnitureAssemblyDAO {
 
-    private final String SQL_INSERT_FURN_ASSM = "INSERT INTO `FurnitureAssembly` (`userName`, `date`,`sold`,`furnitureName`,`assemblyPrice`) VALUES (?,?,?,?,?)";
+    private final String SQL_INSERT_FURN_ASSM = "INSERT INTO `Furniture_Assembly` (`user_Name`, `date`,`sold`,`furniture_Name`,`assembly_Price`) VALUES (?,?,?,?,?)";
 
     public int insertFurnAssmebly(FurnitureAssembly furnAssm) {
         int result = 0;

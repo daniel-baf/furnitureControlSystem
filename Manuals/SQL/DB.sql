@@ -1,11 +1,11 @@
 -- creation
 
-DROP SCHEMA IF EXISTS `FurnitureAssemblyPjct`;
-CREATE SCHEMA `FurnitureAssemblyPjct`;
+DROP SCHEMA IF EXISTS `Furniture_Assembly_Pjct`;
+CREATE SCHEMA `Furniture_Assembly_Pjct`;
 
 -- use schame
 
-USE `FurnitureAssemblyPjct`;
+USE `Furniture_Assembly_Pjct`;
 
 -- tables creation
 
@@ -13,14 +13,13 @@ DROP TABLE IF EXISTS `Furniture`;
 
 CREATE TABLE `Furniture` (
   `name` varchar(100) NOT NULL,
-  `sellPrice` decimal(7,2) NOT NULL,
+  `sell_Price` decimal(7,2) NOT NULL,
   PRIMARY KEY (`name`)
 );
 
+DROP TABLE IF EXISTS `Furniture_Piece`;
 
-DROP TABLE IF EXISTS `FurniturePiece`;
-
-CREATE TABLE `FurniturePiece` (
+CREATE TABLE `Furniture_Piece` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(150) NOT NULL,
   `cost` decimal(6,2) NOT NULL,
@@ -31,8 +30,8 @@ DROP TABLE IF EXISTS `User`;
 
 CREATE TABLE `User` (
   `name` varchar(45) NOT NULL,
-  `password` varchar(45) NOT NULL,
-  `areaCode` tinyint(1) NOT NULL,
+  `password` varchar(80) NOT NULL,
+  `area_Code` tinyint(1) NOT NULL,
   PRIMARY KEY (`name`)
 );
 
@@ -47,39 +46,38 @@ CREATE TABLE `Client` (
   PRIMARY KEY (`NIT`)
 );
 
-
 -- unions
 
-DROP TABLE IF EXISTS `PieceAssembly`;
+DROP TABLE IF EXISTS `Piece_Assembly`;
 
-CREATE TABLE `PieceAssembly` (
-  `furnitureName` varchar(100) NOT NULL,
-  `pieceName` varchar(150) NOT NULL,
+CREATE TABLE `Piece_Assembly` (
+  `furniture_Name` varchar(100) NOT NULL,
+  `piece_Name` varchar(150) NOT NULL,
   `cuantity` int NOT NULL,
-  PRIMARY KEY (`furnitureName`,`pieceName`),
-  CONSTRAINT `fk_funit_assem` FOREIGN KEY (`furnitureName`) 
+  PRIMARY KEY (`furniture_Name`,`piece_Name`),
+  CONSTRAINT `fk_funit_assem` FOREIGN KEY (`furniture_Name`) 
    REFERENCES `Furniture` (`name`) 
     ON DELETE NO ACTION -- i always want to know the unions
     ON UPDATE CASCADE
 );
     
-DROP TABLE IF EXISTS `FurnitureAssembly`;
+DROP TABLE IF EXISTS `Furniture_Assembly`;
 
-CREATE TABLE `FurnitureAssembly` (
+CREATE TABLE `Furniture_Assembly` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `userName` varchar(45) NOT NULL,
+  `user_Name` varchar(45) NOT NULL,
   `date` date NOT NULL,
   `sold` tinyint(1) NOT NULL DEFAULT '0', -- 0 = no sold, 1 = sold, 3 = refounded an re integred
-  `furnitureName` varchar(100) NOT NULL,
-  `assemblyPrice` decimal(7,2) NOT NULL,
+  `furniture_Name` varchar(100) NOT NULL,
+  `assembly_Price` decimal(7,2) NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_furn_furnAssemb` 
-    FOREIGN KEY (`furnitureName`) 
+    FOREIGN KEY (`furniture_Name`) 
     REFERENCES `Furniture` (`name`) 
     ON DELETE NO ACTION -- the sold inventory is never deleted, so name cannot be deleted
     ON UPDATE CASCADE,
   CONSTRAINT `fk_user_furnAssemb`
-    FOREIGN KEY (`userName`)
+    FOREIGN KEY (`user_Name`)
     REFERENCES `User` (`name`) 
     ON UPDATE CASCADE
     ON DELETE NO ACTION -- I don't want to lose the worker id
@@ -89,24 +87,24 @@ DROP TABLE IF EXISTS `Bill`;
 
 CREATE TABLE `Bill` (
   `code` INT NOT NULL AUTO_INCREMENT,
-  `userName` VARCHAR(45) NOT NULL,
-  `furnitureAssembyId` INT NOT NULL,
+  `user_Name` VARCHAR(45) NOT NULL,
+  `furniture_Assemby_Id` INT NOT NULL,
   `ammount` DECIMAL(7,2) NOT NULL,
-  `clientNIT` VARCHAR(12) NOT NULL,
-  `buyDate` DATE NOT NULL,
+  `client_NIT` VARCHAR(12) NOT NULL,
+  `buy_Date` DATE NOT NULL,
   PRIMARY KEY (`code`),
   CONSTRAINT `fk_client_bill` 
-    FOREIGN KEY (`clientNIT`)
+    FOREIGN KEY (`client_NIT`)
     REFERENCES `Client` (`NIT`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE,
   CONSTRAINT `fk_furnAssem_bill` 
-    FOREIGN KEY (`furnitureAssembyId`) 
-    REFERENCES `FurnitureAssembly` (`id`) 
+    FOREIGN KEY (`furniture_Assemby_Id`) 
+    REFERENCES `Furniture_Assembly` (`id`) 
     ON DELETE NO ACTION
     ON UPDATE CASCADE,
   CONSTRAINT `fk_user_bill` 
-    FOREIGN KEY (`userName`) 
+    FOREIGN KEY (`user_Name`) 
     REFERENCES `User` (`name`) 
     ON DELETE NO ACTION
     ON UPDATE CASCADE
@@ -115,16 +113,16 @@ CREATE TABLE `Bill` (
 DROP TABLE IF EXISTS `Refund`;
 
 CREATE TABLE `Refund` (
-  `billCode` int NOT NULL,
+  `bill_Code` int NOT NULL,
   `date` date NOT NULL,
   `ammount` decimal(7,2) NOT NULL,
-  PRIMARY KEY (`billCode`,`date`),
+  PRIMARY KEY (`bill_Code`,`date`),
   CONSTRAINT `fk_bill_refund` 
-    FOREIGN KEY (`billCode`) 
+    FOREIGN KEY (`bill_Code`) 
     REFERENCES `Bill` (`code`) 
     ON DELETE NO ACTION
     ON UPDATE CASCADE
 );
 
 -- DEFAULT USER area 3 for data insert by file
-INSERT INTO `User` VALUES ('admin', 'admin' '3');
+INSERT INTO `User` VALUES ('admin', 'k5o5Krvpa+Dp8X8UHHBlIw==', '3');

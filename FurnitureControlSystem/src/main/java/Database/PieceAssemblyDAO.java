@@ -9,9 +9,9 @@ import java.util.ArrayList;
 public class PieceAssemblyDAO {
 
     // INSERT
-    private final String SQL_INSERT_PIECE_ASSEMB = "INSERT INTO `PieceAssembly` VALUES (?, ?, ?)";
+    private final String SQL_INSERT_PIECE_ASSEMB = "INSERT INTO `Piece_Assembly` VALUES (?, ?, ?)";
     // SELECT
-    private final String SQL_SELECT_PIECE_ASEMBS = "SELECT * FROM `PieceAssembly` WHERE `furnitureName` = ?";
+    private final String SQL_SELECT_PIECE_ASEMBS = "SELECT * FROM `Piece_Assembly` WHERE `furniture_Name` = ?";
 
     public int insert(PieceAssembly pieceAssm) {
         // let's see if pieceName exist
@@ -37,7 +37,7 @@ public class PieceAssemblyDAO {
             ps.setString(1, furnitureName);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                assemblies.add(new PieceAssembly(rs.getString("furnitureName"), rs.getString("pieceName"), rs.getInt("cuantity")));
+                assemblies.add(new PieceAssembly(rs.getString("furniture_Name"), rs.getString("piece_Name"), rs.getInt("cuantity")));
             }
             return assemblies;
         } catch (Exception e) {

@@ -16,33 +16,6 @@
     <body>
         <h1>RESULTADOS CARGA DATOS</h1>
         <fieldset>
-            <h3>Correctos: <%=insertOK.size()%></h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>
-                            -- Linea --
-                        </th>
-                        <th>
-                            -- Linea leida --
-                        </th>
-                        <th>
-                            -- Estado --
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach var="i" items="${insertOK}">
-                        <tr>
-                            <td>${i.lineError}</td>
-                            <td>${i.lineRead}</td>
-                            <td>${i.status}</td>
-                        </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
-        </fieldset>
-        <fieldset>
             <h3>Incorrectos: <%=insertNoOK.size()%></h3>
 
             <table>
@@ -61,6 +34,33 @@
                 </thead>
                 <tbody>
                     <c:forEach var="i" items="${insertNoOK}">
+                        <tr>
+                            <td>${i.lineError}</td>
+                            <td>${i.lineRead}</td>
+                            <td>${i.status}</td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+        </fieldset>
+        <fieldset>
+            <h3>Correctos: <%=insertOK.size()%></h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            -- Linea --
+                        </th>
+                        <th>
+                            -- Linea leida --
+                        </th>
+                        <th>
+                            -- Estado --
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="i" items="${insertOK}">
                         <tr>
                             <td>${i.lineError}</td>
                             <td>${i.lineRead}</td>

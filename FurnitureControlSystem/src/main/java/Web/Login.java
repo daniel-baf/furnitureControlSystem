@@ -2,6 +2,7 @@ package Web;
 
 import Database.UserDAO;
 import Domain.User;
+import GeneralUse.AES256;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,15 +17,14 @@ public class Login extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
         // DATA ACCES OBJECT
         User user = new UserDAO().selectUser(request.getParameter("user"));
-
-        // validate user
+        AES256 aes256 = new AES256();
+        //validate user
         if (user != null) {
             // user found
             if (userOK(user.getName(), request.getParameter("user").trim())
-                    && passwordOK(user.getPassword(), request.getParameter("password").trim())) {
+                    && passwordOK(aes256.decrypt(user.getPassword()), request.getParameter("password").trim())) {
                 HttpSession session = request.getSession();
 
                 // user auth

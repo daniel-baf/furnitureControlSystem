@@ -11,12 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 public class FurniturePieceDAO {
 
     // INSERT
-    private final String SQL_INSERT_PIECE = "INSERT INTO `FurniturePiece` (`name`, `cost`) VALUES (?, ?);";
+    private final String SQL_INSERT_PIECE = "INSERT INTO `Furniture_Piece` (`name`, `cost`) VALUES (?, ?);";
     // SELECT
-    private final String SQL_SELECT_PIECE_BY_NAME = "SELECT * FROM `FurniturePiece` WHERE `name` = ?";
-    private final String SQL_SELECT_PIECES_NAME_LIMIT = "SELECT * FROM `FurniturePiece` WHERE `name`= ? ORDER BY `id` ASC LIMIT ?";
+    private final String SQL_SELECT_PIECE_BY_NAME = "SELECT * FROM `Furniture_Piece` WHERE `name` = ?";
+    private final String SQL_SELECT_PIECES_NAME_LIMIT = "SELECT * FROM `Furniture_Piece` WHERE `name`= ? ORDER BY `id` ASC LIMIT ?";
     //DELTE
-    private final String SQL_DELETE_PIECE = "DELETE FROM `FurniturePiece` WHERE `id` = ?";
+    private final String SQL_DELETE_PIECE = "DELETE FROM `Furniture_Piece` WHERE `id` = ?";
 
     public int insert(FurniturePiece piece) {
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_INSERT_PIECE)) {
@@ -62,15 +62,15 @@ public class FurniturePieceDAO {
 
     public ArrayList<PieceByStock> selectPieceAndStock(String furnitureName, HttpServletResponse response) {
         ArrayList<PieceByStock> list = new ArrayList<>();
-        String TMP_QUERY = "SELECT `pieceName` , (SELECT COUNT(`name`) FROM `FurniturePiece` WHERE `name` = `pieceName` GROUP BY `name`) AS `stock` "
-                + "FROM `PieceAssembly` WHERE `furnitureName` = ?";
+        String TMP_QUERY = "SELECT `piece_Name` , (SELECT COUNT(`name`) FROM `Furniture_Piece` WHERE `name` = `piece_Name` GROUP BY `name`) AS `stock` "
+                + "FROM `Piece_Assembly` WHERE `furniture_Name` = ?";
 
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(TMP_QUERY)) {
             // data
             ps.setString(1, furnitureName);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                list.add(new PieceByStock(rs.getInt("stock"), rs.getString("pieceName")));
+                list.add(new PieceByStock(rs.getInt("stock"), rs.getString("piece_Name")));
             }
             return list;
         } catch (Exception e) {

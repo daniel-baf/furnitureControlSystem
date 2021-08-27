@@ -77,35 +77,46 @@ public class Login extends HttpServlet {
 
     /**
      * searches for match between user on DB an user typed
+     *
      * @param userIn user in DB
      * @param userLog user on <input>
      * @return match?
      */
     private boolean userOK(String userIn, String userLog) {
-        return userIn.equals(userLog);
+        try {
+            return userIn.equals(userLog);
+        } catch (Exception e) { // null pointer
+            return false;
+        }
     }
 
     /**
      * searches for match between user password and password on database
+     *
      * @param passIn password on database
      * @param passLog password on <input>
-     * @return 
+     * @return
      */
     private boolean passwordOK(String passIn, String passLog) {
-        return passIn.equals(passLog);
+        try {
+            return passIn.equals(passLog);
+        } catch (Exception e) {
+            return false;
+        }
+
     }
 
     /**
-     * 
+     *
      * @param session
      * @param user
-     * @param URL 
+     * @param URL
      */
     private void configSession(HttpSession session, User user, String URL) {
         session.setAttribute("area", String.valueOf(user.getAreaCode()));
         session.setAttribute("loged", "true"); // I want it to use as a redirect value if session is created
         session.setAttribute("panelUrl", URL);
         session.setAttribute("usr", user);
-        session.setMaxInactiveInterval(1*3600);// 1 hour * 3600 seconds = > 3600ms -> 1 hour 
+        session.setMaxInactiveInterval(1 * 3600);// 1 hour * 3600 seconds = > 3600ms -> 1 hour 
     }
 }

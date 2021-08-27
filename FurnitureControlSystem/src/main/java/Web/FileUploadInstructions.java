@@ -1,205 +1,194 @@
 package Web;
 
-import Database.ClientDAO;
-import Database.FurnitureAssemblyDAO;
-import Database.FurnitureDAO;
-import Database.FurniturePieceDAO;
-import Database.PieceAssemblyDAO;
-import Database.UserDAO;
-import Domain.Client;
-import Domain.Furniture;
-import Domain.FurnitureAssembly;
-import Domain.FurniturePiece;
-import Domain.PieceAssembly;
-import Domain.User;
-import TransactionObjects.FileInsertStatusObject;
-import java.io.IOException;
+import Database.*;
+import Domain.*;
+import GeneralUse.InsertUtilities;
+import TransactionObjects.InsertObjectStatus;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class FileUploadInstructions {
-
+    
+    private final InsertUtilities insUtilites;
+    
     public FileUploadInstructions() {
+        this.insUtilites = new InsertUtilities();
     }
 
-    // UTILITIES
-    public String removeDoubleComillas(String word) throws IOException {
-        String newWord = "";
-        boolean open = false;
-        for (char c : word.toCharArray()) {
-            if (c != '"') {
-                newWord += c;
-            } else if (c == '"' && open == false) {
-                open = true;
-            }
-        }
-        return newWord.trim();
-    }
-
-    public boolean haveTwoComillas(String st1) {
-        return (st1.trim().replace("\"", "").length() == st1.trim().length() - 2);
-    }
-
-    public boolean insertCommonTask(String[] vals, int lengthExpected, FileInsertStatusObject object, String tableDir,
+    /**
+     * this is a shared steps with other methods
+     *
+     * @param lengthExpected the number of values expected after split vals
+     * @param object the object to save errors on validation to don't let insert
+     * @param tableDir the INSTURCTION, can be MUEBLE, PIEZA...
+     * @param expectedComillas an array with the number of vals's cells where
+     * there must be a value with comillas
+     * @return
+     */
+    public boolean insertCommonTask(int lengthExpected, InsertObjectStatus object, String tableDir,
             int[] expectedComillas) {
+        
+        String[] vals = object.getValues().split(",");
 
-        try {
-            // validate the length
-            if (vals.length != lengthExpected) {
-                object.setStatus("Se detectaron " + vals.length + " atributos. Se esperaban " + lengthExpected + " para la instrucción" + tableDir);
-                return false;
-            }
-            // now we need to ensure thers's two comillas
-            for (int i = 0; i < expectedComillas.length; i++) {
-                vals[expectedComillas[i]] = vals[expectedComillas[i]].trim();
-                if (haveTwoComillas(vals[expectedComillas[i]])) {
-                    vals[expectedComillas[i]] = removeDoubleComillas(vals[expectedComillas[i]]);
-                } else {
-                    object.setStatus("1 o mas atributos tienen menos/mas comillas, se esperaban 2");
-                    return false;
-                }
-            }
-            object.setValuesSplited(vals);
-            return true;
-        } catch (IOException e) {
-            setStatusAndResult(false, object);
-            addErrorMsgToObject(object, e);
+        // validate the length
+        if (vals.length != lengthExpected) {
+            insUtilites.setStatusAndResult(2, object);
             return false;
         }
-    }
-
-    public boolean addErrorMsgToObject(FileInsertStatusObject object, Exception e) {
-        object.setStatus("Hubo un error al intentar insertar, mas inf en \"Tipo de error\"");
-        object.setErrorMsg(e.getMessage());
-        return false;
-    }
-
-    public LocalDate stringToLocalDate(String dateDDMMYY) {
-        try {
-            return LocalDate.parse(dateDDMMYY, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        } catch (Exception e) {
-            return null;
+        // now we need to ensure thers's two comillas
+        for (int i = 0; i < expectedComillas.length; i++) {
+            vals[expectedComillas[i]] = vals[expectedComillas[i]].trim();
+            if (insUtilites.haveTwoComillas(vals[expectedComillas[i]])) {
+                vals[expectedComillas[i]] = insUtilites.removeDoubleComillas(vals[expectedComillas[i]]);
+            } else {
+                object.setStatus("1 o mas atributos tienen menos/mas comillas, se esperaban 2");
+                return false;
+            }
         }
+        object.setValuesSplited(vals);
+        return true;
     }
 
-    public void setStatusAndResult(boolean inserted, FileInsertStatusObject object) {
-        String status = inserted == false ? "Insert rechazado por Base de datos, posible duplicado o error de sintaxis" : "0";
-        object.setStatus(status);
-    }
-
-    public Double getDoubleFromString(String doubleN) {
-        try {
-            return Double.valueOf(doubleN);
-        } catch (NumberFormatException e) {
-            return null;
-        }
-    }
-
-    public Integer getIntegerFromString(String integerN) {
-        try {
-            return Integer.valueOf(integerN);
-        } catch (NumberFormatException e) {
-            return null;
-        }
-    }
-
-    // INSERT
-    public boolean insertUser(FileInsertStatusObject object) {
+    /**
+     * Try to insert a user on DB,from file read
+     *
+     * @param object
+     * @return
+     */
+    public boolean insertUser(InsertObjectStatus object) {
         // USER("name","password",int)
-        String[] vals = object.getValues().split(",");
         boolean inserted = false;
-        if (insertCommonTask(vals, 3, object, "USUARIO", new int[]{0, 1})) {
-            vals = object.getValuesSplited();
+        int typeErrorInsert = 2; // 2 = format error
+        if (insertCommonTask(3, object, "USUARIO", new int[]{0, 1})) {
+            String[] vals = object.getValuesSplited();
             try {
                 Short sht = Short.valueOf(vals[2].trim());
                 inserted = new UserDAO().insert(new User(vals[0], vals[1], sht)) != 0;
+                typeErrorInsert = inserted ? 0 : 1;
             } catch (NumberFormatException e) {
                 inserted = false;
-                addErrorMsgToObject(object, e);
             }
         }
-        setStatusAndResult(inserted, object);
+        insUtilites.setStatusAndResult(typeErrorInsert, object);
         return inserted;
     }
 
-    public boolean insertPiece(FileInsertStatusObject object) {
-        String[] vals = object.getValues().split(",");
+    /**
+     * try to insert a Furniture Piece to DB from text file read
+     *
+     * @param object to save error
+     * @return insert status, Boolean
+     */
+    public boolean insertPiece(InsertObjectStatus object) {
         boolean inserted = false;
+        int typeErrorInsert = 2; // 2 = format error
         //PIEZA("nombre", precioDecimal)
-        if (insertCommonTask(vals, 2, object, "PIEZA", new int[]{0})) {
-            vals = object.getValuesSplited();
-            Double tmp = getDoubleFromString(vals[1]);
+        if (insertCommonTask(2, object, "PIEZA", new int[]{0})) {
+            String[] vals = object.getValuesSplited();
+            Double tmp = insUtilites.getDoubleFromString(vals[1]);
             if (tmp != null) {
                 inserted = new FurniturePieceDAO().insert(new FurniturePiece(vals[0], tmp)) != 0;
+                typeErrorInsert = inserted ? 0 : 1;
             }
         }
-        setStatusAndResult(inserted, object);
+        insUtilites.setStatusAndResult(typeErrorInsert, object);
         return inserted;
     }
 
-    public boolean insertFurniture(FileInsertStatusObject object) {
+    /**
+     * try to insert Furniture to DB from text file read
+     *
+     * @param object to save error
+     * @return Boolean, insert status
+     */
+    public boolean insertFurniture(InsertObjectStatus object) {
         //MUEBLE("nombre", precioDecimal)
-        String[] vals = object.getValues().split(",");
         boolean inserted = false;
-        if (insertCommonTask(vals, 2, object, "MUEBLE", new int[]{0})) {
-            vals = object.getValuesSplited();
-            Double tmp = getDoubleFromString(vals[1].trim());
+        int typeErrorInsert = 2; // 2 = format error
+        if (insertCommonTask(2, object, "MUEBLE", new int[]{0})) {
+            String[] vals = object.getValuesSplited();
+            Double tmp = insUtilites.getDoubleFromString(vals[1].trim());
             if (tmp != null) {
                 inserted = new FurnitureDAO().insert(new Furniture(vals[0], tmp)) != 0;
+                typeErrorInsert = inserted ? 0 : 1;
             }
         }
-        setStatusAndResult(inserted, object);
+        insUtilites.setStatusAndResult(typeErrorInsert, object);
         return inserted;
     }
 
-    public boolean insertClient(FileInsertStatusObject object) {
+    /**
+     * try to insert Client to DB from text file read
+     *
+     * @param object object to save error
+     * @return Boolean, insert status
+     */
+    public boolean insertClient(InsertObjectStatus object) {
         //CLIENTE("nombre","NIT","direccion","municipio","departamento") --> puede venir sin departamento y municipio
         String[] vals = object.getValues().split(",");
         boolean inserted = false;
         int[] expectedComillas;
         int queryType;
+        int typeErrorInsert = 2; // 2 = format error
         Client client;
-
+        
         if (!(vals.length == 5 || vals.length == 3)) {
+            insUtilites.setStatusAndResult(typeErrorInsert, object);
             return false;
         }
-
+        
         expectedComillas = vals.length == 3 ? new int[]{0, 1, 2} : new int[]{0, 1, 2, 3, 4};
         queryType = vals.length == 3 ? 0 : 1;
-
-        if (insertCommonTask(vals, vals.length, object, "CLIENTE", expectedComillas)) {
+        
+        int length = object.getValues().split(",").length;
+        if (insertCommonTask(length, object, "CLIENTE", expectedComillas)) {
             client = vals.length == 3 ? new Client(vals[1], vals[0], vals[2]) : new Client(vals[1], vals[0], vals[2], vals[3], vals[4]);
             inserted = new ClientDAO().insert(client, queryType) != 0;
+            typeErrorInsert = inserted ? 0 : 1;
         }
-        setStatusAndResult(inserted, object);
+        insUtilites.setStatusAndResult(typeErrorInsert, object);
         return inserted;
     }
 
-    public boolean insertPieceAssembly(FileInsertStatusObject object) {
+    /**
+     * Try to insert Piece Assembly to DB from text file read
+     *
+     * @param object
+     * @return
+     */
+    public boolean insertPieceAssembly(InsertObjectStatus object) {
         //ENSAMBLE_PIEZAS("nombre muble", "nombre pieza", 1)
-        String[] vals = object.getValues().split(",");
         boolean inserted = false;
-        if (insertCommonTask(vals, 3, object, "ENSAMBLE_PIEZAS", new int[]{0, 1})) {
-            vals = object.getValuesSplited();
-            Integer tmp = getIntegerFromString(vals[2].trim());
-
+        int typeErrorInsert = 2; // 2 = format error
+        if (insertCommonTask(3, object, "ENSAMBLE_PIEZAS", new int[]{0, 1})) {
+            String[] vals = object.getValuesSplited();
+            Integer tmp = insUtilites.getIntegerFromString(vals[2].trim());
+            
             if (tmp != null) {
                 inserted = new PieceAssemblyDAO().insert(new PieceAssembly(vals[0], vals[1], tmp)) != 0;
+                typeErrorInsert = inserted ? 0 : 1;
             }
         }
-        setStatusAndResult(inserted, object);
+        insUtilites.setStatusAndResult(typeErrorInsert, object);
         return inserted;
     }
 
-    public boolean insertFurnitureAsembly(FileInsertStatusObject object) {
+    /**
+     * try to insert Furniture Assembly from text file read
+     *
+     * @param object
+     * @return
+     */
+    public boolean insertFurnitureAsembly(InsertObjectStatus object) {
         //ENSAMBLAR_MUEBLE("furn name",workerIdWhoEnsabledIt, "date")
-        String[] vals = object.getValues().split(",");
         boolean inserted = false;
-        if (insertCommonTask(vals, 3, object, "ENSAMBLAR_MUEBLE", new int[]{0, 2})) {
-            LocalDate tmp = stringToLocalDate(vals[2]);
+        int typeErrorInsert = 2; // 2 = format error
+        if (insertCommonTask(3, object, "ENSAMBLAR_MUEBLE", new int[]{0, 2})) {
+            String vals[] = object.getValuesSplited();
+            LocalDate tmp = insUtilites.stringToLocalDate(vals[2]);
             inserted = new FurnitureAssemblyDAO().insertFurnAssmebly(new FurnitureAssembly(vals[1], tmp, vals[0])) != 0;
+            typeErrorInsert = inserted ? 0 : 1;
         }
-        setStatusAndResult(inserted, object);
+        insUtilites.setStatusAndResult(typeErrorInsert, object);
         return inserted;
     }
 }

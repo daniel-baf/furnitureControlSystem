@@ -33,52 +33,89 @@ public class FurnitureAssembly {
         this.assemblyPrice = assemblyPrice;
     }
 
+    /**
+     * @return the id
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * @param id the id to set
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * @return the username
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * @param username the username to set
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /**
+     * @return the date
+     */
     public LocalDate getDate() {
         return date;
     }
 
+    /**
+     * @param date the date to set
+     */
     public void setDate(LocalDate date) {
         this.date = date;
     }
 
+    /**
+     * @return the sold
+     */
     public int getSold() {
         return sold;
     }
 
+    /**
+     * @param sold the sold to set
+     */
     public void setSold(int sold) {
         this.sold = sold;
     }
 
+    /**
+     * @return the furnitureName
+     */
     public String getFurnitureName() {
         return furnitureName;
     }
 
+    /**
+     * @param furnitureName the furnitureName to set
+     */
     public void setFurnitureName(String furnitureName) {
         this.furnitureName = furnitureName;
     }
 
+    /**
+     * @return the assemblyPrice
+     */
     public double getAssemblyPrice() {
         return assemblyPrice;
     }
 
+    /**
+     * @param assemblyPrice the assemblyPrice to set
+     */
     public void setAssemblyPrice(double assemblyPrice) {
         this.assemblyPrice = assemblyPrice;
     }
-
+    
+    
 }

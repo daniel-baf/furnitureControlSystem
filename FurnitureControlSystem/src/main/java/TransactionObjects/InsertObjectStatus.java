@@ -1,22 +1,22 @@
 package TransactionObjects;
 
-public class FileInsertStatusObject {
+public class InsertObjectStatus {
 
     private int lineError;
     private String sentece;
     private String values;
+    private String lineRead;
     private String status; // 0 = no error
     private String[] valuesSplited;
-    private String errorMsg;
-
-    public FileInsertStatusObject() {
+    
+    public InsertObjectStatus() {
     }
 
-    public FileInsertStatusObject(int lineError) {
+    public InsertObjectStatus(int lineError) {
         this.lineError = lineError;
     }
 
-    public FileInsertStatusObject(int line, String sentece, String values, String error) {
+    public InsertObjectStatus(int line, String sentece, String values, String error) {
         this.lineError = line;
         this.sentece = sentece;
         this.values = values;
@@ -63,11 +63,13 @@ public class FileInsertStatusObject {
         this.valuesSplited = valuesSplited;
     }
 
-    public String getErrorMsg() {
-        return errorMsg;
+    public String getLineRead() {
+        return lineRead;
     }
 
-    public void setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
+    public void setLineRead(String lineRead) {
+        this.lineRead = lineRead;
     }
+    
+    
 }

@@ -5,7 +5,6 @@ import java.sql.*;
 public class ConnectionDB {
 
     private static final String MYSQL_URL = "jdbc:mysql://localhost:3306/FurnitureAssemblyPjct";
-    // ?useSSL=false&useTimezone=true&serverTimezone=UTC&allowPublicKeyRetrieval=true
     private static final String USER = "jefemayoneso";
     private static final String PASSWORD = "PepePeka_123";
 

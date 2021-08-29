@@ -1,6 +1,7 @@
 package Web.DashboardAcions;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,10 +14,11 @@ public class FinancialAction extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        response.setContentType("text/html;charset=UTF-8");
         
-        response.getWriter().print("val: " + request.getParameter("action-perf"));
-    
+        ArrayList<String[]> table = new ArrayList<>();
+
+        request.setAttribute("title", "Reporte: ");
+        request.setAttribute("table", table);
         request.getRequestDispatcher("/Reports/DinamicTableResult.jsp").forward(request, response);
     }
 

@@ -67,7 +67,7 @@ CREATE TABLE `Furniture_Assembly` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_Name` varchar(45) NOT NULL,
   `date` date NOT NULL,
-  `sold` tinyint(1) NOT NULL DEFAULT '0', -- 0 = no sold, 1 = sold, 3 = refounded an re integred
+  `sold` tinyint(1) NOT NULL DEFAULT '0', -- 0 = no sold, 1 = sold, 2 = refounded an re integred
   `furniture_Name` varchar(100) NOT NULL,
   `assembly_Price` decimal(7,2) NOT NULL,
   PRIMARY KEY (`id`),

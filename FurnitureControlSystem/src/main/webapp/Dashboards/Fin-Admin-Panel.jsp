@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <%
     boolean procedRequest;
+    String[] links = new String[]{"./Fin-Admin-Panel.jsp"};
     try {
         procedRequest = request.getSession() != null && request.isRequestedSessionIdValid(); // return true if session is valid
         procedRequest = request.getSession().getAttribute("area").equals("3") && procedRequest ? true : false;
@@ -27,14 +28,14 @@
         <title>Administración y finanzas</title>
 
         <!-- Custom fonts for this template-->
-        <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link href="../Resources/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
         <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
 
         <!-- Custom styles for this template-->
-        <link href="../css/sb-admin-2.min.css" rel="stylesheet">
-        <link href="../css/MyOwnCss.css">
+        <link href="../Resources/css/sb-admin-2.min.css" rel="stylesheet">
+        <link href="../Resources/css/MyOwnCss.css">
 
     </head>
 
@@ -42,7 +43,7 @@
 
         <!-- Page Wrapper -->
         <div id="wrapper">
-            <jsp:include page="/Includes/FinAndAdm/aside-fin-admin.jsp"/>
+            <jsp:include page="../Includes/FinAndAdm/aside-fin-admin.jsp"/>
             <!-- Content Wrapper -->
             <div id="content-wrapper" class="d-flex flex-column">
                 <!-- Main Content -->
@@ -233,8 +234,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div id="result-insert-FAAP" class="d-none">
-                                                result
+                                            <div id="content-async-insert" class="">
                                             </div>
                                         </div>
                                     </div>
@@ -369,7 +369,7 @@
                                     <div class="card-body">
                                         <div class="text-center">
                                             <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                                 src="../img/undraw_Real_time_sync_re_nky7.svg" alt="...">
+                                                 src="../Resources/img/undraw_Real_time_sync_re_nky7.svg" alt="...">
                                         </div>
                                         <p>Espero te encuentres bien, <span><%=session.getAttribute("usr")%></span></p>
                                         <a target="_blank" rel="nofollow" href="https://github.com/daniel-baf/furnitureControlSystem">Codigo fuente &rarr;</a>
@@ -402,26 +402,26 @@
                 <!-- End of Content Wrapper -->
             </div>
             <!-- End of Page Wrapper -->
-        <jsp:include page="../Includes/scroll-top-logout-pop-up.jsp"/>
+        <jsp:include page="/Includes/scroll-top-logout-pop-up.jsp"/>
 
         <!-- Bootstrap core JavaScript-->
-        <script src="../vendor/jquery/jquery.min.js"></script>
-        <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="../Resources/vendor/jquery/jquery.min.js"></script>
+        <script src="../Resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
         <!-- Core plugin JavaScript-->
-        <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+        <script src="../Resources/vendor/jquery-easing/jquery.easing.min.js"></script>
 
         <!-- Custom scripts for all pages-->
-        <script src="../js/sb-admin-2.min.js"></script>
+        <script src="../Resources/js/sb-admin-2.min.js"></script>
 
         <!-- Page level plugins -->
-        <script src="../vendor/chart.js/Chart.min.js"></script>
+        <script src="../Resources/vendor/chart.js/Chart.min.js"></script>
 
         <!-- Page level custom scripts -->
-        <script src="../js/demo/chart-area-demo.js"></script>
-        <script src="../js/demo/chart-pie-demo.js"></script>
+        <script src="../Resources/js/demo/chart-area-demo.js"></script>
+        <script src="../Resources/js/demo/chart-pie-demo.js"></script>
         <!-- own scripts -->
-        <script src="../js/MyOwnFunctions.js"></script>
+        <script src="../Resources/js/MyOwnFunctions.js"></script>
     </body>
 
 </html>

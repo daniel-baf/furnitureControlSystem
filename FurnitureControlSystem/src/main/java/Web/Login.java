@@ -28,27 +28,27 @@ public class Login extends HttpServlet {
                 HttpSession session = request.getSession();
 
                 // user auth
-                String URL = null;
+                String URL;
                 switch (user.getAreaCode()) {
-                    case 1:
+                    case 1 -> {
                         URL = request.getContextPath() + "/Dashboards/Factory-Panel.jsp";
-                        configSession(session, user, URL);
+                        configSession(session, user);
                         response.sendRedirect(URL);
-                        break;
-                    case 2:
+                    }
+                    case 2 -> {
                         URL = request.getContextPath() + "/Dashboards/Sale-Point-Panel.jsp";
-                        configSession(session, user, URL);
+                        configSession(session, user);
                         response.sendRedirect(URL);
-                        break;
-                    case 3:
+                    }
+                    case 3 -> {
                         URL = request.getContextPath() + "/Dashboards/Fin-Admin-Panel.jsp";
-                        configSession(session, user, URL);
+                        configSession(session, user);
                         response.sendRedirect(URL);
-                        break;
-                    default:
+                    }
+                    default -> {
                         session.invalidate();
                         response.sendRedirect(request.getContextPath());
-                        break;
+                    }
                 }
             } else {
                 response.sendRedirect(request.getContextPath());
@@ -112,9 +112,8 @@ public class Login extends HttpServlet {
      * @param user
      * @param URL
      */
-    private void configSession(HttpSession session, User user, String URL) {
+    private void configSession(HttpSession session, User user) {
         session.setAttribute("area", String.valueOf(user.getAreaCode()));
-        session.setAttribute("panelUrl", URL);
         session.setAttribute("usr", user.getName());
     }
 }

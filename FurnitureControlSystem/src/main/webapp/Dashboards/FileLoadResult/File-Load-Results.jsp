@@ -48,7 +48,7 @@
                                 <!-- Card Header - Accordion -->
                                 <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse"
                                    role="button" aria-expanded="true" aria-controls="collapseCardExample">
-                                    <h6 class="m-0 font-weight-bold text-primary">No se lograron insertar</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">No se lograron insertar: <%=insertNoOK.size()%></h6>
                                 </a>
                                 <div class="collapse show" id="collapseCardExample">
                                     <div class="card-body">
@@ -87,7 +87,7 @@
                             <!-- Card Header - Accordion -->
                             <a href="#collapseCardExample1" class="d-block card-header py-3" data-toggle="collapse"
                                role="button" aria-expanded="true" aria-controls="collapseCardExample">
-                                <h6 class="m-0 font-weight-bold text-primary">Insertados correctamente</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">Insertados correctamente: <%=insertOK.size()%></h6>
                             </a>
                             <div class="collapse show" id="collapseCardExample1">
                                 <div class="card-body">

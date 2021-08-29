@@ -114,9 +114,7 @@ public class Login extends HttpServlet {
      */
     private void configSession(HttpSession session, User user, String URL) {
         session.setAttribute("area", String.valueOf(user.getAreaCode()));
-        session.setAttribute("loged", "true"); // I want it to use as a redirect value if session is created
         session.setAttribute("panelUrl", URL);
-        session.setAttribute("usr", user);
-        session.setMaxInactiveInterval(1 * 3600);// 1 hour * 3600 seconds = > 3600ms -> 1 hour 
+        session.setAttribute("usr", user.getName());
     }
 }

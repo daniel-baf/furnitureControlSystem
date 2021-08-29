@@ -141,6 +141,7 @@ public class FileUploadInstructions {
         
         int length = object.getValues().split(",").length;
         if (insertCommonTask(length, object, "CLIENTE", expectedComillas)) {
+            vals = object.getValuesSplited();
             client = vals.length == 3 ? new Client(vals[1], vals[0], vals[2]) : new Client(vals[1], vals[0], vals[2], vals[3], vals[4]);
             inserted = new ClientDAO().insert(client, queryType) != 0;
             typeErrorInsert = inserted ? 0 : 1;

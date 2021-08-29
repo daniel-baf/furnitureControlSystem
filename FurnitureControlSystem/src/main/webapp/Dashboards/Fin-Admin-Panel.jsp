@@ -177,7 +177,7 @@
                                                 <div class="m-0 row justify-content-center">
                                                     <div class="col-auto align-content-around">
                                                         <form action="../FinancialAction" method="POST">
-                                                            <input name="action-perf" type="text" value="insert-furiture" hidden>
+                                                            <input name="action-perf" type="text" value="insert-furniture" hidden>
                                                             <div class="form-group">
                                                                 <label for="exampleInputName">Nombre</label>
                                                                 <input required name="furnName" type="text" class="form-control" id="exampleInputName" aria-describedby="emailHelp" placeholder="Un nombre de usuario">
@@ -306,24 +306,24 @@
                                                 <div>
                                                     <div class="form-group">
                                                         <label for="exampleInputDate">Fecha inicial</label>
-                                                        <input required name="furnName" id="exampleInputDate" type="date" class="form-control" id="exampleInputName" aria-describedby="emailHelp" placeholder="Un nombre de usuario">
+                                                        <input name="dateStart" id="exampleInputDate" type="date" class="form-control" id="exampleInputName" aria-describedby="emailHelp" placeholder="Un nombre de usuario">
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="exampleInputDate">Fecha inicial</label>
-                                                        <input required name="furnName" id="exampleInputDate" type="date" class="form-control" id="exampleInputName" aria-describedby="emailHelp" placeholder="Un nombre de usuario">
+                                                        <input name="dateEnd" id="exampleInputDate" type="date" class="form-control" id="exampleInputName" aria-describedby="emailHelp" placeholder="Un nombre de usuario">
                                                     </div>
                                                 </div>
-                                                <div class="container">
+                                                <div class="container m-3">
                                                     <div class="d-block text-right">
                                                         <h6 class="ali">Selecciona un tipo de reporte</h6>
                                                     </div>
                                                     <div class="form-check">
                                                         <input class="form-check-input" type="radio" id="report-name-FAAP-choise1" name="report-type-FAAP" value="sells">
-                                                        <label for="report-name-FAAP-choise1">Ventas realizadas a clientes</label>
+                                                        <label class="form-check-label" for="report-name-FAAP-choise1">Ventas realizadas a clientes</label>
                                                     </div>
                                                     <div class="form-check">
                                                         <input class="form-check-input" type="radio" id="report-name-FAAP-choise2" name="report-type-FAAP" value="refunds">
-                                                        <label for="report-name-FAAP-choise2">Devoluciones hechas por clientes</label>
+                                                        <label class="form-check-label" for="report-name-FAAP-choise2">Devoluciones hechas por clientes</label>
                                                     </div>
                                                     <div class="form-check">
                                                         <input class="form-check-input" type="radio" id="report-name-FAAP-choise3" name="report-type-FAAP" value="earnings">

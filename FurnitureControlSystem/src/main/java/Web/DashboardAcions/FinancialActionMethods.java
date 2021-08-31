@@ -21,7 +21,7 @@ public class FinancialActionMethods {
     }
 
     public ArrayList<Bill> getListSells(LocalDate startDate, LocalDate endDate, User usr, HttpServletResponse response) throws IOException {
-        return new BillDAO().getBillingReport(startDate, endDate, new InsertUtilities().isBetweenDates(startDate, endDate), usr, response);
+        return new BillDAO().getBillingReport(startDate, endDate, new InsertUtilities().isBetweenDates(startDate, endDate), usr);
     }
 
     public ArrayList<Earning> getListEarnings(LocalDate startDate, LocalDate endDate) {

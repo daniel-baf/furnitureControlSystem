@@ -73,7 +73,7 @@ public class FinancialAction extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/404.jsp");
         }
         fam.conReportCommonTask(request, profitSum, losesMoney, refundMoney);
-//        request.getRequestDispatcher("Reports/DinamicTableResult.jsp").forward(request, response);
+        request.getRequestDispatcher("Reports/DinamicTableResult.jsp").forward(request, response);
     }
 
     @Override

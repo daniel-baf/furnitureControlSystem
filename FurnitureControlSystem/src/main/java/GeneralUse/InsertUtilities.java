@@ -1,6 +1,7 @@
 package GeneralUse;
 
 import TransactionObjects.InsertObjectStatus;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -88,15 +89,62 @@ public class InsertUtilities {
      * @param object the object to save error
      */
     public void setStatusAndResult(int typeError, InsertObjectStatus object) {
-        switch(typeError) {
-            case 1:
+        switch (typeError) {
+            case 1 ->
                 object.setStatus("Error logico");
-                break;
-            case 2:
+            case 2 ->
                 object.setStatus("Error de formato");
-                break;
-            default:
-                // do nothing
         }
+    }
+
+    /**
+     * parses a local date to SQL date
+     *
+     * @param date
+     * @return
+     */
+    public Date parseLocalDateSQLDate(LocalDate date) {
+        try {
+            return java.sql.Date.valueOf(date);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * parse SQL date to LocalDate
+     *
+     * @param date
+     * @return
+     */
+    public LocalDate parseSQLDateToLocalDate(Date date) {
+        try {
+            return new java.sql.Date(date.getTime()).toLocalDate();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * parse a yyyy-mm-yy string to LocalDate
+     * @param dateyyyyMMdd
+     * @return 
+     */
+    public LocalDate stringToLocalDateyyyyMMMdd(String dateyyyyMMdd) {
+        try {
+            return LocalDate.parse(dateyyyyMMdd, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * return true if both dates are not null, aovid NullPointerException using this method
+     * @param date1
+     * @param date2
+     * @return 
+     */
+    public boolean isBetweenDates(LocalDate date1, LocalDate date2) {
+        return date1 != null && date2 != null;
     }
 }

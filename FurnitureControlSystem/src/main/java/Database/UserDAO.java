@@ -2,14 +2,17 @@ package Database;
 
 import Domain.User;
 import GeneralUse.AES256;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 
 public class UserDAO {
 
     // SELECT 
-    private static final String SQL_SELECT_USERS = "SELECT * FROM `User`";
-    private static final String SQL_SELECT_A_USER = "SELECT * FROM `User` WHERE `name`= ?";
+    private final String SQL_SELECT_USERS = "SELECT * FROM `User`";
+    private final String SQL_SELECT_A_USER = "SELECT * FROM `User` WHERE `name`= ?";
+    private final String SQL_SELECT_MOST_SELLS_USER = "SELECT COUNT(`user_Name`) AS `sold`, `user_Name` FROM `Bill` GROUP BY `user_Name` ORDER BY `sold` DESC LIMIT 1";
+    private final String SQL_SELECT_LESS_SELLS_USER = "SELECT COUNT(`user_Name`) AS `sold`, `user_Name` FROM `Bill` GROUP BY `user_Name` ORDER BY `sold` ASC LIMIT 1";
     // INSERT
     private static final String SQL_INSERT_USER = "INSERT INTO `User` VALUES (?,?,?)"; // name, password, code area
     // UPDATE
@@ -17,6 +20,11 @@ public class UserDAO {
     // DELETE
     private static final String SQL_DELETE_USER = "DELETE FROM `User` WHERE `name` = ?";
 
+    /**
+     * select all users in DB
+     *
+     * @return
+     */
     public ArrayList<User> selectUsers() {
         ArrayList<User> users = new ArrayList<>();
 
@@ -81,5 +89,18 @@ public class UserDAO {
         } catch (Exception e) {
             return 0;
         }
+    }
+
+    public User selectMostLessUser(String mostOrLess) throws IOException {
+        User user = new User();
+        String tmp = mostOrLess.equalsIgnoreCase("most") ? SQL_SELECT_MOST_SELLS_USER : SQL_SELECT_LESS_SELLS_USER;
+        try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(tmp)) {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                user = new User(rs.getString("user_Name"));
+            }
+        } catch (Exception e) {
+        }
+        return user;
     }
 }

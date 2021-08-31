@@ -1,6 +1,8 @@
 package Domain;
 
-public class Furniture {
+import java.io.Serializable;
+
+public class Furniture implements Serializable {
 
     private String name;
     private double sellPrice;

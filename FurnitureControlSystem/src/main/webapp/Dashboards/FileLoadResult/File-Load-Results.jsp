@@ -49,26 +49,26 @@
                                 <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse"
                                    role="button" aria-expanded="true" aria-controls="collapseCardExample">
                                     <h6 class="m-0 font-weight-bold text-primary">No se lograron insertar: <%=insertNoOK.size()%></h6>
-                                </a>
-                                <div class="collapse show" id="collapseCardExample">
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                                <thead>
-                                                    <tr>
-                                                        <th>No. Linea</th>
-                                                        <th>Valor leido</th>
-                                                        <th>Estado</th>
-                                                    </tr>
-                                                </thead>
-                                                <tfoot>
-                                                    <tr>
-                                                        <th>No. Linea</th>
-                                                        <th>Valor leido</th>
-                                                        <th>Estado</th>
-                                                    </tr>
-                                                </tfoot>
-                                                <tbody>
+                            </a>
+                            <div class="collapse show" id="collapseCardExample">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>No. Linea</th>
+                                                    <th>Valor leido</th>
+                                                    <th>Estado</th>
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>No. Linea</th>
+                                                    <th>Valor leido</th>
+                                                    <th>Estado</th>
+                                                </tr>
+                                            </tfoot>
+                                            <tbody>
                                                 <c:forEach var="i" items="${insertNoOK}">
                                                     <tr>
                                                         <td>${i.lineError}</td>
@@ -130,14 +130,12 @@
             </div>
             <!-- End of Content Wrapper -->
 
-        </div>
-        <!-- End of Page Wrapper -->
 
-        <jsp:include page="../../Includes/scroll-top-logout-pop-up.jsp"></jsp:include>
-        <!-- Scroll to Top Button-->
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
+        </div>
+        <jsp:include page="/Includes/footer.jsp"></jsp:include>
+            <!-- End of Page Wrapper -->
+
+        <jsp:include page="/Includes/scroll-top-logout-pop-up.jsp"></jsp:include>
 
         <!-- Bootstrap core JavaScript-->
         <script src="vendor/jquery/jquery.min.js"></script>

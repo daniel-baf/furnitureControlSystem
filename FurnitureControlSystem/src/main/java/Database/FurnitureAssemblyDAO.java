@@ -3,10 +3,9 @@ package Database;
 import Domain.FurnitureAssembly;
 import Domain.FurniturePiece;
 import Domain.PieceAssembly;
+import GeneralUse.InsertUtilities;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class FurnitureAssemblyDAO {
@@ -25,7 +24,7 @@ public class FurnitureAssemblyDAO {
                 ArrayList<FurniturePiece> pieces = new ArrayList<>();
                 double assembPrice = 0;
 
-                if (assemblies.isEmpty() || assemblies.size() == 0) {
+                if (assemblies.isEmpty() || assemblies.isEmpty()) {
                     return 0;
                 }
 
@@ -48,7 +47,7 @@ public class FurnitureAssemblyDAO {
                 }
                 // create furniture
                 ps.setString(1, furnAssm.getUsername());
-                ps.setDate(2, parseLocalDateSQLDate(furnAssm.getDate()));
+                ps.setDate(2, new InsertUtilities().parseLocalDateSQLDate(furnAssm.getDate()));
                 ps.setInt(3, 0);
                 ps.setString(4, furnAssm.getFurnitureName());
                 ps.setDouble(5, assembPrice);
@@ -67,9 +66,5 @@ public class FurnitureAssemblyDAO {
         } catch (Exception e) {
             return 0;
         }
-    }
-
-    public Date parseLocalDateSQLDate(LocalDate date) {
-        return java.sql.Date.valueOf(date);
     }
 }

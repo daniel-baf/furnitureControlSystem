@@ -1,6 +1,8 @@
 package Domain;
 
-public class FurniturePiece {
+import java.io.Serializable;
+
+public class FurniturePiece implements Serializable {
 
     private int id; // autoincrement
     private String name;
@@ -70,5 +72,4 @@ public class FurniturePiece {
         this.cost = cost;
     }
 
-    
 }

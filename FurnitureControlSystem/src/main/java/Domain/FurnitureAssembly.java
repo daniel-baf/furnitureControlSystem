@@ -1,8 +1,9 @@
 package Domain;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class FurnitureAssembly {
+public class FurnitureAssembly implements Serializable {
 
     private int id;
     private String username;
@@ -116,6 +117,5 @@ public class FurnitureAssembly {
     public void setAssemblyPrice(double assemblyPrice) {
         this.assemblyPrice = assemblyPrice;
     }
-    
-    
+
 }

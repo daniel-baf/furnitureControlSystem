@@ -1,6 +1,8 @@
 package Domain;
 
-public class PieceAssembly {
+import java.io.Serializable;
+
+public class PieceAssembly implements Serializable {
 
     private String furnitureName;
     private String pieceName;
@@ -59,5 +61,4 @@ public class PieceAssembly {
         this.cuantity = cuantity;
     }
 
-    
 }

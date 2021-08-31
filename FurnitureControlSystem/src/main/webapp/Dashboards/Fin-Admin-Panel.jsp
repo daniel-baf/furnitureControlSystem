@@ -28,14 +28,14 @@
         <title>Administración y finanzas</title>
 
         <!-- Custom fonts for this template-->
-        <link href="../Resources/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
         <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
 
         <!-- Custom styles for this template-->
-        <link href="../Resources/css/sb-admin-2.min.css" rel="stylesheet">
-        <link href="../Resources/css/MyOwnCss.css">
+        <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+        <link href="../css/MyOwnCss.css">
 
     </head>
 
@@ -318,31 +318,31 @@
                                                         <h6 class="ali">Selecciona un tipo de reporte</h6>
                                                     </div>
                                                     <div class="form-check">
-                                                        <input class="form-check-input" type="radio" id="report-name-FAAP-choise1" name="report-type-FAAP" value="sells">
+                                                        <input required class="form-check-input" type="radio" id="report-name-FAAP-choise1" name="report-type-FAAP" value="sells">
                                                         <label class="form-check-label" for="report-name-FAAP-choise1">Ventas realizadas a clientes</label>
                                                     </div>
                                                     <div class="form-check">
-                                                        <input class="form-check-input" type="radio" id="report-name-FAAP-choise2" name="report-type-FAAP" value="refunds">
+                                                        <input required class="form-check-input" type="radio" id="report-name-FAAP-choise2" name="report-type-FAAP" value="refunds">
                                                         <label class="form-check-label" for="report-name-FAAP-choise2">Devoluciones hechas por clientes</label>
                                                     </div>
                                                     <div class="form-check">
-                                                        <input class="form-check-input" type="radio" id="report-name-FAAP-choise3" name="report-type-FAAP" value="earnings">
+                                                        <input required class="form-check-input" type="radio" id="report-name-FAAP-choise3" name="report-type-FAAP" value="earnings">
                                                         <label class="form-check-label" for="report-name-FAAP-choise3">Ganancias netas generadas</label>
                                                     </div>
                                                     <div class="form-check">
-                                                        <input class="form-check-input" type="radio" id="report-name-FAAP-choise4" name="report-type-FAAP" value="most-sells-user">
+                                                        <input required class="form-check-input" type="radio" id="report-name-FAAP-choise4" name="report-type-FAAP" value="most-sells-user">
                                                         <label class="form-check-label" for="report-name-FAAP-choise4">Usuario que mas ventas ha registrado </label>
                                                     </div>
                                                     <div class="form-check">
-                                                        <input class="form-check-input" type="radio" id="report-name-FAAP-choise5" name="report-type-FAAP" value="most-profits-user">
+                                                        <input required class="form-check-input" type="radio" id="report-name-FAAP-choise5" name="report-type-FAAP" value="most-profits-user">
                                                         <label class="form-check-label" for="report-name-FAAP-choise5">Usuario que mas ganancias ha registrado</label>
                                                     </div>
                                                     <div class="form-check">
-                                                        <input class="form-check-input" type="radio" id="report-name-FAAP-choise6" name="report-type-FAAP" value="most-sold-furniture">
+                                                        <input required class="form-check-input" type="radio" id="report-name-FAAP-choise6" name="report-type-FAAP" value="most-sold-furniture">
                                                         <label class="form-check-label" for="report-name-FAAP-choise6">Mueble mas vendido</label>
                                                     </div>
                                                     <div class="form-check">
-                                                        <input class="form-check-input" type="radio" id="report-name-FAAP-choise8" name="report-type-FAAP" value="less-sold-furniture">
+                                                        <input required class="form-check-input" type="radio" id="report-name-FAAP-choise8" name="report-type-FAAP" value="less-sold-furniture">
                                                         <label class="form-check-label" for="report-name-FAAP-choise7">Mueble menos vendido</label>
                                                     </div>
                                                 </div>
@@ -369,7 +369,7 @@
                                     <div class="card-body">
                                         <div class="text-center">
                                             <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                                 src="../Resources/img/undraw_Real_time_sync_re_nky7.svg" alt="...">
+                                                 src="../img/undraw_posting_photo.svg" alt="...">
                                         </div>
                                         <p>Espero te encuentres bien, <span><%=session.getAttribute("usr")%></span></p>
                                         <a target="_blank" rel="nofollow" href="https://github.com/daniel-baf/furnitureControlSystem">Codigo fuente &rarr;</a>
@@ -405,23 +405,23 @@
         <jsp:include page="/Includes/scroll-top-logout-pop-up.jsp"/>
 
         <!-- Bootstrap core JavaScript-->
-        <script src="../Resources/vendor/jquery/jquery.min.js"></script>
-        <script src="../Resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="../vendor/jquery/jquery.min.js"></script>
+        <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
         <!-- Core plugin JavaScript-->
-        <script src="../Resources/vendor/jquery-easing/jquery.easing.min.js"></script>
+        <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
         <!-- Custom scripts for all pages-->
-        <script src="../Resources/js/sb-admin-2.min.js"></script>
+        <script src="../js/sb-admin-2.min.js"></script>
 
         <!-- Page level plugins -->
-        <script src="../Resources/vendor/chart.js/Chart.min.js"></script>
+        <script src="../vendor/chart.js/Chart.min.js"></script>
 
         <!-- Page level custom scripts -->
-        <script src="../Resources/js/demo/chart-area-demo.js"></script>
-        <script src="../Resources/js/demo/chart-pie-demo.js"></script>
+        <script src="../js/demo/chart-area-demo.js"></script>
+        <script src="../js/demo/chart-pie-demo.js"></script>
         <!-- own scripts -->
-        <script src="../Resources/js/MyOwnFunctions.js"></script>
+        <script src="../js/MyOwnFunction.js"></script>
     </body>
 
 </html>

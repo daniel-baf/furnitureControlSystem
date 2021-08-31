@@ -11,17 +11,19 @@ public class Earning implements Serializable {
     private String item;
     private short furnitureState;
     private LocalDate sellDate;
+    private String worker;
 
     public Earning() {
     }
 
-    public Earning(int billId, double earning, double sellAmmount, String item, short state, LocalDate sellDate) {
+    public Earning(int billId, double earning, double sellAmmount, String item, short state, LocalDate sellDate, String worker) {
         this.billId = billId;
         this.earning = earning;
         this.sellAmmount = sellAmmount;
         this.item = item;
         this.furnitureState = state;
         this.sellDate = sellDate;
+        this.worker = worker;
     }
 
     /**
@@ -106,6 +108,20 @@ public class Earning implements Serializable {
      */
     public void setSellDate(LocalDate sellDate) {
         this.sellDate = sellDate;
+    }
+
+    /**
+     * @return the worker
+     */
+    public String getWorker() {
+        return worker;
+    }
+
+    /**
+     * @param worker the worker to set
+     */
+    public void setWorker(String worker) {
+        this.worker = worker;
     }
 
 }

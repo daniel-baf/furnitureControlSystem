@@ -2,11 +2,13 @@ package Database;
 
 import Domain.Refund;
 import GeneralUse.InsertUtilities;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import javax.servlet.http.HttpServletResponse;
 
 public class RefundDAO {
 
@@ -16,7 +18,7 @@ public class RefundDAO {
 
     public ArrayList<Refund> getRefundsReport(LocalDate initDate, LocalDate endDate, boolean betweenDates) {
         // get dates, what if no dates?
-        String bckup = betweenDates ? SQL_SELECT_REFUND_BILL_REPORT + " WHERE `f`.`date` BETWEEN ? AND ?" : SQL_SELECT_REFUND_BILL_REPORT;
+        String bckup = betweenDates ? SQL_SELECT_REFUND_BILL_REPORT + " WHERE `r`.`date` BETWEEN ? AND ?" : SQL_SELECT_REFUND_BILL_REPORT;
         ArrayList<Refund> refunds = new ArrayList<>();
 
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(bckup)) {

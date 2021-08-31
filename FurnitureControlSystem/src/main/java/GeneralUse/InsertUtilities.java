@@ -1,9 +1,11 @@
 package GeneralUse;
 
 import TransactionObjects.InsertObjectStatus;
+import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import javax.servlet.http.HttpServletResponse;
 
 public class InsertUtilities {
 
@@ -127,24 +129,43 @@ public class InsertUtilities {
 
     /**
      * parse a yyyy-mm-yy string to LocalDate
+     *
      * @param dateyyyyMMdd
-     * @return 
+     * @return
      */
     public LocalDate stringToLocalDateyyyyMMMdd(String dateyyyyMMdd) {
         try {
-            return LocalDate.parse(dateyyyyMMdd, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            return LocalDate.parse(dateyyyyMMdd, formatter);
         } catch (Exception e) {
             return null;
         }
     }
 
     /**
-     * return true if both dates are not null, aovid NullPointerException using this method
+     * return true if both dates are not null, aovid NullPointerException using
+     * this method
+     *
      * @param date1
      * @param date2
-     * @return 
+     * @return
      */
     public boolean isBetweenDates(LocalDate date1, LocalDate date2) {
         return date1 != null && date2 != null;
+    }
+
+    /**
+     * validate theres's no null or empty entries
+     *
+     * @param args
+     * @return
+     */
+    public boolean haveNoNulls(String... args) {
+        for (String arg : args) {
+            if (arg.isBlank() || arg.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -26,9 +26,9 @@ public class Login extends HttpServlet {
             if (userOK(user.getName(), request.getParameter("user").trim())
                     && passwordOK(aes256.decrypt(user.getPassword()), request.getParameter("password").trim())) {
                 HttpSession session = request.getSession();
-
                 // user auth
                 String URL;
+                // redirect to panels
                 switch (user.getAreaCode()) {
                     case 1 -> {
                         URL = request.getContextPath() + "/Dashboards/Factory-Panel.jsp";
@@ -70,11 +70,6 @@ public class Login extends HttpServlet {
         processRequest(request, response);
     }
 
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
     /**
      * searches for match between user on DB an user typed
      *
@@ -107,6 +102,7 @@ public class Login extends HttpServlet {
     }
 
     /**
+     * common task for mission
      *
      * @param session
      * @param user

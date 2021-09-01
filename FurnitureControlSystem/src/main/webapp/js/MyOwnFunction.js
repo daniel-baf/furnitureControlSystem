@@ -1,10 +1,8 @@
-$(document).ready(function () {
 
-    $("#shw-usr-hde-frn-faap").click(showUsrFAAP);
-    $("#shw-frn-hde-usr-faap").click(showFntFAAP);
-    $("#toggle-result-faap").click(function () {
-        alert("borrar el texto de los inputs");
-    });
+$("#shw-usr-hde-frn-faap").click(showUsrFAAP);
+$("#shw-frn-hde-usr-faap").click(showFntFAAP);
+$("#toggle-result-faap").click(function () {
+    alert("borrar el texto de los inputs");
 });
 
 

@@ -22,7 +22,8 @@
         <link href="../css/sb-admin-2.min.css" rel="stylesheet">
         <link href="../css/MyOwnCss.css">
     </head>
-    <body>
+    <body id="page-top">
+
         <!-- Page Wrapper -->
         <div id="wrapper">
 
@@ -34,7 +35,7 @@
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-laugh-wink"></i>
                     </div>
-                    <div class="sidebar-brand-text mx-3">Muebleria <sup>Mi</sup></div>
+                    <div class="sidebar-brand-text mx-3">Muebleria<sup>Mi</sup></div>
                 </a>
 
                 <!-- Divider -->
@@ -44,7 +45,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="index.html">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
-                        <span>Panel</span></a>
+                        <span>Dashboard</span></a>
                 </li>
 
                 <!-- Divider -->
@@ -52,7 +53,7 @@
 
                 <!-- Heading -->
                 <div class="sidebar-heading">
-                    Acciones
+                    Interface
                 </div>
 
                 <!-- Nav Item - Pages Collapse Menu -->
@@ -65,8 +66,8 @@
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Custom Components:</h6>
-                            <a class="collapse-item" href="#">Buttons</a>
-                            <a class="collapse-item" href="#">Cards</a>
+                            <a class="collapse-item" href="buttons.html">Buttons</a>
+                            <a class="collapse-item" href="cards.html">Cards</a>
                         </div>
                     </div>
                 </li>
@@ -151,124 +152,147 @@
                 <!-- Main Content -->
                 <div id="content">
 
-                    <jsp:include page="../Includes/top-bar.jsp"></jsp:include>
+                    <jsp:include page="/Includes/top-bar.jsp"></jsp:include>
 
                         <!-- Begin Page Content -->
                         <div class="container-fluid">
 
                             <!-- Page Heading -->
-                            <h1 class="h3 mb-4 text-gray-800">Dashboard: Area de fábrica</h1>
-                            <!-- Dropdown Card Example -->
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Registrar</h6>
-                                    <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                             aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Mueble</a>
-                                            <a class="dropdown-item" href="#">Pieza</a>
-                                            <div class="dropdown-divider"></div>
+                            <h1 class="h3 mb-4 text-gray-800">Dashboard: Fábrica</h1>
+                            <div class="row">
+
+                                <div class="col-lg-6">
+
+                                    <!-- Default Card Example -->
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            Crear o modificar pieza
+                                        </div>
+                                        <div class="card-body">
+                                            Obten una lista con todas las piezas o muebles y editalas. También podrás borrarlas segun lo que elijas
+                                            <form action="../SelectFromDB" method="GET" class="border-bottom-secondary">
+                                                <div>
+                                                    <input name="action-perf" type="text" value="get-report" hidden>
+                                                    <div class="container m-3">
+                                                        <div class="d-block text-right">
+                                                            <h6 class="ali">Elije lo que deseas consultar</h6>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input required class="form-check-input" type="radio" id="report-name-FAAP-choise1" name="show-obj-value" value="select-pieces">
+                                                            <label class="form-check-label" for="report-name-FAAP-choise1">Ver piezas disponibles</label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input required class="form-check-input" type="radio" id="report-name-FAAP-choise1" name="show-obj-value" value="select-furnitures">
+                                                            <label class="form-check-label" for="report-name-FAAP-choise1">Ver muebles disponibles</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group d-block justify-content-end">
+                                                        <button type="submit" class="btn btn-primary">Ver items</button>
+                                                    </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    colocar inf para registrar piezas o muebles
+                                <!-- Basic Card Example -->
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Basic Card Example</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        The styling for this basic card example is created by using default Bootstrap
+                                        utility classes. By using utility classes, the style of the card component can be
+                                        easily modified with no need for any custom CSS!
+                                    </div>
                                 </div>
+
                             </div>
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Ver informacion</h6>
-                                    <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                             aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Mueble</a>
-                                            <a class="dropdown-item" href="#">Pieza</a>
-                                            <div class="dropdown-divider"></div>
+
+                            <div class="col-lg-6">
+
+                                <!-- Dropdown Card Example -->
+                                <div class="card shadow mb-4">
+                                    <!-- Card Header - Dropdown -->
+                                    <div
+                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">Dropdown Card Example</h6>
+                                        <div class="dropdown no-arrow">
+                                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                 aria-labelledby="dropdownMenuLink">
+                                                <div class="dropdown-header">Dropdown Header:</div>
+                                                <a class="dropdown-item" href="#">Action</a>
+                                                <a class="dropdown-item" href="#">Another action</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="#">Something else here</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card Body -->
+                                    <div class="card-body">
+                                        Dropdown menus can be placed in the card header in order to extend the functionality
+                                        of a basic card. In this dropdown card example, the Font Awesome vertical ellipsis
+                                        icon in the card header can be clicked on in order to toggle a dropdown menu.
+                                    </div>
+                                </div>
+
+                                <!-- Collapsable Card Example -->
+                                <div class="card shadow mb-4">
+                                    <!-- Card Header - Accordion -->
+                                    <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse"
+                                       role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                                        <h6 class="m-0 font-weight-bold text-primary">Collapsable Card Example</h6>
+                                    </a>
+                                    <!-- Card Content - Collapse -->
+                                    <div class="collapse show" id="collapseCardExample">
+                                        <div class="card-body">
+                                            This is a collapsable card example using Bootstrap's built in collapse
+                                            functionality. <strong>Click on the card header</strong> to see the card body
+                                            collapse and expand!
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    Para que el usuario pueda ver informacion de piezas o muebles, esta debe re dirigir a una pagina donde puedan editar o borrar el muebel o pieza
-                                </div>
                             </div>
-
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Stock bajo</h6>
-                                    <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                             aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Mueble</a>
-                                            <a class="dropdown-item" href="#">Pieza</a>
-                                            <div class="dropdown-divider"></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    poner una tabla con los que no tienen stock
-                                </div>
-                            </div>
+                            <!-- /.container-fluid -->
 
                         </div>
-                        <!-- /.container-fluid -->
+                        <!-- End of Main Content -->
+
+                    <jsp:include page="/Includes/footer.jsp"></jsp:include>
 
                     </div>
-                    <!-- End of Main Content -->
-
-                <jsp:include page="../Includes/footer.jsp"></jsp:include>
+                    <!-- End of Content Wrapper -->
 
                 </div>
-                <!-- End of Content Wrapper -->
+                <!-- End of Page Wrapper -->
 
-            </div>
-            <!-- End of Page Wrapper -->
+                <!-- Scroll to Top Button-->
+                <a class="scroll-to-top rounded" href="#page-top">
+                    <i class="fas fa-angle-up"></i>
+                </a>
 
-        <jsp:include page="/Includes/scroll-top-logout-pop-up.jsp"/>
+            <jsp:include page="/Includes/scroll-top-logout-pop-up.jsp"></jsp:include>
 
-        <!-- Bootstrap core JavaScript-->
-        <script src="../vendor/jquery/jquery.min.js"></script>
-        <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <!-- Bootstrap core JavaScript-->
+            <script src="../vendor/jquery/jquery.min.js"></script>
+            <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-        <!-- Core plugin JavaScript-->
-        <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+            <!-- Core plugin JavaScript-->
+            <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
-        <!-- Custom scripts for all pages-->
-        <script src="../js/sb-admin-2.min.js"></script>
+            <!-- Custom scripts for all pages-->
+            <script src="../js/sb-admin-2.min.js"></script>
 
-        <!-- Page level plugins -->
-        <script src="../vendor/chart.js/Chart.min.js"></script>
+            <!-- Page level plugins -->
+            <script src="../vendor/chart.js/Chart.min.js"></script>
 
-        <!-- Page level custom scripts -->
-        <script src="../js/demo/chart-area-demo.js"></script>
-        <script src="../js/demo/chart-pie-demo.js"></script>
-        <!-- own scripts -->
-        <script src="../js/MyOwnFunction.js"></script>
+            <!-- Page level custom scripts -->
+            <script src="../js/demo/chart-area-demo.js"></script>
+            <script src="../js/demo/chart-pie-demo.js"></script>
+
     </body>
 </html>

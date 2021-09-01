@@ -14,20 +14,37 @@ public class Refund implements Serializable {
     private double moneyLost;
     private String furnitureName;
 
+    /**
+     * default constructor, for JavaBeans
+     */
     public Refund() {
     }
 
-    public Refund(int billID, LocalDate refundDate) {
-        this.billID = billID;
-        this.refundDate = refundDate;
-    }
-
+    /**
+     * Constructor, used for simple consults
+     *
+     * @param billID
+     * @param refundDate
+     * @param buyDate
+     */
     public Refund(int billID, LocalDate refundDate, LocalDate buyDate) {
         this.billID = billID;
         this.refundDate = refundDate;
         this.buyDate = buyDate;
     }
 
+    /**
+     * Constructor, used to get Reports with full information of refund
+     *
+     * @param billID
+     * @param furnitureName
+     * @param refundDate
+     * @param buyDate
+     * @param refund
+     * @param clientNit
+     * @param priceAssembly
+     * @param moneyLost
+     */
     public Refund(int billID, String furnitureName, LocalDate refundDate, LocalDate buyDate, double refund, String clientNit, double priceAssembly, double moneyLost) {
         this.billID = billID;
         this.furnitureName = furnitureName;

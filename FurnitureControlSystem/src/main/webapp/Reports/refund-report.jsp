@@ -31,8 +31,7 @@
 
                         <!-- Page Heading -->
                         <h1 class="h3 mb-2 text-gray-800">Reporte generado</h1>
-                        <%=description%> <a id="download-table-csv"href="#">descargar CSV</a>.
-
+                        <%=description%>
                         <!-- DataTales Example -->
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
@@ -78,6 +77,7 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                <input id="export-CSV" type="button" value="Descargar reporte en formato compatible con excel(CSV)" class="btn btn-block btn-primary">
                             </div>
                         </div>
 
@@ -89,8 +89,6 @@
             </div>
             <!-- End of Content Wrapper -->
         </div>
-
-        <script src="../js/MyOwnFunction.js"></script>
 
         <!-- Bootstrap core JavaScript-->
         <script src="vendor/jquery/jquery.min.js"></script>
@@ -109,5 +107,28 @@
         <!-- Page level custom scripts -->
         <script src="js/demo/datatables-demo.js"></script>
 
+        <script src="js/TableCSVExporter.js"></script>
+
+        <script>
+            let dataTable = document.getElementById("dataTable");
+
+            new TableCSVExporter(dataTable, true).convertToCSV();
+
+            $("#export-CSV").on("click", function () {
+                const exporter = new TableCSVExporter(dataTable);
+                const csvOutput = exporter.convertToCSV();
+                const csvBlob = new Blob([csvOutput], {type: "text/csv"});
+                const blobUrl = URL.createObjectURL(csvBlob);
+                const anchorElement = document.createElement("a");
+
+                anchorElement.href = blobUrl;
+                anchorElement.download = "reporte-exportar.csv";
+                anchorElement.click();
+
+                setTimeout(() => {
+                    URL.revokeObjectURL(blobUrl);
+                }, 500);
+            });
+        </script>
     </body>
 </html>

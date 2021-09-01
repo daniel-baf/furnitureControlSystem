@@ -1,11 +1,9 @@
 package GeneralUse;
 
 import TransactionObjects.InsertObjectStatus;
-import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import javax.servlet.http.HttpServletResponse;
 
 public class InsertUtilities {
 
@@ -86,7 +84,8 @@ public class InsertUtilities {
     /**
      * set a error status or success (0) if receive true from call 1 = logical
      * error, 2 = format error
-     *
+     *    
+    public void httpErrorShow(Http)
      * @param typeError
      * @param object the object to save error
      */

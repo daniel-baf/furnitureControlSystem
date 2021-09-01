@@ -2,10 +2,8 @@ package Database;
 
 import Domain.User;
 import GeneralUse.AES256;
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
-import javax.servlet.http.HttpServletResponse;
 
 public class UserDAO {
 
@@ -41,6 +39,12 @@ public class UserDAO {
         return users;
     }
 
+    /**
+     * select a user by name
+     *
+     * @param username
+     * @return
+     */
     public User selectUser(String username) {
         User user = new User();
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_SELECT_A_USER)) {
@@ -54,6 +58,12 @@ public class UserDAO {
         return user;
     }
 
+    /**
+     * select the user with more or less sells in DB registered
+     *
+     * @param mostSellsOrEarn
+     * @return
+     */
     public User selectMostSellsOrEarnigsUser(String mostSellsOrEarn) {
         User user = new User();
         String tmp = mostSellsOrEarn.equalsIgnoreCase("most") ? SQL_SELECT_MOST_SELLS_USER : SQL_SELECT_MOST_EARNS_USER;
@@ -68,12 +78,17 @@ public class UserDAO {
         return user;
     }
 
+    /**
+     * insert a new User on DB, encrypt password before insert
+     *
+     * @param user a user, the password is plain text
+     * @return true if no error on insert
+     */
     public int insert(User user) {
         String pswdEncrypted = new AES256().encrypt(user.getPassword());
         if (pswdEncrypted == null) {
             return 0;
         }
-
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_INSERT_USER)) {
             if (user.getName().trim().equals("") || user.getName() == null) {
                 return 0;
@@ -87,6 +102,12 @@ public class UserDAO {
         }
     }
 
+    /**
+     * update a User on DB
+     *
+     * @param user object with the info to update
+     * @return
+     */
     public int update(User user) {
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_UPDATE_USER)) {
             ps.setString(1, user.getPassword());
@@ -98,6 +119,12 @@ public class UserDAO {
         }
     }
 
+    /**
+     * delete a user from DB via username
+     *
+     * @param user
+     * @return
+     */
     public int delete(User user) {
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_DELETE_USER)) {
             ps.setString(1, user.getName());

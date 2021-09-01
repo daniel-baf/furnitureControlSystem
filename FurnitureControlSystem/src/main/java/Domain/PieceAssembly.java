@@ -8,11 +8,24 @@ public class PieceAssembly implements Serializable {
     private String pieceName;
     private int cuantity;
 
+    /**
+     * Constructor, used to pieces
+     *
+     * @param furnitureName
+     * @param pieceName
+     */
     public PieceAssembly(String furnitureName, String pieceName) {
         this.furnitureName = furnitureName;
         this.pieceName = pieceName;
     }
 
+    /**
+     * Constructor, used for reports
+     *
+     * @param furnitureName
+     * @param pieceName
+     * @param cuantity
+     */
     public PieceAssembly(String furnitureName, String pieceName, int cuantity) {
         this.furnitureName = furnitureName;
         this.pieceName = pieceName;

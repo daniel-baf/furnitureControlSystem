@@ -1,9 +1,16 @@
 package GeneralUse;
 
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Base64;
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
@@ -18,6 +25,12 @@ public class AES256 {
     public AES256() {
     }
 
+    /**
+     * Encrypts a string using AES256
+     *
+     * @param strToEncrypt
+     * @return
+     */
     public String encrypt(String strToEncrypt) {
         try {
             byte[] iv = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -32,11 +45,17 @@ public class AES256 {
             cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivspec);
             return Base64.getEncoder()
                     .encodeToString(cipher.doFinal(strToEncrypt.getBytes(StandardCharsets.UTF_8)));
-        } catch (Exception e) {
+        } catch (InvalidAlgorithmParameterException | InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException e) {
             return null;
         }
     }
 
+    /**
+     * Decrypt a String using AES256
+     *
+     * @param strToDecrypt
+     * @return
+     */
     public String decrypt(String strToDecrypt) {
         try {
             byte[] iv = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -50,9 +69,8 @@ public class AES256 {
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
             cipher.init(Cipher.DECRYPT_MODE, secretKey, ivspec);
             return new String(cipher.doFinal(Base64.getDecoder().decode(strToDecrypt)));
-        } catch (Exception e) {
+        } catch (InvalidAlgorithmParameterException | InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException e) {
             return null;
         }
     }
-
 }

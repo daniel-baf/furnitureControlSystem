@@ -9,6 +9,13 @@ public class ClientDAO {
     private final String SQL_INSERT_CLIENT_FULL = "INSERT INTO `Client` VALUES (?, ?, ?, ?, ?)";
     private final String SQL_INSERT_CLIENT_NO_DEP = "INSERT INTO `Client` (`nit`,`name`,`adress`) VALUES (?,?,?)";
 
+    /**
+     * Insert a client on DB
+     *
+     * @param client
+     * @param type
+     * @return
+     */
     public int insert(Client client, int type) {
         String SQL_TMP = type == 0 ? SQL_INSERT_CLIENT_NO_DEP : SQL_INSERT_CLIENT_FULL;
 
@@ -22,7 +29,6 @@ public class ClientDAO {
             }
             return ps.executeUpdate();
         } catch (Exception e) {
-            // error on insrt, Servlet create table
             return 0;
         }
     }

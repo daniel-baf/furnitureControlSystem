@@ -2,13 +2,11 @@ package Database;
 
 import Domain.Refund;
 import GeneralUse.InsertUtilities;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import javax.servlet.http.HttpServletResponse;
 
 public class RefundDAO {
 
@@ -16,6 +14,13 @@ public class RefundDAO {
             + "`r`.`ammount` AS `refMoney`, `b`.`client_NIT` AS `cNIT`, `f`.`assembly_Price` AS `prcAssembly`, (`f`.`assembly_Price`/3) AS `lstMoney` "
             + "FROM `Refund` AS `r` INNER JOIN `Bill` AS `b` ON `b`.`code` = `r`.`bill_Code` INNER JOIN `Furniture_Assembly` AS `f` ON `f`.`id` = `b`.`furniture_Assemby_ID` ";
 
+    /**
+     * return all refunds, is flexible method who differences if he wants query between dates or not
+     * @param initDate start date for report
+     * @param endDate end date for report
+     * @param betweenDates dates are not null?
+     * @return refunds
+     */
     public ArrayList<Refund> getRefundsReport(LocalDate initDate, LocalDate endDate, boolean betweenDates) {
         // get dates, what if no dates?
         String bckup = betweenDates ? SQL_SELECT_REFUND_BILL_REPORT + " WHERE `r`.`date` BETWEEN ? AND ?" : SQL_SELECT_REFUND_BILL_REPORT;

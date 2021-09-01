@@ -137,7 +137,7 @@
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h1 class="h3 mb-0 text-gray-800">Dashboard: Area financiera</h1>
                             <a href="#load-file-db-txt-faap" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="load-text-file-DB-faap"><i
-                                    class="fas fa-download fa-sm text-white-50" ></i> Cargar BD</a>
+                                    class="fas fa-download fa-sm text-white-50" ></i> Cargar Archivo</a>
                         </div>
 
                         <!-- Content Row -->
@@ -233,7 +233,11 @@
                                     <!-- Card Header - Dropdown -->
                                     <div
                                         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                        <h6 class="m-0 font-weight-bold text-primary">Creación</h6>
+                                        <div>
+                                            <h6 class="m-0 font-weight-bold text-primary">Creación</h6>
+                                            <p>Registra un nuevo mueble para la venta, presiona los tres puntos para cambiar de ventana</p>
+                                        </div>
+
                                         <div class="dropdown no-arrow">
                                             <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -386,15 +390,19 @@
                                                     <div class="form-group">
                                                         <label for="exampleInputDate">Fecha inicial</label>
                                                         <input name="dateStart" id="exampleInputDate" type="date" class="form-control" id="exampleInputName" aria-describedby="emailHelp" placeholder="Un nombre de usuario">
+                                                        <small>Selecciona la fecha de inicio para el reporte, dejalo vacio para que el reporte sea de toda la vida</small>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="exampleInputDate">Fecha inicial</label>
+                                                        <label for="exampleInputDate">Fecha final</label>
                                                         <input name="dateEnd" id="exampleInputDate" type="date" class="form-control" id="exampleInputName" aria-describedby="emailHelp" placeholder="Un nombre de usuario">
+                                                        <small>Selecciona la fecha donde quieres que el repotre termine, dejalo vacio para que el reporte sea de toda la vida</small>
                                                     </div>
                                                 </div>
                                                 <div class="container m-3">
                                                     <div class="d-block text-right">
                                                         <h6 class="ali">Selecciona un tipo de reporte</h6>
+                                                        <small>Los reportes pueden ser exportados a formato compatible con excel(CSV)</small>
+                                                        <br>
                                                     </div>
                                                     <div class="form-check">
                                                         <input required class="form-check-input" type="radio" id="report-name-FAAP-choise1" name="report-type-FAAP" value="sells">

@@ -7,9 +7,9 @@ import TransactionObjects.InsertObjectStatus;
 import java.time.LocalDate;
 
 public class FileUploadInstructions {
-    
+
     private final InsertUtilities insUtilites;
-    
+
     public FileUploadInstructions() {
         this.insUtilites = new InsertUtilities();
     }
@@ -26,7 +26,7 @@ public class FileUploadInstructions {
      */
     public boolean insertCommonTask(int lengthExpected, InsertObjectStatus object, String tableDir,
             int[] expectedComillas) {
-        
+
         String[] vals = object.getValues().split(",");
 
         // validate the length
@@ -130,15 +130,15 @@ public class FileUploadInstructions {
         int queryType;
         int typeErrorInsert = 2; // 2 = format error
         Client client;
-        
+
         if (!(vals.length == 5 || vals.length == 3)) {
             insUtilites.setStatusAndResult(typeErrorInsert, object);
             return false;
         }
-        
+
         expectedComillas = vals.length == 3 ? new int[]{0, 1, 2} : new int[]{0, 1, 2, 3, 4};
         queryType = vals.length == 3 ? 0 : 1;
-        
+
         int length = object.getValues().split(",").length;
         if (insertCommonTask(length, object, "CLIENTE", expectedComillas)) {
             vals = object.getValuesSplited();
@@ -163,7 +163,7 @@ public class FileUploadInstructions {
         if (insertCommonTask(3, object, "ENSAMBLE_PIEZAS", new int[]{0, 1})) {
             String[] vals = object.getValuesSplited();
             Integer tmp = insUtilites.getIntegerFromString(vals[2].trim());
-            
+
             if (tmp != null) {
                 inserted = new PieceAssemblyDAO().insert(new PieceAssembly(vals[0], vals[1], tmp)) != 0;
                 typeErrorInsert = inserted ? 0 : 1;

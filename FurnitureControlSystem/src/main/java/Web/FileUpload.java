@@ -45,7 +45,7 @@ public class FileUpload extends HttpServlet {
             while ((text = bufReader.readLine()) != null) {
                 object = new InsertObjectStatus(lineCounter);
                 object.setLineRead(text);
-                if (tryInsert(text, object)) {
+                if (tryInsert(text, object, response)) {
                     object.setStatus("no error");
                     success.add(object);
                 } else {
@@ -67,7 +67,7 @@ public class FileUpload extends HttpServlet {
      * @param object a object to save status, if inserted or not
      * @return insert status, true if inserted
      */
-    private boolean tryInsert(String readLine, InsertObjectStatus object) {
+    private boolean tryInsert(String readLine, InsertObjectStatus object, HttpServletResponse response) throws IOException {
         // save data to send as atribute to JSP
         object.setSentece(getTokensManual(readLine)[0]);
         object.setValues(getTokensManual(readLine)[1]);

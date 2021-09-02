@@ -6,17 +6,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import javax.servlet.http.HttpServletResponse;
 
 public class FurniturePieceDAO {
 
-    // INSERT
     private final String SQL_INSERT_PIECE = "INSERT INTO `Furniture_Piece` (`name`, `cost`) VALUES (?, ?);";
-    // SELECT
     private final String SQL_SELECT_PIECE = "SELECT * FROM `Furniture_Piece` ";
     private final String SQL_SELECT_PIECES_NAME_LIMIT = "SELECT * FROM `Furniture_Piece` WHERE `name`= ? ORDER BY `id` ASC LIMIT ?";
-    //DELTE
+    private final String SQL_SELECT_PIECES_STOCK = "SELECT `name`, COUNT(`name`) AS `stock` FROM `Furniture_Piece` GROUP BY `name`";
     private final String SQL_DELETE_PIECE = "DELETE FROM `Furniture_Piece` WHERE `id` = ?";
+    private final String SQL_UPDATE_PIECE = "UPDATE `Furniture_Piece` SET `name` = ?, `cost` = ? WHERE (`id` = ?)";
 
     /**
      * insert a user on DB
@@ -88,19 +86,19 @@ public class FurniturePieceDAO {
      * stock pieces
      *
      * @param furnitureName
-     * @param response
      * @return
      */
-    public ArrayList<PieceByStock> selectPieceAndStock(String furnitureName, HttpServletResponse response) {
+    public ArrayList<PieceByStock> selectPieceAndStock(String furnitureName, boolean byName) {
         ArrayList<PieceByStock> list = new ArrayList<>();
-        String TMP_QUERY = "SELECT `piece_Name` , (SELECT COUNT(`name`) FROM `Furniture_Piece` WHERE `name` = `piece_Name` GROUP BY `name`) AS `stock` "
-                + "FROM `Piece_Assembly` WHERE `furniture_Name` = ?";
+        String TMP_QUERY = byName ? "SELECT `name`, COUNT(`name`) AS `stock` FROM `Furniture_Piece` WHERE `name` = ? GROUP BY `name`" : SQL_SELECT_PIECES_STOCK;
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(TMP_QUERY)) {
             // data
-            ps.setString(1, furnitureName);
+            if (byName) {
+                ps.setString(1, furnitureName);
+            }
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                list.add(new PieceByStock(rs.getInt("stock"), rs.getString("piece_Name")));
+                list.add(new PieceByStock(rs.getInt("stock"), rs.getString("name")));
             }
         } catch (Exception e) {
         }
@@ -118,6 +116,17 @@ public class FurniturePieceDAO {
             ps.setInt(1, piece.getId());
             int reg = ps.executeUpdate();
             return reg;
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    public int update(FurniturePiece piece) {
+        try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_UPDATE_PIECE)) {
+            ps.setString(1, piece.getName());
+            ps.setDouble(2, piece.getCost());
+            ps.setInt(3, piece.getId());
+            return ps.executeUpdate();
         } catch (Exception e) {
             return 0;
         }

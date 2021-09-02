@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <%
     String description = (String) request.getAttribute("rep-desc");
+    int reportSumBillings = 0;
 %>
 <html>
     <head>
@@ -65,8 +66,9 @@
                                         </tfoot>
                                         <tbody>
                                             <c:forEach var="bill" items="${bills}">
-                                                <tr>
-                                                    <td>${bill.code}</td>
+                                                <c:set var="tmp" value="${tmp + bill.ammount}"></c:set>
+                                                    <tr>
+                                                        <td>${bill.code}</td>
                                                     <td>${bill.username}</td>
                                                     <td>${bill.furnitureAssemblyId}</td>
                                                     <td>${bill.furnitureName}</td>
@@ -82,10 +84,25 @@
                                 <input id="export-CSV" type="button" value="Descargar reporte en formato compatible con excel(CSV)" class="btn btn-block btn-primary">
                             </div>
                         </div>
-
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Ingresos por venta <br><%=request.getParameter("dateStart")%> - <%=request.getParameter("dateEnd")%></div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">Q${tmp}</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!-- /.container-fluid -->
-
                 </div>
                 <!-- End of Main Content -->
             </div>

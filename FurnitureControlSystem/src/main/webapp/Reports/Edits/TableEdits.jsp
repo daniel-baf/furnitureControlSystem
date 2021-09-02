@@ -40,6 +40,7 @@
                             <tfoot>
                                 <tr>
                                 <c:forEach var="i" items="${titles}"><th>${i}</th></c:forEach>
+                                <th>Acciones</th>
                                 </tr>
                             </tfoot>
                             <tbody>
@@ -51,8 +52,7 @@
                                         <td>${furn.assemblyPrice}</td>
                                         <td>${furn.username}</td>
                                         <td>${furn.sold}</td>
-                                        <td style="width: 170px">
-                                            <a class="btn btn-primary">Editar</a>
+                                        <td style="width: 00px">
                                             <a href="${pageContext.request.contextPath}/DeleteFromDB?action-perf=delete-furn-assemb&id=${furn.id}" class="btn btn-danger">Borrar</a>
                                         </td>
                                     </tr>
@@ -65,7 +65,7 @@
                                         <td>${piece.name}</td>
                                         <td>${piece.cost}</td>
                                         <td style="width: 170px">
-                                            <a class="btn btn-primary">Editar</a>
+                                            <a href="${pageContext.request.contextPath}/Reports/Edits/EditItem.jsp?type=edit-piece&id=${piece.id}&name=${piece.name}&cost=${piece.cost}" class="btn btn-primary">Editar</a>
                                             <a href="${pageContext.request.contextPath}/DeleteFromDB?action-perf=delete-furn-piece&id=${piece.id}" class="btn btn-danger">Borrar</a>
                                         </td>
                                     </tr>

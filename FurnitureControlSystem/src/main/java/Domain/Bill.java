@@ -25,7 +25,7 @@ public class Bill implements Serializable {
         this.furnitureAssemblyId = furnitureAssemblyId;
         this.username = username;
         this.clientNit = clientNit;
-        this.ammount = ammount;
+        this.ammount = Math.round(ammount * 100.00) / 100.00;
         this.buyDate = buyDate;
     }
 
@@ -35,7 +35,7 @@ public class Bill implements Serializable {
         this.furnitureName = furnitureName;
         this.username = username;
         this.clientNit = clientNit;
-        this.ammount = ammount;
+        this.ammount = Math.round(ammount * 100.00) / 100.00;
         this.buyDate = buyDate;
     }
 

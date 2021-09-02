@@ -1,9 +1,16 @@
+<%@page import="Database.FurnitureDAO"%>
+<%@page import="Domain.Furniture"%>
+<%@page import="TransactionObjects.PieceByStock"%>
+<%@page import="Database.FurniturePieceDAO"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
     if (!session.getAttribute("area").equals("1")) {
         response.sendError(response.SC_NOT_ACCEPTABLE, "No tienes permitido entrar a esta pagina");
     }
+    ArrayList<PieceByStock> listPieces = new FurniturePieceDAO().selectPieceAndStock(null, false);
+    ArrayList<Furniture> listFurnitures = (ArrayList<Furniture>) new FurnitureDAO().selectFurnitures();
 %>
 <html>
     <head>
@@ -13,14 +20,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
-        <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link href="${pageContext.request.contextPath}/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
         <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
 
         <!-- Custom styles for this template-->
-        <link href="../css/sb-admin-2.min.css" rel="stylesheet">
-        <link href="../css/MyOwnCss.css">
+        <link href="${pageContext.request.contextPath}/css/sb-admin-2.min.css" rel="stylesheet">
+        <link href="${pageContext.request.contextPath}/css/MyOwnCss.css">
     </head>
     <body id="page-top">
 
@@ -43,7 +50,7 @@
 
                 <!-- Nav Item - Dashboard -->
                 <li class="nav-item">
-                    <a class="nav-link" href="index.html">
+                    <a class="nav-link" href="Factory-Panel.jsp">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
                         <span>Dashboard</span></a>
                 </li>
@@ -61,13 +68,13 @@
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                        aria-expanded="true" aria-controls="collapseTwo">
                         <i class="fas fa-fw fa-cog"></i>
-                        <span>Components</span>
+                        <span>Inventario y stock</span>
                     </a>
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Custom Components:</h6>
-                            <a class="collapse-item" href="buttons.html">Buttons</a>
-                            <a class="collapse-item" href="cards.html">Cards</a>
+                            <a class="collapse-item" href="#inventory-pieces-stock-div">Piezas</a>
+                            <a class="collapse-item" href="#">Muebles</a>
                         </div>
                     </div>
                 </li>
@@ -194,17 +201,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Basic Card Example -->
-                                <div class="card shadow mb-4">
-                                    <div class="card-header py-3">
-                                        <h6 class="m-0 font-weight-bold text-primary">Basic Card Example</h6>
-                                    </div>
-                                    <div class="card-body">
-                                        The styling for this basic card example is created by using default Bootstrap
-                                        utility classes. By using utility classes, the style of the card component can be
-                                        easily modified with no need for any custom CSS!
-                                    </div>
-                                </div>
+                            <jsp:include page="/Includes/Furnitures-list.jsp"></jsp:include>
 
                             </div>
 
@@ -213,86 +210,151 @@
                                 <!-- Dropdown Card Example -->
                                 <div class="card shadow mb-4">
                                     <!-- Card Header - Dropdown -->
-                                    <div
-                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                        <h6 class="m-0 font-weight-bold text-primary">Dropdown Card Example</h6>
-                                        <div class="dropdown no-arrow">
-                                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                                 aria-labelledby="dropdownMenuLink">
-                                                <div class="dropdown-header">Dropdown Header:</div>
-                                                <a class="dropdown-item" href="#">Action</a>
-                                                <a class="dropdown-item" href="#">Another action</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#">Something else here</a>
+
+                                    <div class="card shadow mb-4">
+                                        <!-- Card Header - Dropdown -->
+                                        <div
+                                            class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                            <div>
+                                                <h6 class="m-0 font-weight-bold text-primary">Registrar</h6>
+                                                <p>Puedes seleccionar los tres puntos para cambiar de ventana</p>
+                                            </div>
+
+                                            <div class="dropdown no-arrow">
+                                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                     aria-labelledby="dropdownMenuLink">
+                                                    <div class="dropdown-header">¿Qué deseas registar?</div>
+                                                    <a class="dropdown-item" id="shw-usr-hde-frn-faap">Pieza</a>
+                                                    <a class="dropdown-item" id="shw-frn-hde-usr-faap">Mueble Ensamblado</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" id="toggle-result-faap">Limpiar</a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <!-- Card Body -->
-                                    <div class="card-body">
-                                        Dropdown menus can be placed in the card header in order to extend the functionality
-                                        of a basic card. In this dropdown card example, the Font Awesome vertical ellipsis
-                                        icon in the card header can be clicked on in order to toggle a dropdown menu.
-                                    </div>
-                                </div>
-
-                                <!-- Collapsable Card Example -->
-                                <div class="card shadow mb-4">
-                                    <!-- Card Header - Accordion -->
-                                    <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse"
-                                       role="button" aria-expanded="true" aria-controls="collapseCardExample">
-                                        <h6 class="m-0 font-weight-bold text-primary">Collapsable Card Example</h6>
-                                    </a>
-                                    <!-- Card Content - Collapse -->
-                                    <div class="collapse show" id="collapseCardExample">
+                                        <!-- Card Body -->
                                         <div class="card-body">
-                                            This is a collapsable card example using Bootstrap's built in collapse
-                                            functionality. <strong>Click on the card header</strong> to see the card body
-                                            collapse and expand!
+                                            <div class="chart-area">
+                                                <!-- FUNNITURE START -->
+                                                <div id="insert-frn-FAAP">
+                                                    <h6 class="row d-flex p-2 justify-content-center border-bottom-primary">Registar una nueva pieza</h6>
+                                                    <div class="m-0 row justify-content-center">
+                                                        <div class="col-auto align-content-around">
+                                                            <form action="../InsertToDB" method="POST">
+                                                                <input name="action-perf" type="text" value="insert-piece" hidden>
+                                                                <div class="form-group">
+                                                                    <label for="exampleInputName">Nombre</label>
+                                                                    <select name="piece-name" class="form-control btn-block" id="examplePieceName">
+                                                                    <%for (PieceByStock elem : listPieces) {
+                                                                            String selected = elem.getName().equals(request.getParameter("name")) ? "selected" : "";
+                                                                    %>
+                                                                    <option <%=selected%> value="<%=elem.getName()%>"><%=elem.getName()%></option>
+                                                                    <%}%>
+                                                                </select>
+
+                                                                <small>Elige un tipo de pieza existente</small>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="exampleInputPrice">Precio</label>
+                                                                <input required name="piece-price" type="number" step=".01" class="form-control" id="exampleInputPrice" aria-describedby="priceHelp" placeholder="El precio que la pieza">
+                                                                <small>El precio de fabricacion de la pieza</small>
+                                                            </div>
+                                                            <button type="submit" class="btn btn-primary">Registrar pieza</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- FURNITURE END -->
+                                            <!-- PIECE START -->
+                                            <div  class="d-none" id="insert-usr-FAAP">
+                                                <!-- FUNNITURE START -->
+                                                <div id="insert-frn-FAAP">
+                                                    <h6 class="row d-flex p-2 justify-content-center border-bottom-primary">Registar nuevo mueble ensamblado</h6>
+                                                    <div class="m-0 row justify-content-center">
+                                                        <div class="col-auto align-content-around">
+                                                            <form action="../InsertToDB" method="POST">
+                                                                <input name="action-perf" type="text" value="insert-furn-assbm" hidden>
+                                                                <div class="form-group">
+                                                                    <label for="exampleInputName">Nombre</label>
+                                                                    <select name="furniture-assemb" class="form-control btn-block" id="examplePieceName">
+                                                                        <%for (Furniture elem : listFurnitures) {%>
+                                                                        <option value="<%=elem.getName()%>"><%=elem.getName()%></option>
+                                                                        <br>
+                                                                        <%}%>
+                                                                    </select>
+                                                                    <small>Puedes revisar la lista de abajo para ver nombres</small>
+                                                                </div>
+                                                                <button type="submit" class="btn btn-primary">Ensamblar mueble</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
                             </div>
-                            <!-- /.container-fluid -->
+                            <jsp:include page="/Includes/pieces-stock.jsp"></jsp:include>
+                            </div>
 
                         </div>
-                        <!-- End of Main Content -->
 
-                    <jsp:include page="/Includes/footer.jsp"></jsp:include>
+                        <div class="row">
+
+
+                            <!-- Collapsable Card Example -->
+
+                        </div>
+                        <!-- /.container-fluid -->
 
                     </div>
-                    <!-- End of Content Wrapper -->
+                    <!-- End of Main Content -->
+
+                <jsp:include page="/Includes/footer.jsp"></jsp:include>
 
                 </div>
-                <!-- End of Page Wrapper -->
+                <!-- End of Content Wrapper -->
 
-                <!-- Scroll to Top Button-->
-                <a class="scroll-to-top rounded" href="#page-top">
-                    <i class="fas fa-angle-up"></i>
-                </a>
+            </div>
+            <!-- End of Page Wrapper -->
 
-            <jsp:include page="/Includes/scroll-top-logout-pop-up.jsp"></jsp:include>
+            <!-- Scroll to Top Button-->
+            <a class="scroll-to-top rounded" href="#page-top">
+                <i class="fas fa-angle-up"></i>
+            </a>
+
+        <jsp:include page="/Includes/scroll-top-logout-pop-up.jsp"></jsp:include>
 
             <!-- Bootstrap core JavaScript-->
-            <script src="../vendor/jquery/jquery.min.js"></script>
-            <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <script src="${pageContext.request.contextPath}/vendor/jquery/jquery.min.js"></script>
+        <script src="${pageContext.request.contextPath}/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-            <!-- Core plugin JavaScript-->
-            <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+        <!-- Core plugin JavaScript-->
+        <script src="${pageContext.request.contextPath}/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-            <!-- Custom scripts for all pages-->
-            <script src="../js/sb-admin-2.min.js"></script>
+        <!-- Custom scripts for all pages-->
+        <script src="${pageContext.request.contextPath}/js/sb-admin-2.min.js"></script>
 
-            <!-- Page level plugins -->
-            <script src="../vendor/chart.js/Chart.min.js"></script>
+        <!-- Page level plugins -->
+        <script src="${pageContext.request.contextPath}/vendor/chart.js/Chart.min.js"></script>
 
-            <!-- Page level custom scripts -->
-            <script src="../js/demo/chart-area-demo.js"></script>
-            <script src="../js/demo/chart-pie-demo.js"></script>
+        <!-- Page level custom scripts -->
+        <script src="${pageContext.request.contextPath}/js/demo/chart-area-demo.js"></script>
+        <script src="${pageContext.request.contextPath}/js/demo/chart-pie-demo.js"></script>
+
+
+        <!-- Page level plugins -->
+        <script src="${pageContext.request.contextPath}/vendor/datatables/jquery.dataTables.min.js"></script>
+        <script src="${pageContext.request.contextPath}/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+        <!-- Page level custom scripts -->
+        <script src="${pageContext.request.contextPath}/js/demo/datatables-demo.js"></script>
+
+        <script src="${pageContext.request.contextPath}/js/MyOwnFunction.js"></script>
 
     </body>
 </html>

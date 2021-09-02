@@ -44,7 +44,7 @@
                                         <div class="text-center">
                                             <h1 class="h4 text-gray-900 mb-4">Bienvendio a MiMuebleria!</h1>
                                         </div>
-                                        <form class="user" action="/FurnitureControlSystem/Login" method="POST">
+                                        <form class="user" action="${pageContext.request.contextPath}/Login" method="POST">
                                             <div class="form-group">
                                                 <input type="user" class="form-control form-control-user"
                                                        id="exampleInputEmail" aria-describedby="emailHelp"

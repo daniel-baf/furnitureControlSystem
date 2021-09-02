@@ -37,7 +37,6 @@
                             <h1 class="h3 mb-4 text-gray-800"><%=repTitle%></h1>
 
                         <div class="col-lg-6">
-
                             <!-- Dropdown Card Example -->
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
@@ -60,10 +59,8 @@
                                     <%=repBody%>
                                 </div>
                             </div>
-
                         </div>
                         <!-- /.container-fluid -->
-
                     </div>
                     <!-- End of Main Content -->
 

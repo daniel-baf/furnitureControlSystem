@@ -1,3 +1,6 @@
+<%@page import="Database.UserDAO"%>
+<%@page import="Domain.User"%>
+<%@page import="java.util.ArrayList"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -13,6 +16,7 @@
     if (!procedRequest) {
         response.sendRedirect("../login.jsp");
     }
+    ArrayList<User> listUsers = (ArrayList<User>) new UserDAO().selectUsers();
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,14 +32,14 @@
         <title>Administración y finanzas</title>
 
         <!-- Custom fonts for this template-->
-        <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link href="${pageContext.request.contextPath}/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
         <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
 
         <!-- Custom styles for this template-->
-        <link href="../css/sb-admin-2.min.css" rel="stylesheet">
-        <link href="../css/MyOwnCss.css">
+        <link href="${pageContext.request.contextPath}/css/sb-admin-2.min.css" rel="stylesheet">
+        <link href="${pageContext.request.contextPath}/css/MyOwnCss.css">
 
     </head>
 
@@ -105,10 +109,10 @@
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Creación</h6>
-                            <a class="collapse-item" href="utilities-color.html">Nuevo usuario</a>
-                            <a class="collapse-item" href="utilities-border.html">Tipo de mueble</a>
+                            <a class="collapse-item" href="#insert-usr-FAAP">Nuevo usuario</a>
+                            <a class="collapse-item" href="#insert-frn-FAAP">Tipo de mueble</a>
                             <h6 class="collapse-header">Borrar</h6>
-                            <a class="collapse-item" href="utilities-animation.html">Usuario</a>
+                            <a class="collapse-item" href="#delete-user-form">Usuario</a>
                         </div>
                     </div>
                 </li>
@@ -212,13 +216,20 @@
                                 <div class="card border-left-warning shadow h-100 py-2">
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
-                                            <div class="col mr-2">
+                                            <div href="#table-stock" class="col mr-2">
                                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                                     Piezas con stock bajo</div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+
+                                                <a href="#table-stock">
+
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                        <p>Ver</p>
+                                                    </div>
+
+                                                </a>
                                             </div>
                                             <div class="col-auto">
-                                                <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                <i class="fas fa-comments fa-2x text-gray-300">.</i>
                                             </div>
                                         </div>
                                     </div>
@@ -270,7 +281,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="exampleInputPrice">Precio</label>
-                                                                <input required name="furnPrice" type="number" class="form-control" id="exampleInputPrice" aria-describedby="priceHelp" placeholder="Un nombre de usuario">
+                                                                <input required name="furnPrice" type="number" min="0" step=".01" class="form-control" id="exampleInputPrice" aria-describedby="priceHelp" placeholder="Un nombre de usuario">
                                                                 <small>El precio de venta del mueble</small>
                                                             </div>
                                                             <button type="submit" class="btn btn-primary">Registrar</button>
@@ -296,7 +307,7 @@
                                                                     <div class="form-group"> 
                                                                         <label for="exampleInputPassword">Contraseña</label>
                                                                         <input required name="userPswrd" type="password" class="form-control" id="exampleInputPassword" aria-describedby="passwordHelp" placeholder="Ingresa la contraseña">
-                                                                        <small>El precio de venta del mueble</small>
+                                                                        <small>La contraseña para el nuevo usuario</small>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-xl-4 col-lg-5">
@@ -328,8 +339,7 @@
                             <div class="col-xl-4 col-lg-5">
                                 <div class="card shadow mb-4">
                                     <!-- Card Header - Dropdown -->
-                                    <div
-                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" id="delete-user-form">
                                         <h6 class="m-0 font-weight-bold text-primary">Borrar usuario</h6>
                                         <div class="dropdown no-arrow">
                                             <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
@@ -353,7 +363,12 @@
                                                         <div class="form-group">
                                                             <input name="action-perf" type="text" value="delete-user" hidden>
                                                             <label for="exampleInputName">Nombre</label>
-                                                            <input required name="username" type="text" class="form-control" id="exampleInputName" aria-describedby="emailHelp" placeholder="Un nombre de usuario">
+                                                            <select name="username" class="form-control btn-block" id="examplePieceName">
+                                                                <%for (User elem : listUsers) {%>
+                                                                <option value="<%=elem.getName()%>"><%=elem.getName()%></option>
+                                                                <br>
+                                                                <%}%>
+                                                            </select>
                                                             <small>El usuario debe existir</small>
                                                         </div>
                                                         <button type="submit" class="btn btn-primary">Borrar</button>
@@ -447,12 +462,12 @@
                             <!-- Illustrations -->
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Accordion -->
-                                <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse"
+                                <a href="#collapseCardExample1" class="d-block card-header py-3" data-toggle="collapse"
                                    role="button" aria-expanded="true" aria-controls="collapseCardExample">
                                     <h6 class="m-0 font-weight-bold text-primary">Bienvenido</h6>
                                 </a>
                                 <!-- Card Content - Collapse -->
-                                <div class="collapse show" id="collapseCardExample">
+                                <div class="collapse show" id="collapseCardExample1">
                                     <div class="card-body">
                                         <div class="text-center">
                                             <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
@@ -472,18 +487,19 @@
                                 <div class="card-body">
                                     <p>Sube un archivo plano/texto para ser insertado</p>
                                     <form action="../FileUpload" method="POST" enctype="multipart/form-data" target="_blank" class="justify-content-end">
-                                        <input class="btn" type="file" name="file" value="Buscar">
+                                        <input class="btn btn-sm" type="file" name="file" value="Buscar">
                                         <input class="btn btn-block btn-primary"type="submit" value="Actualiar BD">
                                     </form>
                                 </div>
                             </div>
 
+                            <jsp:include page="/Includes/pieces-stock.jsp"></jsp:include>
+                            </div>
                         </div>
-                    </div>
-                    <!-- /.container-fluid -->
+                        <!-- /.container-fluid -->
 
-                </div>
-                <!-- End of Main Content -->
+                    </div>
+                    <!-- End of Main Content -->
                 <jsp:include page="../Includes/footer.jsp"></jsp:include>
                 </div>
                 <!-- End of Content Wrapper -->
@@ -492,23 +508,31 @@
         <jsp:include page="/Includes/scroll-top-logout-pop-up.jsp"/>
 
         <!-- Bootstrap core JavaScript-->
-        <script src="../vendor/jquery/jquery.min.js"></script>
-        <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="${pageContext.request.contextPath}/vendor/jquery/jquery.min.js"></script>
+        <script src="${pageContext.request.contextPath}/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
         <!-- Core plugin JavaScript-->
-        <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+        <script src="${pageContext.request.contextPath}/vendor/jquery-easing/jquery.easing.min.js"></script>
 
         <!-- Custom scripts for all pages-->
-        <script src="../js/sb-admin-2.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/sb-admin-2.min.js"></script>
 
         <!-- Page level plugins -->
-        <script src="../vendor/chart.js/Chart.min.js"></script>
+        <script src="${pageContext.request.contextPath}/vendor/chart.js/Chart.min.js"></script>
 
         <!-- Page level custom scripts -->
-        <script src="../js/demo/chart-area-demo.js"></script>
-        <script src="../js/demo/chart-pie-demo.js"></script>
+        <script src="${pageContext.request.contextPath}/js/demo/chart-area-demo.js"></script>
+        <script src="${pageContext.request.contextPath}/js/demo/chart-pie-demo.js"></script>
         <!-- own scripts -->
-        <script src="../js/MyOwnFunction.js"></script>
+        <script src="${pageContext.request.contextPath}/js/MyOwnFunction.js"></script>
+
+        <!-- Page level plugins -->
+        <script src="${pageContext.request.contextPath}/vendor/datatables/jquery.dataTables.min.js"></script>
+        <script src="${pageContext.request.contextPath}/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+        <!-- Page level custom scripts -->
+        <script src="${pageContext.request.contextPath}/js/demo/datatables-demo.js"></script>
+
     </body>
 
 </html>

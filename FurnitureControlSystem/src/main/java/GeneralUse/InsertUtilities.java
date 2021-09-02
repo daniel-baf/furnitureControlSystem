@@ -1,9 +1,13 @@
 package GeneralUse;
 
 import TransactionObjects.InsertObjectStatus;
+import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class InsertUtilities {
 
@@ -84,8 +88,9 @@ public class InsertUtilities {
     /**
      * set a error status or success (0) if receive true from call 1 = logical
      * error, 2 = format error
-     *    
-    public void httpErrorShow(Http)
+     *
+     * public void httpErrorShow(Http)
+     *
      * @param typeError
      * @param object the object to save error
      */
@@ -166,5 +171,35 @@ public class InsertUtilities {
             }
         }
         return true;
+    }
+
+    /**
+     * return a message calling a page and show message if error
+     *
+     * @param response
+     * @param request
+     * @param e
+     * @param message
+     * @throws javax.servlet.ServletException
+     * @throws java.io.IOException
+     */
+    public void sendErrorMessage(HttpServletResponse response, HttpServletRequest request, Exception e, String message) throws ServletException, IOException {
+        request.setAttribute("rep-title", "Error");
+        request.setAttribute("rep-body", "Ha ocurrido un error durante la operacion.<br>Una posible causa es: " + message + "<br>El error es: " + e.getMessage());
+        request.getRequestDispatcher("Reports/Message.jsp").forward(request, response);
+    }
+
+    /**
+     * this is a common task from furniture, add attributes to show into
+     * message.jsp
+     *
+     * @param request
+     * @param repTitle
+     * @param repBody
+     */
+    public void configAttibutes(HttpServletRequest request, String repTitle, String repBody) {
+        request.setAttribute("rep-title", repTitle);
+        request.setAttribute("rep-body", repBody);
+
     }
 }

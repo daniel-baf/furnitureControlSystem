@@ -1,17 +1,23 @@
 package Web.DashboardAcions;
 
+import Database.FurnitureAssemblyDAO;
 import Database.FurnitureDAO;
+import Database.FurniturePieceDAO;
 import Database.UserDAO;
 import Domain.Furniture;
+import Domain.FurnitureAssembly;
+import Domain.FurniturePiece;
 import Domain.User;
 import GeneralUse.AES256;
 import GeneralUse.InsertUtilities;
 import java.io.IOException;
+import java.time.LocalDate;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @WebServlet(name = "InsertToDB", urlPatterns = {"/InsertToDB"})
 public class InsertToDB extends HttpServlet {
@@ -24,13 +30,21 @@ public class InsertToDB extends HttpServlet {
         //different actions
 
         try {
+            InsertUtilities iu = new InsertUtilities();
             switch (action) {
                 case "insert-furniture" -> {
-                    insertFurnitureDB(request, response);
+                    insertFurnitureDB(request, response, iu);
                     break;
                 }
                 case "insert-user" -> {
-                    insertUserDB(request, response);
+                    insertUserDB(request, response, iu);
+                }
+                case "insert-furn-assbm" -> {
+                    HttpSession session = request.getSession();
+                    insertFurnAssemblyDB(request, response, (String) session.getAttribute("usr"), iu);
+                }
+                case "insert-piece" -> {
+                    insertPieceDB(request, response, iu);
                 }
                 default -> {
                     response.getWriter().print("aaaa");
@@ -61,41 +75,39 @@ public class InsertToDB extends HttpServlet {
      * @throws ServletException
      * @throws IOException
      */
-    private void insertFurnitureDB(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        InsertUtilities iu = new InsertUtilities();
+    private void insertFurnitureDB(HttpServletRequest request, HttpServletResponse response, InsertUtilities iu) throws ServletException, IOException {
         Double price = iu.getDoubleFromString(request.getParameter("furnPrice"));
         Furniture furn = new Furniture(request.getParameter("furnName"), price);
         String repBody = " insertar el mueble con nombre " + furn.getName();
-        repBody = new FurnitureDAO().insert(furn) != 0 ? "Se ha insertado " + repBody : "No se ha borrado " + repBody;
-        configAttibutes(request, "Registrar nuevo mueble", repBody);
+        repBody = new FurnitureDAO().insert(furn) != 0 ? "Se ha logrado " + repBody : "No se ha logrado " + repBody;
+        iu.configAttibutes(request, "Registrar nuevo mueble", repBody);
         request.getRequestDispatcher("Reports/Message.jsp").forward(request, response);
     }
 
-    /**
-     * this is a common task from furniture, add attributes to show into
-     * message.jsp
-     *
-     * @param request
-     * @param repTitle
-     * @param repBody
-     */
-    private void configAttibutes(HttpServletRequest request, String repTitle, String repBody) {
-        request.setAttribute("rep-title", repTitle);
-        request.setAttribute("rep-body", repBody);
-
-    }
-
-    private void insertUserDB(HttpServletRequest request, HttpServletResponse response) throws ServletException, ServletException, IOException {
+    private void insertUserDB(HttpServletRequest request, HttpServletResponse response, InsertUtilities iu) throws ServletException, ServletException, IOException {
         // encrypt password
         AES256 aes356 = new AES256();
-        InsertUtilities iu = new InsertUtilities();
-        // if (iu.haveNoNulls(request.getParameter("usrName"), request.getParameter("userPswrd"), request.getParameter("areaCode"))) {
         short tmp = (short) ((int) iu.getIntegerFromString(request.getParameter("areaCode")));
         User user = new User(request.getParameter("usrName"), aes356.encrypt(request.getParameter("userPswrd")), tmp);
         String repBody = " insertar el mueble con nombre " + user.getName();
         repBody = new UserDAO().insert(user) != 0 ? "Se ha insertado " + repBody : "No se ha borrado " + repBody;
-        configAttibutes(request, "Registrar nuevo mueble", repBody);
+        iu.configAttibutes(request, "Registrar nuevo mueble", repBody);
         request.getRequestDispatcher("Reports/Message.jsp").forward(request, response);
     }
 
+    private void insertFurnAssemblyDB(HttpServletRequest request, HttpServletResponse response, String username, InsertUtilities iu) throws ServletException, IOException {
+        FurnitureAssembly fa = new FurnitureAssembly(username, LocalDate.now(), request.getParameter("furniture-assemb"));
+        String repBody = " registrar el nuevo ensamble de mueble";
+        repBody = new FurnitureAssemblyDAO().insertFurnAssmebly(fa) != 0 ? "Se ha logrado insertar " + repBody : "No se ha logrado crear " + repBody;
+        iu.configAttibutes(request, "Registrar nuevo ensamble de mueble", repBody);
+        request.getRequestDispatcher("Reports/Message.jsp").forward(request, response);
+    }
+
+    private void insertPieceDB(HttpServletRequest request, HttpServletResponse response, InsertUtilities iu) throws ServletException, IOException {
+        FurniturePiece piece = new FurniturePiece(request.getParameter("piece-name"), iu.getDoubleFromString(request.getParameter("piece-price")));
+        String repBody = " registrar la pieza a la base de datos";
+        repBody = new FurniturePieceDAO().insert(piece) != 0 ? "Se ha logrado " + repBody : "No se ha logrado " + repBody;
+        iu.configAttibutes(request, "Registrar pieza", repBody);
+        request.getRequestDispatcher("Reports/Message.jsp").forward(request, response);
+    }
 }

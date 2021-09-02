@@ -18,8 +18,8 @@ public class Earning implements Serializable {
 
     public Earning(int billId, double earning, double sellAmmount, String item, short state, LocalDate sellDate, String worker) {
         this.billId = billId;
-        this.earning = earning;
-        this.sellAmmount = sellAmmount;
+        this.earning = Math.round(earning * 100.00) / 100.00;
+        this.sellAmmount = Math.round(sellAmmount * 100.00) / 100.00;
         this.item = item;
         this.furnitureState = state;
         this.sellDate = sellDate;

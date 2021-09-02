@@ -40,7 +40,7 @@ public class FurnitureAssemblyDAO {
 
                 for (PieceAssembly assembly : assemblies) {
                     ArrayList<FurniturePiece> tmp = new FurniturePieceDAO().selectPiecesLimitX(assembly.getPieceName(), assembly.getCuantity());
-                    if (tmp.isEmpty() || tmp == null) {
+                    if (tmp.isEmpty()) {
                         return 0;
                     } else if (tmp.size() < assembly.getCuantity()) {
                         return 0;

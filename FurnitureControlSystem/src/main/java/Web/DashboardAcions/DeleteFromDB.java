@@ -39,8 +39,8 @@ public class DeleteFromDB extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "404.jsp");
                 }
             }
-        } catch (IOException | ServletException e) {
-            response.getWriter().print(e.getMessage());
+        } catch (Exception e) {
+            new InsertUtilities().sendErrorMessage(response, request, e, "Error en la sintaxis o valor no valido, revisa la solicitud y vuelve a intentarlo");
         }
     }
 

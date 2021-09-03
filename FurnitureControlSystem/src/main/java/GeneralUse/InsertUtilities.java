@@ -185,7 +185,7 @@ public class InsertUtilities {
      */
     public void sendErrorMessage(HttpServletResponse response, HttpServletRequest request, Exception e, String message) throws ServletException, IOException {
         request.setAttribute("rep-title", "Error");
-        request.setAttribute("rep-body", "Ha ocurrido un error durante la operacion.<br>Una posible causa es: " + message + "<br>El error es: " + e.getMessage());
+        request.setAttribute("rep-body", "Ha ocurrido un error durante la operacion.<br>Una posible causa es: " + message + "<br>El error es: " + e.getMessage() + "<br>Un mensaje mas detallado: " + e.getLocalizedMessage());
         request.getRequestDispatcher("Reports/Message.jsp").forward(request, response);
     }
 

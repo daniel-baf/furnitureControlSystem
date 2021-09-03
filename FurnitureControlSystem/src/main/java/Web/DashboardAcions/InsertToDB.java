@@ -1,9 +1,11 @@
 package Web.DashboardAcions;
 
+import Database.ClientDAO;
 import Database.FurnitureAssemblyDAO;
 import Database.FurnitureDAO;
 import Database.FurniturePieceDAO;
 import Database.UserDAO;
+import Domain.Client;
 import Domain.Furniture;
 import Domain.FurnitureAssembly;
 import Domain.FurniturePiece;
@@ -46,12 +48,15 @@ public class InsertToDB extends HttpServlet {
                 case "insert-piece" -> {
                     insertPieceDB(request, response, iu);
                 }
+                case "insert-client" -> {
+                    insertClientDB(request, response, iu);
+                }
                 default -> {
                     response.getWriter().print("aaaa");
                 }
             }
-        } catch (IOException | ServletException e) {
-            response.getWriter().print(e.getMessage());
+        } catch (Exception e) {
+            new InsertUtilities().sendErrorMessage(response, request, e, "Error en el formato o valor invalido, revisa la solicitud y vuelve a intentarlo");
         }
     }
 
@@ -108,6 +113,26 @@ public class InsertToDB extends HttpServlet {
         String repBody = " registrar la pieza a la base de datos";
         repBody = new FurniturePieceDAO().insert(piece) != 0 ? "Se ha logrado " + repBody : "No se ha logrado " + repBody;
         iu.configAttibutes(request, "Registrar pieza", repBody);
+        request.getRequestDispatcher("Reports/Message.jsp").forward(request, response);
+    }
+
+    private void insertClientDB(HttpServletRequest request, HttpServletResponse response, InsertUtilities iu) throws ServletException, IOException {
+        Client client = new Client(
+                request.getParameter("nit"),
+                request.getParameter("name"),
+                request.getParameter("adress"),
+                request.getParameter("municipality"),
+                request.getParameter("department"));
+        String repBody = " registrar al nuevo cliente en la base de datos";
+
+        if (client.getMunicipality().length() > 0 && client.getDepartment().isEmpty()
+                || client.getMunicipality().isEmpty() && client.getDepartment().length() > 0) {
+            repBody = "Uno de los atributos no cumple con los requisitos";
+        } else {
+            repBody = new ClientDAO().insert(client, response) != 0 ? "se ha logrado" + repBody : "no se ha logrado " + repBody;
+        }
+
+        iu.configAttibutes(request, "Registrar usuario", repBody);
         request.getRequestDispatcher("Reports/Message.jsp").forward(request, response);
     }
 }

@@ -12,7 +12,8 @@ import java.util.ArrayList;
 public class FurnitureAssemblyDAO {
 
     private final String SQL_INSERT_FURN_ASSM = "INSERT INTO `Furniture_Assembly` (`user_Name`, `date`,`sold`,`furniture_Name`,`assembly_Price`) VALUES (?,?,?,?,?)";
-    private final String SQL_SELECT_FURNITURES = "SELECT * FROM `Furniture_Assembly`";
+    private final String SQL_SELECT_FURN_ASSMS = "SELECT * FROM `Furniture_Assembly`";
+    private final String SQL_SELECT_FURN_ASSM = "SELECT * FROM `Furniture_Assembly` WHERE id = ?";
     private final String SQL_DELETE_FURN_ASSM = "DELETE FROM `Furniture_Assembly` WHERE `id` = ?";
 
     /**
@@ -79,7 +80,7 @@ public class FurnitureAssemblyDAO {
 
     public ArrayList<FurnitureAssembly> getFurnitures() {
         ArrayList<FurnitureAssembly> furnitures = new ArrayList<>();
-        try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_SELECT_FURNITURES)) {
+        try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_SELECT_FURN_ASSMS)) {
             // data
             ResultSet rs = ps.executeQuery();
             InsertUtilities iu = new InsertUtilities();
@@ -110,5 +111,19 @@ public class FurnitureAssemblyDAO {
         } catch (Exception e) {
             return 0;
         }
+    }
+
+    public FurnitureAssembly selectFurnAssembly(int id) {
+        FurnitureAssembly fa = null;
+        try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_SELECT_FURN_ASSM)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            InsertUtilities iu = new InsertUtilities();
+            if (rs.next()) {
+                fa = new FurnitureAssembly(rs.getInt("id"), rs.getString("user_Name"), iu.parseSQLDateToLocalDate(rs.getDate("date")), rs.getInt("sold"), rs.getString("furniture_Name"), rs.getDouble("assembly_Price"));
+            }
+        } catch (Exception e) {
+        }
+        return fa;
     }
 }

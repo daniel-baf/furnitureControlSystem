@@ -4,6 +4,7 @@ import Database.*;
 import Domain.*;
 import GeneralUse.InsertUtilities;
 import TransactionObjects.InsertObjectStatus;
+import java.io.IOException;
 import java.time.LocalDate;
 
 public class FileUploadInstructions {
@@ -86,7 +87,7 @@ public class FileUploadInstructions {
             String[] vals = object.getValuesSplited();
             Double tmp = insUtilites.getDoubleFromString(vals[1]);
             if (tmp != null) {
-                inserted = new FurniturePieceDAO().insert(new FurniturePiece(vals[0], tmp)) != 0;
+                inserted = new FurniturePieceDAO().insert(new FurniturePiece(vals[0])) != 0;
                 typeErrorInsert = inserted ? 0 : 1;
             }
         }
@@ -122,12 +123,11 @@ public class FileUploadInstructions {
      * @param object object to save error
      * @return Boolean, insert status
      */
-    public boolean insertClient(InsertObjectStatus object) {
+    public boolean insertClient(InsertObjectStatus object) throws IOException {
         //CLIENTE("nombre","NIT","direccion","municipio","departamento") --> puede venir sin departamento y municipio
         String[] vals = object.getValues().split(",");
         boolean inserted = false;
         int[] expectedComillas;
-        int queryType;
         int typeErrorInsert = 2; // 2 = format error
         Client client;
 
@@ -135,15 +135,13 @@ public class FileUploadInstructions {
             insUtilites.setStatusAndResult(typeErrorInsert, object);
             return false;
         }
-
         expectedComillas = vals.length == 3 ? new int[]{0, 1, 2} : new int[]{0, 1, 2, 3, 4};
-        queryType = vals.length == 3 ? 0 : 1;
 
         int length = object.getValues().split(",").length;
         if (insertCommonTask(length, object, "CLIENTE", expectedComillas)) {
             vals = object.getValuesSplited();
-            client = vals.length == 3 ? new Client(vals[1], vals[0], vals[2]) : new Client(vals[1], vals[0], vals[2], vals[3], vals[4]);
-            inserted = new ClientDAO().insert(client, queryType) != 0;
+            client = vals.length == 3 ? new Client(vals[1], vals[0], vals[2], null, null) : new Client(vals[1], vals[0], vals[2], vals[3], vals[4]);
+            inserted = new ClientDAO().insert(client, null) != 0;
             typeErrorInsert = inserted ? 0 : 1;
         }
         insUtilites.setStatusAndResult(typeErrorInsert, object);

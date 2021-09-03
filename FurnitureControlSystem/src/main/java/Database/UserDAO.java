@@ -46,7 +46,7 @@ public class UserDAO {
      * @return
      */
     public User selectUser(String username) {
-        User user = new User();
+        User user = null;
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_SELECT_A_USER)) {
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();

@@ -14,5 +14,7 @@
         <h1>Usted es parte del punto de ventas</h1>
         <label>area: <%=session.getAttribute("area")%></label>
         <label>area: <%=session.getAttribute("usr")%></label>
+        
+        <a href="BillingPages/create-bill.jsp">Crear factura</a>
     </body>
 </html>

@@ -29,11 +29,15 @@ public class UpdateOnDB extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html");
-        switch (request.getParameter("update-action")) {
-            case "edit-piece" -> {
-                updatePieceOnDB(request, response);
-            }
+        try {
+            switch (request.getParameter("update-action")) {
+                case "edit-piece" -> {
+                    updatePieceOnDB(request, response);
+                }
 
+            }
+        } catch (Exception e) {
+            new InsertUtilities().sendErrorMessage(response, request, e, "Error al insertar un valor, o de foramto");
         }
     }
 

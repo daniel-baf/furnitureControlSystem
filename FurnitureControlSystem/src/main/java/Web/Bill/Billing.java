@@ -3,6 +3,7 @@ package Web.Bill;
 import Database.FurnitureAssemblyDAO;
 import Domain.FurnitureAssembly;
 import GeneralUse.InsertUtilities;
+import TransactionObjects.BillFurniture;
 import Web.DashboardAcions.FinancialArea.ShowReport;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class Billing extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
-        ArrayList<FurnitureAssembly> cartBckup = (ArrayList<FurnitureAssembly>) session.getAttribute("buy-cart");
+        ArrayList<BillFurniture> cartBckup = (ArrayList<BillFurniture>) session.getAttribute("buy-cart");
         //create item if not created
         if (cartBckup == null) {
             cartBckup = new ArrayList<>();
@@ -64,25 +65,26 @@ public class Billing extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void addToCart(HttpServletRequest request, HttpServletResponse response, HttpSession session, ArrayList<FurnitureAssembly> cartBckup) throws ServletException, IOException, Exception {
+    private void addToCart(HttpServletRequest request, HttpServletResponse response, HttpSession session, ArrayList<BillFurniture> cartBckup) throws ServletException, IOException, Exception {
         // validate if item exists on arraylist
         InsertUtilities iu = new InsertUtilities();
         if (itemNoOnCartYet(iu.getIntegerFromString(request.getParameter("code-item")), cartBckup)) {
             FurnitureAssembly fa = new FurnitureAssemblyDAO().selectFurnAssembly(new InsertUtilities().getIntegerFromString(request.getParameter("code-item")));
-            if (fa != null) {
-                confCartAndRedirect(cartBckup, session, fa);
+            BillFurniture bf = new FurnitureAssemblyDAO().selectFurniturePriceAndSellPrice(fa);
+            if (bf != null && bf.getSold() == 0) {
+                confCartAndRedirect(cartBckup, session, bf);
             } else {
-                throw new Exception("La pieza que buscas no existe");
+                throw new Exception("La pieza que buscas no existe, ya ha sido comprada o fue devuelta anteriormente y fue re integrada con otro ID");
             }
         }
         new ShowReport().redirectToURL(request, response, "Dashboards/BillingPages/create-bill.jsp");
     }
 
-    private boolean itemNoOnCartYet(Integer id, ArrayList<FurnitureAssembly> cartBckup) {
+    private boolean itemNoOnCartYet(Integer id, ArrayList<BillFurniture> cartBckup) {
         return cartBckup.stream().noneMatch(furnitureAssembly -> (furnitureAssembly.getId() == id));
     }
 
-    private void removeFromCart(HttpServletRequest request, HttpServletResponse response, HttpSession session, ArrayList<FurnitureAssembly> cartBckup) throws ServletException, IOException {
+    private void removeFromCart(HttpServletRequest request, HttpServletResponse response, HttpSession session, ArrayList<BillFurniture> cartBckup) throws ServletException, IOException {
         for (int i = 0; i < cartBckup.size(); i++) {
             if (cartBckup.get(i).getId() == new InsertUtilities().getIntegerFromString(request.getParameter("id"))) {
                 cartBckup.remove(i);
@@ -93,8 +95,8 @@ public class Billing extends HttpServlet {
         new ShowReport().redirectToURL(request, response, "Dashboards/BillingPages/create-bill.jsp");
     }
 
-    private void confCartAndRedirect(ArrayList<FurnitureAssembly> cartBckup, HttpSession session, FurnitureAssembly fa) {
-        cartBckup.add(fa);
+    private void confCartAndRedirect(ArrayList<BillFurniture> cartBckup, HttpSession session, BillFurniture bf) {
+        cartBckup.add(bf);
         session.setAttribute("buy-cart", cartBckup);
     }
 

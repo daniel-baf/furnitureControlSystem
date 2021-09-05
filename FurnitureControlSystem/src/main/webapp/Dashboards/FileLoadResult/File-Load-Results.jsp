@@ -28,14 +28,15 @@
     </head>
 
     <body id="page-top">
+
         <!-- Page Wrapper -->
         <div id="wrapper">
-            <!-- Content Wrapper -->
-            <div id="content-wrapper" class="d-flex flex-column">
-                <!-- Main Content -->
-                <div id="content">
+            <jsp:include page="/Includes/Financial/financial-sidebar.jsp"></jsp:include>
+                <!-- Content Wrapper -->
+                <div id="content-wrapper" class="d-flex flex-column">
+                    <!-- Main Content -->
+                    <div id="content">
                     <jsp:include page="/Includes/top-bar.jsp"></jsp:include>
-
                         <!-- Begin Page Content -->
                         <div class="container-fluid">
 
@@ -123,36 +124,28 @@
                         </div>
                     </div>
                     <!-- /.container-fluid -->
-
                 </div>
                 <!-- End of Main Content -->
-
+                <jsp:include page="/Includes/footer.jsp"></jsp:include>
+                </div>
+                <!-- End of Content Wrapper -->
             </div>
-            <!-- End of Content Wrapper -->
-
-
-        </div>
-        <jsp:include page="/Includes/footer.jsp"></jsp:include>
             <!-- End of Page Wrapper -->
-
         <jsp:include page="/Includes/scroll-top-logout-pop-up.jsp"></jsp:include>
 
-        <!-- Bootstrap core JavaScript-->
-        <script src="vendor/jquery/jquery.min.js"></script>
-        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
+            <!-- Bootstrap core JavaScript-->
+            <script src="${pageContext.request.contextPath}/vendor/jquery/jquery.min.js"></script>
+        <script src="${pageContext.request.contextPath}/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
         <!-- Core plugin JavaScript-->
-        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
+        <script src="${pageContext.request.contextPath}/vendor/jquery-easing/jquery.easing.min.js"></script>
         <!-- Custom scripts for all pages-->
-        <script src="js/sb-admin-2.min.js"></script>
-
+        <script src="${pageContext.request.contextPath}/js/sb-admin-2.min.js"></script>
         <!-- Page level plugins -->
-        <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-        <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
+        <script src="${pageContext.request.contextPath}/vendor/datatables/jquery.dataTables.min.js"></script>
+        <script src="${pageContext.request.contextPath}/vendor/datatables/dataTables.bootstrap4.min.js"></script>
         <!-- Page level custom scripts -->
-        <script src="js/demo/datatables-demo.js"></script>
+        <script src="${pageContext.request.contextPath}/js/demo/datatables-demo.js"></script>
+        <script src="${pageContext.request.contextPath}/js/TableCSVExporter.js"></script>
+        <script src="${pageContext.request.contextPath}/js/TableDownload.js"></script>
     </body>
-
 </html>

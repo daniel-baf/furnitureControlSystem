@@ -4,7 +4,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%ArrayList<Furniture> furnitures = (ArrayList<Furniture>) new FurnitureDAO().selectFurnitures();%>
 <!-- Collapsable Card Example -->
-<div class="card shadow mb-4">
+<div class="card shadow mb-4" id="inventory-furniture-stock-div">
     <!-- Card Header - Accordion -->
     <a href="#collapseInventoryFurniture" class="d-block card-header py-3" data-toggle="collapse"
        role="button" aria-expanded="true" aria-controls="collapseCardExample">

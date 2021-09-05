@@ -1,5 +1,5 @@
+<%@page import="TransactionObjects.BillFurniture"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="Domain.FurnitureAssembly"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -20,12 +20,11 @@
 
         <!-- Page Wrapper -->
         <div id="wrapper">
-            <!-- Content Wrapper -->
-            <div id="content-wrapper" class="d-flex flex-column">
-
-                <!-- Main Content -->
-                <div id="content">
-
+            <jsp:include page="/Includes/Sellpoint/aside-sellpoint.jsp"></jsp:include>
+                <!-- Content Wrapper -->
+                <div id="content-wrapper" class="d-flex flex-column">
+                    <!-- Main Content -->
+                    <div id="content">
                     <jsp:include page="/Includes/top-bar.jsp"></jsp:include>
 
                         <!-- Begin Page Content -->
@@ -54,7 +53,7 @@
                                         </form>
                                     </div>
                                     <div class="row justify-content-around mb-4">
-                                        <form action="${pageContext.request.contextPath}/ProcesBilling" method="POST">
+                                        <form action="${pageContext.request.contextPath}/CheckClientAndRedirect" method="POST">
                                             <div class="form-group">
                                                 <label>NIT</label>
                                                 <input required="required" class="form-control" type="text" name="client-nit">
@@ -64,57 +63,11 @@
                                     </div>
                                 </div>    
                             </div>
-                            <div class="col-8">
-                                <h3>Items</h3>
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 60px">Id</th>
-                                            <th style="width: 380px">Item</th>
-                                            <th style="width: 140px">Precio</th>
-                                            <th style="width: 80px">Accion</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Id</th>
-                                            <th>Item</th>
-                                            <th>Precio</th>
-                                            <th>Accion</th>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td>Total</td>
-                                            <td>Q100.00</td>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        <%
-                                            try {
-                                                ArrayList<FurnitureAssembly> cart = (ArrayList<FurnitureAssembly>) session.getAttribute("buy-cart");
-                                                if (!cart.isEmpty()) {
-                                                    for (FurnitureAssembly furnitureAssembly : cart) {%>
-                                        <tr>
-                                            <td><%=furnitureAssembly.getId()%></td>
-                                            <td><%=furnitureAssembly.getFurnitureName()%></td>
-                                            <td>precio</td>
-                                            <td>
-                                                <a class="btn btn-danger" href="${pageContext.request.contextPath}/Billing?action-perf=remove-from-cart&id=<%=furnitureAssembly.getId()%>">Quitar</a>
-                                            </td>
-                                        </tr>
-                                        <%}
-                                                }
-                                            } catch (Exception e) {
-                                            }%>
-
-                                    </tbody>
-                                </table>
+                            <jsp:include page="/Includes/items-on-cart.jsp"></jsp:include>
                             </div>
                         </div>
-
                     </div>
-                </div>
-                <!-- End of Main Content -->
+                    <!-- End of Main Content -->
                 <jsp:include page="/Includes/footer.jsp"></jsp:include>
 
                 </div>

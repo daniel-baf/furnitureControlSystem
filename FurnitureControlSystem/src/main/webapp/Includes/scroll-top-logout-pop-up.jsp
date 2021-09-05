@@ -18,7 +18,7 @@
             <div class="modal-body">Presiona "Salir" para cerrar sesion.</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a id="logout-btn" class="btn btn-primary" href="../login.jsp">Salir</a>
+                <a id="logout-btn" class="btn btn-primary" href="${pageContext.request.contextPath}/Logout">Salir</a>
             </div>
         </div>
     </div>

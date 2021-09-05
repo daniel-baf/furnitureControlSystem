@@ -20,6 +20,14 @@ public class Bill implements Serializable {
         this.code = code;
     }
 
+    public Bill(int furnitureAssemblyId, String username, String clientNit, double ammount, LocalDate buyDate) {
+        this.furnitureAssemblyId = furnitureAssemblyId;
+        this.username = username;
+        this.clientNit = clientNit;
+        this.ammount = Math.round(ammount * 100.00) / 100.00;
+        this.buyDate = buyDate;
+    }
+
     public Bill(int code, int furnitureAssemblyId, String username, String clientNit, double ammount, LocalDate buyDate) {
         this.code = code;
         this.furnitureAssemblyId = furnitureAssemblyId;

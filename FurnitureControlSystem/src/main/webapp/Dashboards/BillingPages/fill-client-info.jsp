@@ -15,15 +15,17 @@
 
     </head>
     <body>
-        <div id="insert-frn-FAAP">
-            <h6 class="row d-flex p-2 justify-content-center border-bottom-primary">Registrar información de cliente</h6>
-            <div class="m-0 row justify-content-center">
-                <div class="col-auto align-content-around">
-                    <form action="${pageContext.request.contextPath}/InsertToDB" method="POST">
+        <jsp:include page="/Includes/top-bar.jsp"></jsp:include>
+            <div id="insert-frn-FAAP">
+                <h3 class="row d-flex p-2 justify-content-center">Registrar información de cliente</h3>
+                <p class="row d-flex p-2 justify-content-center border-bottom-primary">  Necesitamos informacion sobre el cliente para generar facturas</p>
+                <div class="m-0 row justify-content-center">
+                    <div class="col-auto align-content-around">
+                        <form action="${pageContext.request.contextPath}/InsertToDB" method="POST">
                         <input name="action-perf" type="text" value="insert-client" hidden>
                         <div class="form-group">
                             <label for="nit">NIT</label>
-                            <input required name="nit" type="text" class="form-control" id="nit" aria-describedby="emailHelp" placeholder="Un NIT del cliente">
+                            <input required name="nit" type="text" class="form-control" id="nit" aria-describedby="emailHelp" placeholder="Un NIT del cliente"z>
                             <small>Solicitale al cliente el nit</small>
                         </div>
                         <div class="form-group">

@@ -4,6 +4,7 @@ import Domain.FurnitureAssembly;
 import Domain.FurniturePiece;
 import Domain.PieceAssembly;
 import GeneralUse.InsertUtilities;
+import TransactionObjects.BillFurniture;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +15,10 @@ public class FurnitureAssemblyDAO {
     private final String SQL_INSERT_FURN_ASSM = "INSERT INTO `Furniture_Assembly` (`user_Name`, `date`,`sold`,`furniture_Name`,`assembly_Price`) VALUES (?,?,?,?,?)";
     private final String SQL_SELECT_FURN_ASSMS = "SELECT * FROM `Furniture_Assembly`";
     private final String SQL_SELECT_FURN_ASSM = "SELECT * FROM `Furniture_Assembly` WHERE id = ?";
+    private final String SQL_SELECT_FURN_FOR_BILL = "SELECT `fa`.`id` AS `id`, `fa`.`furniture_Name` AS `name`, `f`.`sell_Price` AS `price`, "
+            + "`fa`.`sold` AS `sold` FROM `Furniture_Assembly` AS `fa` INNER JOIN `Furniture` AS `f`ON `f`.`name` = `fa`.`furniture_Name` AND `fa`.`id` = ?";
     private final String SQL_DELETE_FURN_ASSM = "DELETE FROM `Furniture_Assembly` WHERE `id` = ?";
+    private final String SQL_UPDATE_FURN_ASSM = "UPDATE `Furniture_Assembly` SET `user_Name` = ?, `date` = ?, `sold` = ?, `furniture_Name` = ?, `assembly_Price` = ? WHERE (`id` = ?)";
 
     /**
      * A long method, insert a new Furniture, but first search for available
@@ -78,9 +82,10 @@ public class FurnitureAssemblyDAO {
         }
     }
 
-    public ArrayList<FurnitureAssembly> getFurnitures() {
+    public ArrayList<FurnitureAssembly> getFurnitures(boolean onlyAvailable) {
+        String SQL_TMP = onlyAvailable ? SQL_SELECT_FURN_ASSMS + " WHERE `sold` = 0" : SQL_SELECT_FURN_ASSMS;
         ArrayList<FurnitureAssembly> furnitures = new ArrayList<>();
-        try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_SELECT_FURN_ASSMS)) {
+        try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_TMP)) {
             // data
             ResultSet rs = ps.executeQuery();
             InsertUtilities iu = new InsertUtilities();
@@ -125,5 +130,33 @@ public class FurnitureAssemblyDAO {
         } catch (Exception e) {
         }
         return fa;
+    }
+
+    public BillFurniture selectFurniturePriceAndSellPrice(FurnitureAssembly fa) {
+        BillFurniture bf = null;
+        try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_SELECT_FURN_FOR_BILL)) {
+            ps.setInt(1, fa.getId());
+            ResultSet rs = ps.executeQuery();
+            InsertUtilities iu = new InsertUtilities();
+            if (rs.next()) {
+                bf = new BillFurniture(rs.getString("name"), rs.getInt("id"), rs.getDouble("price"), rs.getInt("sold"));
+            }
+        } catch (Exception e) {
+        }
+        return bf;
+    }
+
+    public int update(FurnitureAssembly furn) {
+        try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_UPDATE_FURN_ASSM)) {
+            ps.setString(1, furn.getUsername());
+            ps.setDate(2, new InsertUtilities().parseLocalDateSQLDate(furn.getDate()));
+            ps.setInt(3, furn.getSold());
+            ps.setString(4, furn.getFurnitureName());
+            ps.setDouble(5, furn.getAssemblyPrice());
+            ps.setInt(6, furn.getId());
+            return ps.executeUpdate();
+        } catch (Exception e) {
+            return 0;
+        }
     }
 }

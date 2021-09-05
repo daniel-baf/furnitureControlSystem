@@ -6,6 +6,7 @@ import GeneralUse.InsertUtilities;
 import TransactionObjects.InsertObjectStatus;
 import java.io.IOException;
 import java.time.LocalDate;
+import javax.servlet.http.HttpServletResponse;
 
 public class FileUploadInstructions {
 
@@ -87,7 +88,7 @@ public class FileUploadInstructions {
             String[] vals = object.getValuesSplited();
             Double tmp = insUtilites.getDoubleFromString(vals[1]);
             if (tmp != null) {
-                inserted = new FurniturePieceDAO().insert(new FurniturePiece(vals[0])) != 0;
+                inserted = new FurniturePieceDAO().insert(new FurniturePiece(vals[0], tmp)) != 0;
                 typeErrorInsert = inserted ? 0 : 1;
             }
         }

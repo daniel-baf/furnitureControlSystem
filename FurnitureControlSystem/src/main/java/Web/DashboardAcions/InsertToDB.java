@@ -80,7 +80,7 @@ public class InsertToDB extends HttpServlet {
      * @throws ServletException
      * @throws IOException
      */
-    private void insertFurnitureDB(HttpServletRequest request, HttpServletResponse response, InsertUtilities iu) throws ServletException, IOException {
+    private void insertFurnitureDB(HttpServletRequest request, HttpServletResponse response, InsertUtilities iu) throws Exception {
         Double price = iu.getDoubleFromString(request.getParameter("furnPrice"));
         Furniture furn = new Furniture(request.getParameter("furnName"), price);
         String repBody = " insertar el mueble con nombre " + furn.getName();
@@ -89,7 +89,7 @@ public class InsertToDB extends HttpServlet {
         request.getRequestDispatcher("Reports/Message.jsp").forward(request, response);
     }
 
-    private void insertUserDB(HttpServletRequest request, HttpServletResponse response, InsertUtilities iu) throws ServletException, ServletException, IOException {
+    private void insertUserDB(HttpServletRequest request, HttpServletResponse response, InsertUtilities iu) throws ServletException, ServletException, IOException, Exception {
         // encrypt password
         AES256 aes356 = new AES256();
         short tmp = (short) ((int) iu.getIntegerFromString(request.getParameter("areaCode")));
@@ -100,7 +100,7 @@ public class InsertToDB extends HttpServlet {
         request.getRequestDispatcher("Reports/Message.jsp").forward(request, response);
     }
 
-    private void insertFurnAssemblyDB(HttpServletRequest request, HttpServletResponse response, String username, InsertUtilities iu) throws ServletException, IOException {
+    private void insertFurnAssemblyDB(HttpServletRequest request, HttpServletResponse response, String username, InsertUtilities iu) throws Exception {
         FurnitureAssembly fa = new FurnitureAssembly(username, LocalDate.now(), request.getParameter("furniture-assemb"));
         String repBody = " registrar el nuevo ensamble de mueble";
         repBody = new FurnitureAssemblyDAO().insertFurnAssmebly(fa) != 0 ? "Se ha logrado insertar " + repBody : "No se ha logrado crear " + repBody;
@@ -108,7 +108,7 @@ public class InsertToDB extends HttpServlet {
         request.getRequestDispatcher("Reports/Message.jsp").forward(request, response);
     }
 
-    private void insertPieceDB(HttpServletRequest request, HttpServletResponse response, InsertUtilities iu) throws ServletException, IOException {
+    private void insertPieceDB(HttpServletRequest request, HttpServletResponse response, InsertUtilities iu) throws ServletException, IOException, Exception {
         FurniturePiece piece = new FurniturePiece(request.getParameter("piece-name"), iu.getDoubleFromString(request.getParameter("piece-price")));
         String repBody = " registrar la pieza a la base de datos";
         repBody = new FurniturePieceDAO().insert(piece) != 0 ? "Se ha logrado " + repBody : "No se ha logrado " + repBody;
@@ -116,7 +116,7 @@ public class InsertToDB extends HttpServlet {
         request.getRequestDispatcher("Reports/Message.jsp").forward(request, response);
     }
 
-    private void insertClientDB(HttpServletRequest request, HttpServletResponse response, InsertUtilities iu) throws ServletException, IOException {
+    private void insertClientDB(HttpServletRequest request, HttpServletResponse response, InsertUtilities iu) throws Exception {
         Client client = new Client(
                 request.getParameter("nit"),
                 request.getParameter("name"),

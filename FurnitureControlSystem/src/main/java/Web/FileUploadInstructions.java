@@ -56,7 +56,7 @@ public class FileUploadInstructions {
      * @param object
      * @return
      */
-    public boolean insertUser(InsertObjectStatus object) {
+    public boolean insertUser(InsertObjectStatus object) throws Exception {
         // USER("name","password",int)
         boolean inserted = false;
         int typeErrorInsert = 2; // 2 = format error
@@ -79,8 +79,9 @@ public class FileUploadInstructions {
      *
      * @param object to save error
      * @return insert status, Boolean
+     * @throws java.lang.Exception
      */
-    public boolean insertPiece(InsertObjectStatus object) {
+    public boolean insertPiece(InsertObjectStatus object) throws Exception {
         boolean inserted = false;
         int typeErrorInsert = 2; // 2 = format error
         //PIEZA("nombre", precioDecimal)
@@ -101,8 +102,9 @@ public class FileUploadInstructions {
      *
      * @param object to save error
      * @return Boolean, insert status
+     * @throws java.lang.Exception
      */
-    public boolean insertFurniture(InsertObjectStatus object) {
+    public boolean insertFurniture(InsertObjectStatus object) throws Exception {
         //MUEBLE("nombre", precioDecimal)
         boolean inserted = false;
         int typeErrorInsert = 2; // 2 = format error
@@ -123,8 +125,9 @@ public class FileUploadInstructions {
      *
      * @param object object to save error
      * @return Boolean, insert status
+     * @throws java.lang.Exception
      */
-    public boolean insertClient(InsertObjectStatus object) throws IOException {
+    public boolean insertClient(InsertObjectStatus object) throws Exception {
         //CLIENTE("nombre","NIT","direccion","municipio","departamento") --> puede venir sin departamento y municipio
         String[] vals = object.getValues().split(",");
         boolean inserted = false;
@@ -154,8 +157,9 @@ public class FileUploadInstructions {
      *
      * @param object
      * @return
+     * @throws java.lang.Exception
      */
-    public boolean insertPieceAssembly(InsertObjectStatus object) {
+    public boolean insertPieceAssembly(InsertObjectStatus object) throws Exception {
         //ENSAMBLE_PIEZAS("nombre muble", "nombre pieza", 1)
         boolean inserted = false;
         int typeErrorInsert = 2; // 2 = format error
@@ -177,8 +181,9 @@ public class FileUploadInstructions {
      *
      * @param object
      * @return
+     * @throws java.lang.Exception
      */
-    public boolean insertFurnitureAsembly(InsertObjectStatus object) {
+    public boolean insertFurnitureAsembly(InsertObjectStatus object) throws Exception {
         //ENSAMBLAR_MUEBLE("furn name",workerIdWhoEnsabledIt, "date")
         boolean inserted = false;
         int typeErrorInsert = 2; // 2 = format error

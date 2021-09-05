@@ -15,13 +15,16 @@ public class RefundDAO {
             + "FROM `Refund` AS `r` INNER JOIN `Bill` AS `b` ON `b`.`code` = `r`.`bill_Code` INNER JOIN `Furniture_Assembly` AS `f` ON `f`.`id` = `b`.`furniture_Assemby_ID` ";
 
     /**
-     * return all refunds, is flexible method who differences if he wants query between dates or not
+     * return all refunds, is flexible method who differences if he wants query
+     * between dates or not
+     *
      * @param initDate start date for report
      * @param endDate end date for report
      * @param betweenDates dates are not null?
      * @return refunds
+     * @throws java.lang.Exception
      */
-    public ArrayList<Refund> getRefundsReport(LocalDate initDate, LocalDate endDate, boolean betweenDates) {
+    public ArrayList<Refund> getRefundsReport(LocalDate initDate, LocalDate endDate, boolean betweenDates) throws Exception {
         // get dates, what if no dates?
         String bckup = betweenDates ? SQL_SELECT_REFUND_BILL_REPORT + " WHERE `r`.`date` BETWEEN ? AND ?" : SQL_SELECT_REFUND_BILL_REPORT;
         ArrayList<Refund> refunds = new ArrayList<>();
@@ -51,6 +54,7 @@ public class RefundDAO {
                 ));
             }
         } catch (Exception e) {
+            new InsertUtilities().throwCustomError("Error al obtener devolucion, verifica los datos ingresados, " + e.getMessage());
         }
         return refunds;
     }

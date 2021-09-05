@@ -16,45 +16,49 @@ public class Login extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        // DATA ACCES OBJECT
-        User user = new UserDAO().selectUser(request.getParameter("user"));
-        AES256 aes256 = new AES256();
-        //validate user
-        if (user != null) {
-            // user found
-            if (userOK(user.getName(), request.getParameter("user").trim())
-                    && passwordOK(aes256.decrypt(user.getPassword()), request.getParameter("password").trim())) {
-                HttpSession session = request.getSession();
-                // user auth
-                String URL;
-                // redirect to panels
-                switch (user.getAreaCode()) {
-                    case 1 -> {
-                        URL = request.getContextPath() + "/Dashboards/Factory-Panel.jsp";
-                        configSession(session, user);
-                        response.sendRedirect(URL);
+
+        try {
+            response.setContentType("text/html;charset=UTF-8");
+            // DATA ACCES OBJECT
+            User user = new UserDAO().selectUser(request.getParameter("user"));
+            AES256 aes256 = new AES256();
+            //validate user
+            if (user != null) {
+                // user found
+                if (userOK(user.getName(), request.getParameter("user").trim())
+                        && passwordOK(aes256.decrypt(user.getPassword()), request.getParameter("password").trim())) {
+                    HttpSession session = request.getSession();
+                    // user auth
+                    String URL;
+                    // redirect to panels
+                    switch (user.getAreaCode()) {
+                        case 1 -> {
+                            URL = request.getContextPath() + "/Dashboards/Factory-Panel.jsp";
+                            configSession(session, user);
+                            response.sendRedirect(URL);
+                        }
+                        case 2 -> {
+                            URL = request.getContextPath() + "/Dashboards/Sale-Point-Panel.jsp";
+                            configSession(session, user);
+                            response.sendRedirect(URL);
+                        }
+                        case 3 -> {
+                            URL = request.getContextPath() + "/Dashboards/Fin-Admin-Panel.jsp";
+                            configSession(session, user);
+                            response.sendRedirect(URL);
+                        }
+                        default -> {
+                            session.invalidate();
+                            response.sendRedirect(request.getContextPath());
+                        }
                     }
-                    case 2 -> {
-                        URL = request.getContextPath() + "/Dashboards/Sale-Point-Panel.jsp";
-                        configSession(session, user);
-                        response.sendRedirect(URL);
-                    }
-                    case 3 -> {
-                        URL = request.getContextPath() + "/Dashboards/Fin-Admin-Panel.jsp";
-                        configSession(session, user);
-                        response.sendRedirect(URL);
-                    }
-                    default -> {
-                        session.invalidate();
-                        response.sendRedirect(request.getContextPath());
-                    }
+                } else {
+                    response.sendRedirect(request.getContextPath());
                 }
             } else {
                 response.sendRedirect(request.getContextPath());
             }
-        } else {
-            response.sendRedirect(request.getContextPath());
+        } catch (Exception e) {
         }
     }
 

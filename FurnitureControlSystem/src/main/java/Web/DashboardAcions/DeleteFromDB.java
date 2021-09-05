@@ -40,7 +40,7 @@ public class DeleteFromDB extends HttpServlet {
                 }
             }
         } catch (Exception e) {
-            new InsertUtilities().sendErrorMessage(response, request, e, "Error en la sintaxis o valor no valido, revisa la solicitud y vuelve a intentarlo");
+            new InsertUtilities().sendErrorMessage(response, request, e, "Ha ocurrido un error");
         }
     }
 
@@ -64,7 +64,7 @@ public class DeleteFromDB extends HttpServlet {
      * @throws ServletException
      * @throws IOException
      */
-    public void deleteUserDB(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void deleteUserDB(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, Exception {
         // get user name
         User user = new User(request.getParameter("username"));
         String repBody = "el usuario con registro " + user.getName();
@@ -82,7 +82,7 @@ public class DeleteFromDB extends HttpServlet {
      * @throws ServletException
      * @throws IOException
      */
-    private void deleteFurnAssembly(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void deleteFurnAssembly(HttpServletRequest request, HttpServletResponse response) throws Exception {
         FurnitureAssembly fa = new FurnitureAssembly(new InsertUtilities().getIntegerFromString(request.getParameter("id")));
         String repBody = "el mueble con ID " + fa.getId();
         repBody += new FurnitureAssemblyDAO().deleteFurnAssembly(fa) != 0 ? " Se ha borrado " : "No se ha logrado borrar ";
@@ -91,7 +91,7 @@ public class DeleteFromDB extends HttpServlet {
         request.getRequestDispatcher("Reports/Message.jsp").forward(request, response);
     }
 
-    private void deleteFurnPiece(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void deleteFurnPiece(HttpServletRequest request, HttpServletResponse response) throws Exception {
         FurniturePiece fp = new FurniturePiece(new InsertUtilities().getIntegerFromString(request.getParameter("id")));
         String repBody = "la pieza con ID " + fp.getId();
         repBody += new FurniturePieceDAO().delete(fp) != 0 ? " Se ha borrado " : "No se ha logrado borrar ";

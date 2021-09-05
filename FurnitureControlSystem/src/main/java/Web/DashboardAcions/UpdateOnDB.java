@@ -37,7 +37,7 @@ public class UpdateOnDB extends HttpServlet {
 
             }
         } catch (Exception e) {
-            new InsertUtilities().sendErrorMessage(response, request, e, "Error al insertar un valor, o de foramto");
+            new InsertUtilities().sendErrorMessage(response, request, e, "Ha ocurrido un error");
         }
     }
 
@@ -50,7 +50,7 @@ public class UpdateOnDB extends HttpServlet {
      * @throws IOException
      * @throws ServletException
      */
-    private void updatePieceOnDB(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    private void updatePieceOnDB(HttpServletRequest request, HttpServletResponse response) throws Exception {
         // create Piece Object
         InsertUtilities iu = new InsertUtilities();
         FurniturePiece fp = new FurniturePiece(iu.getIntegerFromString(request.getParameter("piece-id")), request.getParameter("piece-name"), iu.getDoubleFromString(request.getParameter("piece-price")));

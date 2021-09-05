@@ -5,6 +5,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -45,10 +47,14 @@ public class FileUpload extends HttpServlet {
             while ((text = bufReader.readLine()) != null) {
                 object = new InsertObjectStatus(lineCounter);
                 object.setLineRead(text);
-                if (tryInsert(text, object, response)) {
-                    object.setStatus("no error");
-                    success.add(object);
-                } else {
+                try {
+                    if (tryInsert(text, object, response)) {
+                        object.setStatus("no error");
+                        success.add(object);
+                    } else {
+                        errors.add(object);
+                    }
+                } catch (Exception ex) {
                     errors.add(object);
                 }
                 lineCounter++;
@@ -67,7 +73,7 @@ public class FileUpload extends HttpServlet {
      * @param object a object to save status, if inserted or not
      * @return insert status, true if inserted
      */
-    private boolean tryInsert(String readLine, InsertObjectStatus object, HttpServletResponse response) throws IOException {
+    private boolean tryInsert(String readLine, InsertObjectStatus object, HttpServletResponse response) throws IOException, Exception {
         // save data to send as atribute to JSP
         object.setSentece(getTokensManual(readLine)[0]);
         object.setValues(getTokensManual(readLine)[1]);

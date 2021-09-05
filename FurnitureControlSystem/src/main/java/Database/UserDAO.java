@@ -2,6 +2,7 @@ package Database;
 
 import Domain.User;
 import GeneralUse.AES256;
+import GeneralUse.InsertUtilities;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -24,17 +25,18 @@ public class UserDAO {
      * select all users in DB
      *
      * @return
+     * @throws java.lang.Exception custom error with a "error" message
      */
-    public ArrayList<User> selectUsers() {
+    public ArrayList<User> selectUsers() throws Exception {
         ArrayList<User> users = new ArrayList<>();
-
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_SELECT_USERS)) {
             // data
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                users.add(new User(rs.getString("name"), rs.getString("password"), rs.getShort("area_Code")));
+                users.add(getUserFromRs(rs));
             }
         } catch (Exception e) { // error catch
+            new InsertUtilities().throwCustomError("Error, al seleccionar usuario, revisa los datos ingresados " + e.getMessage());
         }
         return users;
     }
@@ -44,16 +46,18 @@ public class UserDAO {
      *
      * @param username
      * @return
+     * @throws java.lang.Exception custom error with a "message" error
      */
-    public User selectUser(String username) {
+    public User selectUser(String username) throws Exception {
         User user = null;
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_SELECT_A_USER)) {
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                user = new User(rs.getString("name"), rs.getString("password"), rs.getShort("area_Code"));
+                user = getUserFromRs(rs);
             }
         } catch (Exception e) {
+            new InsertUtilities().throwCustomError("Error, al seleccionar usuario, revisa los datos ingresados, " + e.getMessage());
         }
         return user;
     }
@@ -63,8 +67,9 @@ public class UserDAO {
      *
      * @param mostSellsOrEarn
      * @return
+     * @throws java.lang.Exception
      */
-    public User selectMostSellsOrEarnigsUser(String mostSellsOrEarn) {
+    public User selectMostSellsOrEarnigsUser(String mostSellsOrEarn) throws Exception {
         User user = new User();
         String tmp = mostSellsOrEarn.equalsIgnoreCase("most") ? SQL_SELECT_MOST_SELLS_USER : SQL_SELECT_MOST_EARNS_USER;
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(tmp)) {
@@ -72,8 +77,8 @@ public class UserDAO {
             if (rs.next()) {
                 user = new User(rs.getString("worker"));
             }
-
         } catch (Exception e) {
+            new InsertUtilities().throwCustomError("Error, al seleccionar usuario con ganancias, revisa los datos ingresados " + e.getMessage());
         }
         return user;
     }
@@ -83,8 +88,9 @@ public class UserDAO {
      *
      * @param user a user, the password is plain text
      * @return true if no error on insert
+     * @throws java.lang.Exception
      */
-    public int insert(User user) {
+    public int insert(User user) throws Exception {
         String pswdEncrypted = new AES256().encrypt(user.getPassword());
         if (pswdEncrypted == null) {
             return 0;
@@ -98,6 +104,7 @@ public class UserDAO {
             ps.setShort(3, user.getAreaCode());
             return ps.executeUpdate();
         } catch (Exception e) {
+            new InsertUtilities().throwCustomError("Error, al insertar usuario, revisa los datos ingresados, " + e.getMessage());
             return 0;
         }
     }
@@ -107,14 +114,16 @@ public class UserDAO {
      *
      * @param user object with the info to update
      * @return
+     * @throws java.lang.Exception
      */
-    public int update(User user) {
+    public int update(User user) throws Exception {
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_UPDATE_USER)) {
             ps.setString(1, user.getPassword());
             ps.setShort(2, user.getAreaCode());
             ps.setString(3, user.getName());
             return ps.executeUpdate();
         } catch (Exception e) {
+            new InsertUtilities().throwCustomError("Error, al actualizar usuario, revisa los datos ingresados, " + e.getMessage());
             return 0;
         }
     }
@@ -124,13 +133,26 @@ public class UserDAO {
      *
      * @param user
      * @return
+     * @throws java.lang.Exception
      */
-    public int delete(User user) {
+    public int delete(User user) throws Exception {
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_DELETE_USER)) {
             ps.setString(1, user.getName());
             return ps.executeUpdate();
         } catch (Exception e) {
+            new InsertUtilities().throwCustomError("Error, al borrar usuario, revisa los datos ingresados, " + e.getMessage());
             return 0;
         }
+    }
+
+    /**
+     * return a User getting the values from the ResultSet
+     *
+     * @param rs
+     * @return
+     * @throws SQLException
+     */
+    private User getUserFromRs(ResultSet rs) throws SQLException {
+        return new User(rs.getString("name"), rs.getString("password"), rs.getShort("area_Code"));
     }
 }

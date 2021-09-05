@@ -202,4 +202,13 @@ public class InsertUtilities {
         request.setAttribute("rep-body", repBody);
 
     }
+
+    /**
+     * throw a message to help user to identify error
+     *
+     * @throws Exception
+     */
+    public void throwCustomError(String message) throws Exception {
+        throw new Exception(message);
+    }
 }

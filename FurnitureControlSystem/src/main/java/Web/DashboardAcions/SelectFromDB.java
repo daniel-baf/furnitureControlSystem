@@ -31,11 +31,9 @@ public class SelectFromDB extends HttpServlet {
                 case "select-available-furns" -> {
                     configRequestFurniture(request, response, true);
                 }
-                case "select-sells-today" -> {
-                }
             }
         } catch (Exception e) {
-            new InsertUtilities().sendErrorMessage(response, request, e, "Error de formato o valores invalidos en la solicitud");
+            new InsertUtilities().sendErrorMessage(response, request, e, "Ha ocurrido un errro");
         }
 
     }
@@ -52,14 +50,14 @@ public class SelectFromDB extends HttpServlet {
         processRequest(request, response);
     }
 
-    private void configRequestFurniture(HttpServletRequest request, HttpServletResponse response, boolean onlyAvailable) throws IOException, ServletException {
+    private void configRequestFurniture(HttpServletRequest request, HttpServletResponse response, boolean onlyAvailable) throws Exception {
         ArrayList<FurnitureAssembly> furns = new FurnitureAssemblyDAO().getFurnitures(onlyAvailable);
         sharedSettinsResponse("furniture", "Muebles disponibles", request, response, new String[]{"ID", "Mueble", "Precio Ensamble", "Ensamblado por", "Vendido"});
         request.setAttribute("furnitures", furns);
         request.getRequestDispatcher("/Reports/Edits/TableEdits.jsp").forward(request, response);
     }
 
-    private void configRequestPieces(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    private void configRequestPieces(HttpServletRequest request, HttpServletResponse response) throws Exception {
         ArrayList<FurniturePiece> pieces = new FurniturePieceDAO().selectPieces(null, false);
         sharedSettinsResponse("pieces", "Piezas disponibles", request, response, new String[]{"id", "nombre", "precio"});
         request.setAttribute("pieces", pieces);

@@ -24,16 +24,15 @@ public class EarningsDAO {
      * @param endDate to set on BETWEEN, SLQ query
      * @param user User object
      * @return Earnings List
+     * @throws java.lang.Exception custom exception with a "message" to show
      */
-    public ArrayList<Earning> getEarningsReport(boolean betweenDates, LocalDate initDate, LocalDate endDate, User user) {
+    public ArrayList<Earning> getEarningsReport(boolean betweenDates, LocalDate initDate, LocalDate endDate, User user) throws Exception {
         // validate Query for multiple actions
-        String bckup = SQL_SELECT_EARNINGS;
+        String bckup = SQL_SELECT_EARNINGS; // dinamic method for select
         bckup += betweenDates ? " AND (`b`.`buy_Date` BETWEEN ? AND ?)" : "";
         bckup += user != null ? " AND `f`.`user_Name` = ?" : "";
-        ArrayList<Earning> earnings = new ArrayList<>();
-        boolean activeDates = false; // to know if theres's dates sat on RS
+        ArrayList<Earning> earnings = new ArrayList<>(); // to save and show report as bean
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(bckup)) {
-            // config resultSet
             confResultSet(betweenDates, initDate, endDate, ps, user);
             ResultSet rs = ps.executeQuery();
             InsertUtilities iu = new InsertUtilities();
@@ -49,6 +48,7 @@ public class EarningsDAO {
                 ));
             }
         } catch (Exception e) {
+            new InsertUtilities().throwCustomError("Error al intentar obtener reporte de ganancias, verifica los datos ingresados, " + e.getMessage());
         }
         return earnings;
     }
@@ -64,21 +64,18 @@ public class EarningsDAO {
      * @throws SQLException
      */
     private void confResultSet(boolean betweenDates, LocalDate initDate, LocalDate endDate, PreparedStatement ps, User user) throws SQLException {
-        boolean activeDates = false;
+        int psCounter = 1;
         if (betweenDates) {
             if (initDate.isAfter(endDate)) {
                 LocalDate tmp = initDate;
                 initDate = endDate;
                 endDate = tmp;
             }
-            ps.setDate(1, new InsertUtilities().parseLocalDateSQLDate(initDate));
-            ps.setDate(2, new InsertUtilities().parseLocalDateSQLDate(endDate));
-            activeDates = true;
+            ps.setDate(psCounter++, new InsertUtilities().parseLocalDateSQLDate(initDate));
+            ps.setDate(psCounter++, new InsertUtilities().parseLocalDateSQLDate(endDate));
         }
-        if (activeDates && user != null) {
-            ps.setString(3, user.getName());
-        } else if (!activeDates && user != null) {
-            ps.setString(1, user.getName());
+        if (user != null) {
+            ps.setString(psCounter++, user.getName());
         }
     }
 }

@@ -1,6 +1,7 @@
 package Database;
 
 import Domain.PieceAssembly;
+import GeneralUse.InsertUtilities;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,8 +17,9 @@ public class PieceAssemblyDAO {
      *
      * @param pieceAssm
      * @return
+     * @throws java.lang.Exception
      */
-    public int insert(PieceAssembly pieceAssm) {
+    public int insert(PieceAssembly pieceAssm) throws Exception {
         // let's see if pieceName exist
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_INSERT_PIECE_ASSEMB)) {
             if (new FurniturePieceDAO().selectPieces(pieceAssm.getPieceName().toLowerCase(), true).size() > 0) {
@@ -28,6 +30,7 @@ public class PieceAssemblyDAO {
                 return reg;
             }
         } catch (Exception e) {
+            new InsertUtilities().throwCustomError("Error al insertar pieza, verifica los datos ingresados, " + e.getMessage());
         }
         return 0;
     }
@@ -38,8 +41,9 @@ public class PieceAssemblyDAO {
      * @param furnitureName
      * @param byName
      * @return
+     * @throws java.lang.Exception
      */
-    public ArrayList<PieceAssembly> selectAssemblies(String furnitureName, boolean byName) {
+    public ArrayList<PieceAssembly> selectAssemblies(String furnitureName, boolean byName) throws Exception {
         String SQL_TEMP = SQL_SELECT_PIECE_ASEMBS;
         SQL_TEMP += byName ? " WHERE `furniture_Name` = ? " : "";
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_TEMP)) {
@@ -53,6 +57,7 @@ public class PieceAssemblyDAO {
             }
             return assemblies;
         } catch (Exception e) {
+            new InsertUtilities().throwCustomError("Error al seleccionar ensamble de pieza, verifica los datos ingresados, " + e.getMessage());
             return null;
         }
     }

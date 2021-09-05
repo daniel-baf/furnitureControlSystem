@@ -2,8 +2,11 @@ package Web.Bill;
 
 import Database.ClientDAO;
 import Domain.Client;
+import GeneralUse.InsertUtilities;
 import Web.DashboardAcions.FinancialArea.ShowReport;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,14 +35,20 @@ public class CheckClientAndRedirect extends HttpServlet {
         response.setContentType("text/html");
         //validate client exist
         HttpSession session = request.getSession();
-        Client clientTmp = new ClientDAO().selectClient(request.getParameter("client-nit"));
-        if (clientTmp != null) {
-            //client exist
-            session.setAttribute("client-bill-user", clientTmp);
-            session.setAttribute("buy-cart", session.getAttribute("buy-cart"));
-            request.getRequestDispatcher("/Dashboards/BillingPages/process-bill.jsp").forward(request, response);
-        } else {
-            new ShowReport().redirectToURL(request, response, "Dashboards/BillingPages/fill-client-info.jsp");
+        Client clientTmp;
+        try {
+            clientTmp = new ClientDAO().selectClient(request.getParameter("client-nit"));
+            if (clientTmp != null) {
+                //client exist
+                session.setAttribute("client-bill-user", clientTmp);
+                session.setAttribute("buy-cart", session.getAttribute("buy-cart"));
+                request.getRequestDispatcher("/Dashboards/BillingPages/process-bill.jsp").forward(request, response);
+            } else {
+                new ShowReport().redirectToURL(request, response, "Dashboards/BillingPages/fill-client-info.jsp");
+            }
+        } catch (Exception ex) {
+            new InsertUtilities().sendErrorMessage(response, request, ex, "Ha ocurrido un error al procesar el carrito");
         }
+
     }
 }

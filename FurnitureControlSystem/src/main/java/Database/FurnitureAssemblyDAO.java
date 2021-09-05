@@ -27,22 +27,22 @@ public class FurnitureAssemblyDAO {
      *
      * @param furnAssm
      * @return
+     * @throws java.lang.Exception
      */
-    public int insertFurnAssmebly(FurnitureAssembly furnAssm) {
+    public int insertFurnAssmebly(FurnitureAssembly furnAssm) throws Exception {
         int result = 0;
+        // connect to db
         try ( Connection conn = ConnectionDB.getConnection()) {
-
             conn.setAutoCommit(false);
             try ( PreparedStatement ps = conn.prepareStatement(SQL_INSERT_FURN_ASSM)) {
                 //We need the assemblies to know wich pieces use
                 ArrayList<PieceAssembly> assemblies = new PieceAssemblyDAO().selectAssemblies(furnAssm.getFurnitureName(), true);
                 ArrayList<FurniturePiece> pieces = new ArrayList<>();
                 double assembPrice = 0;
-
-                if (assemblies.isEmpty() || assemblies.isEmpty()) {
+                // VALIDATE assembly
+                if (assemblies.isEmpty() || assemblies == null) {
                     return 0;
                 }
-
                 for (PieceAssembly assembly : assemblies) {
                     ArrayList<FurniturePiece> tmp = new FurniturePieceDAO().selectPiecesLimitX(assembly.getPieceName(), assembly.getCuantity());
                     if (tmp.isEmpty()) {
@@ -50,7 +50,7 @@ public class FurnitureAssemblyDAO {
                     } else if (tmp.size() < assembly.getCuantity()) {
                         return 0;
                     } else {
-                        assembPrice = tmp.stream().map(furniturePiece -> {
+                        assembPrice = tmp.stream().map(furniturePiece -> { // add piece to arraylist
                             pieces.add(furniturePiece);
                             return furniturePiece;
                         }).map(furniturePiece -> furniturePiece.getCost()).reduce(assembPrice, (accumulator, _item) -> accumulator + _item);
@@ -58,7 +58,10 @@ public class FurnitureAssemblyDAO {
                 }
                 // delete pieces
                 pieces.forEach(piece -> {
-                    new FurniturePieceDAO().delete(piece);
+                    try {
+                        new FurniturePieceDAO().delete(piece);
+                    } catch (Exception ex) {
+                    }
                 });
                 // create furniture
                 ps.setString(1, furnAssm.getUsername());
@@ -67,7 +70,7 @@ public class FurnitureAssemblyDAO {
                 ps.setString(4, furnAssm.getFurnitureName());
                 ps.setDouble(5, assembPrice);
                 // SQL execute
-                result = ps.executeUpdate();
+                result = ps.executeUpdate(); // success?
             } catch (Exception e) {
                 conn.rollback();
             } finally {
@@ -76,20 +79,27 @@ public class FurnitureAssemblyDAO {
                 }
                 conn.setAutoCommit(true);
             }
-            return result;
         } catch (Exception e) {
-            return 0;
+            new InsertUtilities().throwCustomError("No se ha podido terminar la transaccion para insertar un nuevo mueble, verifica los datos ingresados, " + e.getMessage());
         }
+        return result;
     }
 
-    public ArrayList<FurnitureAssembly> getFurnitures(boolean onlyAvailable) {
-        String SQL_TMP = onlyAvailable ? SQL_SELECT_FURN_ASSMS + " WHERE `sold` = 0" : SQL_SELECT_FURN_ASSMS;
+    /**
+     * get all furnitures available for sell from DB
+     *
+     * @param onlyAvailable
+     * @return
+     * @throws java.lang.Exception
+     */
+    public ArrayList<FurnitureAssembly> getFurnitures(boolean onlyAvailable) throws Exception {
+        String SQL_TMP = onlyAvailable ? SQL_SELECT_FURN_ASSMS + " WHERE `sold` = 0" : SQL_SELECT_FURN_ASSMS; // query
         ArrayList<FurnitureAssembly> furnitures = new ArrayList<>();
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_TMP)) {
             // data
             ResultSet rs = ps.executeQuery();
             InsertUtilities iu = new InsertUtilities();
-            while (rs.next()) {
+            while (rs.next()) { // furniture
                 furnitures.add(new FurnitureAssembly(
                         rs.getInt("id"),
                         rs.getString("user_Name"),
@@ -99,6 +109,7 @@ public class FurnitureAssemblyDAO {
                         iu.getDoubleFromString(rs.getString("assembly_Price"))));
             }
         } catch (Exception e) { // error catch
+            new InsertUtilities().throwCustomError("Error al seleccionar muebles, verifica los datos ingresados, " + e.getMessage());
         }
         return furnitures;
     }
@@ -108,17 +119,26 @@ public class FurnitureAssemblyDAO {
      *
      * @param furnAssem Furniture Assembly object
      * @return
+     * @throws java.lang.Exception
      */
-    public int deleteFurnAssembly(FurnitureAssembly furnAssem) {
+    public int deleteFurnAssembly(FurnitureAssembly furnAssem) throws Exception {
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_DELETE_FURN_ASSM)) {
             ps.setInt(1, furnAssem.getId());
             return ps.executeUpdate();
         } catch (Exception e) {
+            new InsertUtilities().throwCustomError("Error al borrar mueble, verifica los datos ingresados, " + e.getMessage());
             return 0;
         }
     }
 
-    public FurnitureAssembly selectFurnAssembly(int id) {
+    /**
+     * select a furniture by id
+     *
+     * @param id
+     * @return
+     * @throws java.lang.Exception
+     */
+    public FurnitureAssembly selectFurnAssembly(int id) throws Exception {
         FurnitureAssembly fa = null;
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_SELECT_FURN_ASSM)) {
             ps.setInt(1, id);
@@ -128,25 +148,39 @@ public class FurnitureAssemblyDAO {
                 fa = new FurnitureAssembly(rs.getInt("id"), rs.getString("user_Name"), iu.parseSQLDateToLocalDate(rs.getDate("date")), rs.getInt("sold"), rs.getString("furniture_Name"), rs.getDouble("assembly_Price"));
             }
         } catch (Exception e) {
+            new InsertUtilities().throwCustomError("Error al seleccionar mueble , verifica los datos ingresados, " + e.getMessage());
         }
         return fa;
     }
 
-    public BillFurniture selectFurniturePriceAndSellPrice(FurnitureAssembly fa) {
+    /**
+     * select all furniture and add a sell price for them by GROUP
+     *
+     * @param fa
+     * @return
+     * @throws java.lang.Exception
+     */
+    public BillFurniture selectFurniturePriceAndSellPrice(FurnitureAssembly fa) throws Exception {
         BillFurniture bf = null;
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_SELECT_FURN_FOR_BILL)) {
             ps.setInt(1, fa.getId());
             ResultSet rs = ps.executeQuery();
-            InsertUtilities iu = new InsertUtilities();
             if (rs.next()) {
                 bf = new BillFurniture(rs.getString("name"), rs.getInt("id"), rs.getDouble("price"), rs.getInt("sold"));
             }
         } catch (Exception e) {
+            new InsertUtilities().throwCustomError("Error al seleccionar muebles  y precio, verifica los datos ingresados, " + e.getMessage());
         }
         return bf;
     }
 
-    public int update(FurnitureAssembly furn) {
+    /**
+     *
+     * @param furn
+     * @return
+     * @throws java.lang.Exception
+     */
+    public int update(FurnitureAssembly furn) throws Exception {
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_UPDATE_FURN_ASSM)) {
             ps.setString(1, furn.getUsername());
             ps.setDate(2, new InsertUtilities().parseLocalDateSQLDate(furn.getDate()));
@@ -156,6 +190,7 @@ public class FurnitureAssemblyDAO {
             ps.setInt(6, furn.getId());
             return ps.executeUpdate();
         } catch (Exception e) {
+            new InsertUtilities().throwCustomError("Error al actualizar mueble, verifica los datos ingresados, " + e.getMessage());
             return 0;
         }
     }

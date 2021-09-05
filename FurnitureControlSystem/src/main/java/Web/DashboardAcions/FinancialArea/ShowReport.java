@@ -65,11 +65,14 @@ public class ShowReport extends HttpServlet {
                 }
                 case "show-buys-client-info" -> {
                     Client client = new Client(request.getParameter("client-nit"));
+                    response.getWriter().print("Cliente con nit: " + request.getParameter("client-nit"));
+                    response.getWriter().print("<br> obj: " + client);
+                    response.getWriter().print("<br>nit client obg: " + client.getNit());
                     sra.getReportSells(request, response, date1, date2, validDates, null, null, client);
                 }
             }
         } catch (Exception e) {
-            new InsertUtilities().sendErrorMessage(response, request, e, "Un error al seleccionar fechas o de formato");
+            new InsertUtilities().sendErrorMessage(response, request, e, "Ha ocurrido un error");
         }
 
     }

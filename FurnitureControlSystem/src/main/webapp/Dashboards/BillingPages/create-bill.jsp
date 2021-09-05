@@ -17,7 +17,6 @@
     </head>
 
     <body id="page-top">
-
         <!-- Page Wrapper -->
         <div id="wrapper">
             <jsp:include page="/Includes/Sellpoint/aside-sellpoint.jsp"></jsp:include>
@@ -26,13 +25,10 @@
                     <!-- Main Content -->
                     <div id="content">
                     <jsp:include page="/Includes/top-bar.jsp"></jsp:include>
-
                         <!-- Begin Page Content -->
                         <div class="container-fluid">
                             <!-- Page Heading -->
-                            <div>
-                                <h1 class="h3 mb-4 text-gray-800">Factura</h1>
-                            </div>
+                            <div><h1 class="h3 mb-4 text-gray-800">Factura</h1></div>
                         </div>
                         <!-- /.container-fluid -->
                         <div class="container-md">

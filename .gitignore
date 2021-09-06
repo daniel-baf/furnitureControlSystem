@@ -22,14 +22,11 @@ local.properties
 *.iml
 *.iws
 *.ipr
-*~
 *.swp
 
 # Maven
-target/
 
 # tomcat
-tomcat
 
 # Binaries
 *.7z

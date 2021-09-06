@@ -62,8 +62,8 @@
              data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Creación</h6>
-                <a class="collapse-item" href="${pageContext.request.contextPath}/Dashboards/Fin-Admin-Panel.jsp#insert-usr-FAAP">Nuevo usuario</a>
-                <a class="collapse-item" href="${pageContext.request.contextPath}/Dashboards/Fin-Admin-Panel.jsp#insert-frn-FAAP">Tipo de mueble</a>
+                <a class="collapse-item" href="${pageContext.request.contextPath}/Dashboards/Fin-Admin-Panel.jsp#creation-div">Nuevo usuario</a>
+                <a class="collapse-item" href="${pageContext.request.contextPath}/Dashboards/Fin-Admin-Panel.jsp#creation-div">Tipo de mueble</a>
                 <h6 class="collapse-header">Borrar</h6>
                 <a class="collapse-item" href="${pageContext.request.contextPath}/Dashboards/Fin-Admin-Panel.jsp#delete-user-form">Usuario</a>
             </div>

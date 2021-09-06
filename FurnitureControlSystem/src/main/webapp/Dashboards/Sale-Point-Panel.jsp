@@ -178,16 +178,12 @@
                                                             <h6 class="ali">Selecciona un tipo de reporte</h6>
                                                         </div>
                                                         <div class="form-check">
-                                                            <input required class="form-check-input" type="radio" id="report-name-FAAP-choise1" name="report-type-FAAP" value="sells">
-                                                            <label class="form-check-label" for="report-name-FAAP-choise1">Detalles de factura de un cliente</label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <input required class="form-check-input" type="radio" id="report-name-FAAP-choise2" name="report-type-FAAP" value="refunds">
+                                                            <input required class="form-check-input" type="radio" id="report-name-FAAP-choise2" name="report-type-FAAP" value="refunds-client">
                                                             <label class="form-check-label" for="report-name-FAAP-choise2">Devoluciones por cliente</label>
                                                         </div>
                                                         <div class="form-check">
                                                             <input required class="form-check-input" type="radio" id="report-name-FAAP-choise3" name="report-type-FAAP" value="show-buys-client-info">
-                                                            <label class="form-check-label" for="report-name-FAAP-choise3">Compras de un cliente</label>
+                                                            <label class="form-check-label" for="report-name-FAAP-choise3">Facturas de un cliente</label>
                                                         </div>
                                                     </div>
                                                     <div class="form-group d-block justify-content-end">

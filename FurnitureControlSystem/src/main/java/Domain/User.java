@@ -5,6 +5,7 @@ public class User {
     private String name;
     private String password;
     private short areaCode;
+    private int authorized;
 
     /**
      * generic constructor, used to create objects
@@ -18,7 +19,7 @@ public class User {
      * @param name 's ID
      */
     public User(String name) {
-        this.name = name;   
+        this.name = name;
     }
 
     /**
@@ -28,10 +29,11 @@ public class User {
      * @param password 's password
      * @param areaCode 's work area
      */
-    public User(String name, String password, short areaCode) {
+    public User(String name, String password, short areaCode, int authorized) {
         this.name = name;
         this.password = password;
         this.areaCode = areaCode;
+        this.authorized = authorized;
     }
 
     /**
@@ -75,5 +77,12 @@ public class User {
     public void setAreaCode(short areaCode) {
         this.areaCode = areaCode;
     }
-    
+
+    public int getAuthorized() {
+        return authorized;
+    }
+
+    public void setAuthorized(int authorized) {
+        this.authorized = authorized;
+    }
 }

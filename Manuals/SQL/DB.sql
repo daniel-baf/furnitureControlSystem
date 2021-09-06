@@ -32,6 +32,7 @@ CREATE TABLE `User` (
   `name` varchar(45) NOT NULL,
   `password` varchar(80) NOT NULL,
   `area_Code` tinyint(1) NOT NULL,
+  `authorized` INT NULL DEFAULT 1,
   PRIMARY KEY (`name`)
 );
 
@@ -125,4 +126,11 @@ CREATE TABLE `Refund` (
 );
 
 -- DEFAULT USER area 3 for data insert by file
-INSERT INTO `User` VALUES ('admin', 'k5o5Krvpa+Dp8X8UHHBlIw==', '3');
+INSERT INTO `User` (`name`, `password`, `area_Code`) VALUES ('admin', 'JEZ/Oj4hmSIMgj0eRCUqnQ==', '3');
+
+-- WAR user
+
+DROP USER IF EXISTS 'ipc2'@'localhost';
+CREATE USER 'ipc2'@'localhost' IDENTIFIED BY 'ipc2+contraPjct0s';
+GRANT ALL PRIVILEGES ON Furniture_Assembly_Pjct.* TO 'ipc2'@'localhost';
+FLUSH PRIVILEGES;

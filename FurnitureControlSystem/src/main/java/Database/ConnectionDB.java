@@ -5,8 +5,8 @@ import java.sql.*;
 public class ConnectionDB {
 
     private static final String MYSQL_URL = "jdbc:mysql://localhost:3306/Furniture_Assembly_Pjct";
-    private static final String USER = "jefemayoneso";
-    private static final String PASSWORD = "PepePeka_123";
+    private static final String USER = "ipc2";
+    private static final String PASSWORD = "ipc2+contraPjct0s";
 
     public ConnectionDB() {
     }

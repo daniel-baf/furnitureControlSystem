@@ -29,22 +29,18 @@
         <!-- Custom styles for this template-->
         <link href="${pageContext.request.contextPath}/css/sb-admin-2.min.css" rel="stylesheet">
         <link href="${pageContext.request.contextPath}/css/MyOwnCss.css">
-
     </head>
 
     <body id="page-top">
-
         <!-- Page Wrapper -->
         <div id="wrapper">
-            <jsp:include page="/Includes/Financial/financial-sidebar.jsp"></jsp:include>
 
+            <jsp:include page="/Includes/Financial/financial-sidebar.jsp"></jsp:include>
                 <!-- Content Wrapper -->
                 <div id="content-wrapper" class="d-flex flex-column">
-
                     <!-- Main Content -->
                     <div id="content">
                     <jsp:include page="/Includes/top-bar.jsp"></jsp:include>
-
                         <!-- Begin Page Content -->
                         <div class="container-fluid">
 
@@ -63,8 +59,7 @@
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
-                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                        Ganancias (Dia)</div>
+                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Ganancias (Dia)</div>
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
                                                 </div>
                                                 <div class="col-auto">
@@ -81,8 +76,7 @@
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
-                                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                        Ganancias (Mes)</div>
+                                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Ganancias (Mes)</div>
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
                                                 </div>
                                                 <div class="col-auto">
@@ -99,8 +93,7 @@
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
-                                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Muy pronto...
-                                                    </div>
+                                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Muy pronto...</div>
                                                     <div class="row no-gutters align-items-center">
                                                         <div class="col-auto">
                                                             <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
@@ -109,7 +102,8 @@
                                                             <div class="progress progress-sm mr-2">
                                                                 <div class="progress-bar bg-info" role="progressbar"
                                                                      style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                                                     aria-valuemax="100"></div>
+                                                                     aria-valuemax="100">
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -121,22 +115,17 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <!-- Pending Requests Card Example -->
                                 <div class="col-xl-3 col-md-6 mb-4">
                                     <div class="card border-left-warning shadow h-100 py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
-                                                <div href="#table-stock" class="col mr-2">
-                                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                        Piezas con stock bajo</div>
-
-                                                    <a href="#table-stock">
-
+                                                <div href="#inventory-pieces-stock-div" class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Piezas con stock bajo</div>
+                                                    <a href="#inventory-pieces-stock-div">
                                                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                                                             <p>Ver</p>
                                                         </div>
-
                                                     </a>
                                                 </div>
                                                 <div class="col-auto">
@@ -151,13 +140,12 @@
                             <div class="row">
                                 <!-- Area Chart -->
                                 <div class="col-xl-8 col-lg-7">
-                                    <div class="card shadow mb-4">
+                                    <div id="creation-div" class="card shadow mb-4">
                                         <!-- Card Header - Dropdown -->
-                                        <div
-                                            class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                             <div>
                                                 <h6 class="m-0 font-weight-bold text-primary">Creación</h6>
-                                                <p>Registra un nuevo mueble para la venta, presiona los tres puntos para cambiar de ventana</p>
+                                                <p>Registra muebles o usuarios, presiona <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i> para cambiar a otras ventanas</p>
                                             </div>
 
                                             <div class="dropdown no-arrow">
@@ -183,114 +171,118 @@
                                                     <h6 class="row d-flex p-2 justify-content-center border-bottom-primary">Mueble</h6>
                                                     <div class="m-0 row justify-content-center">
                                                         <div class="col-auto align-content-around">
-                                                            <form action="../InsertToDB" method="POST">
-                                                                <input name="action-perf" type="text" value="insert-furniture" hidden>
-                                                                <div class="form-group">
-                                                                    <label for="exampleInputName">Nombre</label>
-                                                                    <input required name="furnName" type="text" class="form-control" id="exampleInputName" aria-describedby="emailHelp" placeholder="Un nombre de usuario">
-                                                                    <small>Los nombres no se pueden repetir con los ya existentes</small>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="exampleInputPrice">Precio</label>
-                                                                    <input required name="furnPrice" type="number" min="0" step=".01" class="form-control" id="exampleInputPrice" aria-describedby="priceHelp" placeholder="Un nombre de usuario">
-                                                                    <small>El precio de venta del mueble</small>
-                                                                </div>
-                                                                <button type="submit" class="btn btn-primary">Registrar</button>
-                                                            </form>
-                                                        </div>
+                                                            <form action="${pageContext.request.contextPath}/ValidateNewFurniture" method="POST">
+                                                            <div class="form-group">
+                                                                <label for="exampleInputName">Nombre</label>
+                                                                <input required name="furnName" type="text" class="form-control" id="exampleInputName" aria-describedby="emailHelp" placeholder="Un nombre de usuario">
+                                                                <small>Los nombres no se pueden repetir con los ya existentes</small>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="exampleInputPrice">Precio</label>
+                                                                <input required name="furnPrice" type="number" min="0" step=".01" class="form-control" id="exampleInputPrice" aria-describedby="priceHelp" placeholder="Un nombre de usuario">
+                                                                <small>El precio de venta del mueble</small>
+                                                            </div>
+                                                            <button type="submit" class="btn btn-primary">Registrar</button>
+                                                        </form>
                                                     </div>
                                                 </div>
-                                                <!-- FURNITURE END -->
-                                                <!-- USER START -->
-                                                <div  class="d-none" id="insert-usr-FAAP">
-                                                    <h6 class="row d-flex p-2 justify-content-center border-bottom-primary">Usuario</h6>
-                                                    <div class="m-0 row justify-content-center">
-                                                        <div class="col-auto align-content-around">
-                                                            <form action="../InsertToDB" method="POST">
-                                                                <div class="d-flex justify-content-between">
-                                                                    <div class="col-xl-8 col-lg-7">
-                                                                        <input name="action-perf" type="text" value="insert-user" hidden>
-                                                                        <div class="form-group">
-                                                                            <label for="exampleInputName1">Nombre</label>
-                                                                            <input required name="usrName" type="text" class="form-control" id="exampleInputName1" aria-describedby="nameHelp" placeholder="Un nombre de usuario">
-                                                                            <small>Los nombres no se pueden repetir con los ya existentes</small>
-                                                                        </div>
-                                                                        <div class="form-group"> 
-                                                                            <label for="exampleInputPassword">Contraseña</label>
-                                                                            <input required name="userPswrd" type="password" class="form-control" id="exampleInputPassword" aria-describedby="passwordHelp" placeholder="Ingresa la contraseña">
-                                                                            <small>La contraseña para el nuevo usuario</small>
-                                                                        </div>
+                                            </div>
+                                            <!-- FURNITURE END -->
+                                            <!-- USER START -->
+                                            <div  class="d-none" id="insert-usr-FAAP">
+                                                <h6 class="row d-flex p-2 justify-content-center border-bottom-primary">Usuario</h6>
+                                                <div class="m-0 row justify-content-center">
+                                                    <div class="col-auto align-content-around">
+                                                        <form action="../InsertToDB" method="POST">
+                                                            <div class="d-flex justify-content-between">
+                                                                <div class="col-xl-8 col-lg-7">
+                                                                    <input name="action-perf" type="text" value="insert-user" hidden>
+                                                                    <div class="form-group">
+                                                                        <label for="exampleInputName1">Nombre</label>
+                                                                        <input required name="usrName" type="text" class="form-control" id="exampleInputName1" aria-describedby="nameHelp" placeholder="Un nombre de usuario">
+                                                                        <small>Los nombres no se pueden repetir con los ya existentes</small>
                                                                     </div>
-                                                                    <div class="col-xl-4 col-lg-5">
-                                                                        <div class="form-group d-flex flex-column justify-content-center">
-                                                                            <div>
-                                                                                <lable for="select-insert-user-FAAP"">Codigo de area</lable>
-                                                                                <select id="select-insert-user-FAAP" name="areaCode" class="form-control" aria-label=".form-select-lg example">
-                                                                                    <option required value="1">Fabrica</option>
-                                                                                    <option required value="2">Punto de ventas</option>
-                                                                                    <option required value="3">Financiera y adm.</option>
-                                                                                </select>
-                                                                            </div>
+                                                                    <div class="form-group"> 
+                                                                        <label for="exampleInputPassword">Contraseña</label>
+                                                                        <input required name="userPswrd" type="password" class="form-control" id="exampleInputPassword" aria-describedby="passwordHelp" placeholder="Ingresa la contraseña">
+                                                                        <small>La contraseña para el nuevo usuario</small>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-xl-4 col-lg-5">
+                                                                    <div class="form-group d-flex flex-column justify-content-center">
+                                                                        <div>
+                                                                            <lable for="select-insert-user-FAAP"">Codigo de area</lable>
+                                                                            <select id="select-insert-user-FAAP" name="areaCode" class="form-control" aria-label=".form-select-lg example">
+                                                                                <option required value="1">Fabrica</option>
+                                                                                <option required value="2">Punto de ventas</option>
+                                                                                <option required value="3">Financiera y adm.</option>
+                                                                            </select>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <button type="submit" class="btn btn-primary">Crear</button>
-                                                            </form>
-                                                        </div>
+                                                            </div>
+                                                            <button type="submit" class="btn btn-primary">Crear</button>
+                                                        </form>
                                                     </div>
-                                                </div>
-                                                <div id="content-async-insert" class="">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- Pie Chart -->
-                                <div class="col-xl-4 col-lg-5">
-                                    <div class="card shadow mb-4">
-                                        <!-- Card Header - Dropdown -->
-                                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" id="delete-user-form">
-                                            <h6 class="m-0 font-weight-bold text-primary">Borrar usuario</h6>
-                                            <div class="dropdown no-arrow">
-                                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                                     aria-labelledby="dropdownMenuLink">
-                                                    <div class="dropdown-header">Acciones formulario</div>
-                                                    <a class="dropdown-item" href="#">Limpiar</a>
-                                                    <div class="dropdown-divider"></div>
-                                                </div>
+                            </div>
+                            <!-- Pie Chart -->
+                            <div class="col-xl-4 col-lg-5">
+                                <div class="card shadow mb-4">
+                                    <!-- Card Header - Dropdown -->
+                                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" id="delete-user-form">
+                                        <h6 class="m-0 font-weight-bold text-primary">Borrar/bloquear usuario</h6>
+                                        <div class="dropdown no-arrow">
+                                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                 aria-labelledby="dropdownMenuLink">
+                                                <div class="dropdown-header">Acciones formulario</div>
+                                                <a class="dropdown-item" href="#">Limpiar</a>
+                                                <div class="dropdown-divider"></div>
                                             </div>
                                         </div>
-                                        <!-- Card Body -->
-                                        <div class="card-body">
-                                            <div class="chart-pie pt-4 pb-2">
-                                                <div class="m-0 row justify-content-center">
-                                                    <div class="col-auto align-content-around">
-                                                        <form action="../DeleteFromDB" method="POST">
-                                                            <div class="form-group">
-                                                                <input name="action-perf" type="text" value="delete-user" hidden>
+                                    </div>
+                                    <!-- Card Body -->
+                                    <div class="card-body">
+                                        <div class="chart-pie pt-4 pb-2">
+                                            <div class="m-0 row justify-content-center">
+                                                <div>
+                                                    <form action="../DeleteFromDB" method="POST">
+                                                        <input name="action-perf" type="text" value="delete-user" hidden>
+                                                        <div class="form-group">
+                                                            <div>
                                                                 <label for="exampleInputName">Nombre</label>
                                                                 <select name="username" class="form-control btn-block" id="examplePieceName">
-                                                                <%for (User elem : listUsers) {%>
-                                                                <option value="<%=elem.getName()%>"><%=elem.getName()%></option>
-                                                                <br>
-                                                                <%}%>
-                                                            </select>
-                                                            <small>El usuario debe existir</small>
+                                                                    <%for (User elem : listUsers) {%>
+                                                                    <option value="<%=elem.getName()%>"><%=elem.getName()%></option>
+                                                                    <%}%>
+                                                                </select>
+                                                                <small>El usuario debe existir</small>
+                                                            </div>
+                                                            <div>
+                                                                <label for="exampleInputNamea">Accion</label>
+                                                                <select name="action" class="form-control btn-block" id="examplePieceNamea">
+                                                                    <option value="block">Bloquear</option>
+                                                                    <option value="delete">Borrar</option>
+                                                                </select>
+                                                            </div>
                                                         </div>
-                                                        <button type="submit" class="btn btn-primary">Borrar</button>
+                                                        <button type="submit" class="btn btn-primary">Proceder</button>
                                                     </form>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="mt-4 text-center small">
-                                            <span class="mr-2">
-                                                <i class="fas fa-circle text-primary"></i> Esta accion borra usuario de la base de datos
-                                            </span>
+                                            <div class="mt-4 text-center small">
+                                                <span class="mr-2">
+                                                    <i class="fas fa-circle text-primary"></i> Esta accion borra usuario de la base de datos
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -299,7 +291,6 @@
 
                         <!-- Content Row -->
                         <div class="row">
-
                             <!-- Content Column -->
                             <div class="col-lg-6 mb-4">
 
@@ -362,61 +353,67 @@
                                                 <div class="form-group d-block justify-content-end">
                                                     <button type="submit" class="btn btn-primary">Crear reporte</button>
                                                 </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-4">
+
+                                <!-- Illustrations -->
+                                <div class="card shadow mb-4">
+                                    <!-- Card Header - Accordion -->
+                                    <a href="#collapseCardExample1" class="d-block card-header py-3" data-toggle="collapse"
+                                       role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                                        <h6 class="m-0 font-weight-bold text-primary">Bienvenido</h6>
+                                    </a>
+                                    <!-- Card Content - Collapse -->
+                                    <div class="collapse show" id="collapseCardExample1">
+                                        <div class="card-body">
+                                            <div class="text-center">
+                                                <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
+                                                     src="../img/undraw_posting_photo.svg" alt="...">
+                                            </div>
+                                            <p>Espero te encuentres bien, <span><%=session.getAttribute("usr")%></span></p>
+                                            <a target="_blank" rel="nofollow" href="https://github.com/daniel-baf/furnitureControlSystem">Codigo fuente &rarr;</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- Approach -->
+                                <div id="load-file-db-txt-faap" class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Archivo para base de datos</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <p>Sube un archivo plano/texto para ser insertado</p>
+                                        <form action="../FileUpload" method="POST" enctype="multipart/form-data" target="_blank" class="justify-content-end">
+                                            <input class="btn btn-sm" type="file" name="file" value="Buscar">
+                                            <input class="btn btn-block btn-primary"type="submit" value="Actualiar BD">
                                         </form>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="col-lg-6 mb-4">
-
-                            <!-- Illustrations -->
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Accordion -->
-                                <a href="#collapseCardExample1" class="d-block card-header py-3" data-toggle="collapse"
-                                   role="button" aria-expanded="true" aria-controls="collapseCardExample">
-                                    <h6 class="m-0 font-weight-bold text-primary">Bienvenido</h6>
-                                </a>
-                                <!-- Card Content - Collapse -->
-                                <div class="collapse show" id="collapseCardExample1">
-                                    <div class="card-body">
-                                        <div class="text-center">
-                                            <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                                 src="../img/undraw_posting_photo.svg" alt="...">
-                                        </div>
-                                        <p>Espero te encuentres bien, <span><%=session.getAttribute("usr")%></span></p>
-                                        <a target="_blank" rel="nofollow" href="https://github.com/daniel-baf/furnitureControlSystem">Codigo fuente &rarr;</a>
+                            <div class="row">
+                                <div class="col">
+                                    <jsp:include page="/Includes/pieces-stock.jsp"></jsp:include>
+                                    </div>
+                                    <div class="col">
+                                    <jsp:include page="/Includes/Furnitures-list.jsp"></jsp:include>
                                     </div>
                                 </div>
-
                             </div>
-                            <!-- Approach -->
-                            <div id="load-file-db-txt-faap" class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Archivo para base de datos</h6>
-                                </div>
-                                <div class="card-body">
-                                    <p>Sube un archivo plano/texto para ser insertado</p>
-                                    <form action="../FileUpload" method="POST" enctype="multipart/form-data" target="_blank" class="justify-content-end">
-                                        <input class="btn btn-sm" type="file" name="file" value="Buscar">
-                                        <input class="btn btn-block btn-primary"type="submit" value="Actualiar BD">
-                                    </form>
-                                </div>
-                            </div>
-
-                            <jsp:include page="/Includes/pieces-stock.jsp"></jsp:include>
-                            </div>
+                            <!-- /.container-fluid -->
                         </div>
-                        <!-- /.container-fluid -->
-
+                        <!-- End of Main Content -->
                     </div>
                     <!-- End of Main Content -->
+                <jsp:include page="/Includes/footer.jsp"></jsp:include>
                 </div>
-                <!-- End of Main Content -->
-            <jsp:include page="/Includes/footer.jsp"></jsp:include>
+                <!-- End of Content Wrapper -->
             </div>
-            <!-- End of Content Wrapper -->
-
         </div>
         <!-- End of Page Wrapper -->
     <jsp:include page="/Includes/scroll-top-logout-pop-up.jsp"></jsp:include>

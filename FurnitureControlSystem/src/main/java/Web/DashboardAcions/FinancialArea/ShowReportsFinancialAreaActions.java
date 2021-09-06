@@ -10,10 +10,8 @@ import Domain.Furniture;
 import Domain.Refund;
 import Domain.User;
 import GeneralUse.Redirect;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -27,8 +25,8 @@ public class ShowReportsFinancialAreaActions {
         new Redirect().redirectToURL(request, response, "Reports/Financial/bills-result.jsp");
     }
 
-    public void generateReportRefunds(HttpServletRequest request, HttpServletResponse response, LocalDate date1, LocalDate date2, boolean validDates) throws Exception {
-        ArrayList<Refund> refunds = new RefundDAO().getRefundsReport(date1, date2, validDates);
+    public void generateReportRefunds(HttpServletRequest request, HttpServletResponse response, LocalDate date1, LocalDate date2, boolean validDates, Client client) throws Exception {
+        ArrayList<Refund> refunds = new RefundDAO().getRefundsReport(date1, date2, validDates, client);
         String reportDescription = "Se muestran las devoluciones generadas durante el periodo " + date1 + " " + date2;
         request.setAttribute("rep-desc", reportDescription);
         request.setAttribute("refunds", refunds);

@@ -42,8 +42,8 @@ public class ProcesBilling extends HttpServlet {
         FurnitureAssembly furnAssm;
         Bill bill;
         String results = "";
-        boolean error = false;
-        
+        boolean success = false;
+
         response.getWriter().print("<br>Inicia a recorrer lista");
         for (BillFurniture item : (ArrayList<BillFurniture>) request.getSession().getAttribute("buy-cart")) {
             // generate bill per item
@@ -60,6 +60,7 @@ public class ProcesBilling extends HttpServlet {
                 if (new BillDAO().insert(bill) != 0) {
                     bill = new BillDAO().select(0, item.getId());
                     results += ("<br>Factura No." + bill.getCode() + ", Item: " + item.getId());
+                    success = true;
                 } else {
                     results += ("<br>No se puede generar factura para el item con id: " + item.getId());
                 }
@@ -67,17 +68,19 @@ public class ProcesBilling extends HttpServlet {
                 results += ("<br>No se pudo generar factura para el item con ID " + item.getId() + " Error: " + e.getMessage());
             }
         }
-        
+        if (success) {
+            request.getSession().removeAttribute("buy-cart");
+        }
         request.setAttribute("rep-body", results);
         request.setAttribute("rep-title", "Resultado facturas");
         new ShowReport().redirectToURL(request, response, "/Reports/Message.jsp");
     }
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
     }
-    
+
 }

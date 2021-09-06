@@ -26,7 +26,7 @@ public class Login extends HttpServlet {
             if (user != null) {
                 // user found
                 if (userOK(user.getName(), request.getParameter("user").trim())
-                        && passwordOK(aes256.decrypt(user.getPassword()), request.getParameter("password").trim())) {
+                        && passwordOK(request.getParameter("password").trim(), user)) {
                     HttpSession session = request.getSession();
                     // user auth
                     String URL;
@@ -96,9 +96,9 @@ public class Login extends HttpServlet {
      * @param passLog password on <input>
      * @return
      */
-    private boolean passwordOK(String passIn, String passLog) {
+    private boolean passwordOK(String passIn, User user) {
         try {
-            return passIn.equals(passLog);
+            return user.getPassword().equals(new AES256().encrypt(passIn)) && user.getAuthorized() == 1;
         } catch (Exception e) {
             return false;
         }

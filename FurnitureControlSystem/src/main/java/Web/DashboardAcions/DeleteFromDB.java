@@ -26,7 +26,11 @@ public class DeleteFromDB extends HttpServlet {
         try {
             switch (action) {
                 case "delete-user" -> {
-                    deleteUserDB(request, response);
+                    if (request.getParameter("action").equals("delete")) {
+                        deleteUserDB(request, response);
+                    } else if (request.getParameter("action").equals("block")) {
+                        blockAccess(request, response);
+                    }
                     break;
                 }
                 case "delete-furn-assemb" -> {
@@ -95,6 +99,16 @@ public class DeleteFromDB extends HttpServlet {
         FurniturePiece fp = new FurniturePiece(new InsertUtilities().getIntegerFromString(request.getParameter("id")));
         String repBody = "la pieza con ID " + fp.getId();
         repBody += new FurniturePieceDAO().delete(fp) != 0 ? " Se ha borrado " : "No se ha logrado borrar ";
+        request.setAttribute("rep-title", "Borrar registro");
+        request.setAttribute("rep-body", repBody);
+        request.getRequestDispatcher("Reports/Message.jsp").forward(request, response);
+    }
+
+    private void blockAccess(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        User user = new UserDAO().selectUser(request.getParameter("username"));
+        user.setAuthorized(0);
+        String repBody = "el usuario con registro " + user.getName();
+        repBody = new UserDAO().update(user) != 0 ? "Se ha borrado " + repBody : "No se ha logrado borrar " + repBody;
         request.setAttribute("rep-title", "Borrar registro");
         request.setAttribute("rep-body", repBody);
         request.getRequestDispatcher("Reports/Message.jsp").forward(request, response);

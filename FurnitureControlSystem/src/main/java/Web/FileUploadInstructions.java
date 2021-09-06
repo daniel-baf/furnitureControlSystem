@@ -2,11 +2,10 @@ package Web;
 
 import Database.*;
 import Domain.*;
+import GeneralUse.AES256;
 import GeneralUse.InsertUtilities;
 import TransactionObjects.InsertObjectStatus;
-import java.io.IOException;
 import java.time.LocalDate;
-import javax.servlet.http.HttpServletResponse;
 
 public class FileUploadInstructions {
 
@@ -55,6 +54,7 @@ public class FileUploadInstructions {
      *
      * @param object
      * @return
+     * @throws java.lang.Exception
      */
     public boolean insertUser(InsertObjectStatus object) throws Exception {
         // USER("name","password",int)
@@ -64,7 +64,8 @@ public class FileUploadInstructions {
             String[] vals = object.getValuesSplited();
             try {
                 Short sht = Short.valueOf(vals[2].trim());
-                inserted = new UserDAO().insert(new User(vals[0], vals[1], sht)) != 0;
+                String encrypted = new AES256().encrypt(vals[1]);
+                inserted = new UserDAO().insert(new User(vals[0], encrypted, sht, 1)) != 0;
                 typeErrorInsert = inserted ? 0 : 1;
             } catch (NumberFormatException e) {
                 inserted = false;

@@ -19,8 +19,8 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class AES256 {
 
-    private final String SECRET_KEY = "pineapple apple ham ice cream with three chocolate ice cream";
-    private final String SALT = "gasdf;gaslk135asdf";
+    private static final String SECRET_KEY = "pineaple_apple_ham_ice_cream_three_bread_coconnut";
+    private static final String SALT = "a_sneacky_salt!!!";
 
     public AES256() {
     }
@@ -31,7 +31,7 @@ public class AES256 {
      * @param strToEncrypt
      * @return
      */
-    public String encrypt(String strToEncrypt) {
+    public static String encrypt(String strToEncrypt) {
         try {
             byte[] iv = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
             IvParameterSpec ivspec = new IvParameterSpec(iv);
@@ -56,7 +56,7 @@ public class AES256 {
      * @param strToDecrypt
      * @return
      */
-    public String decrypt(String strToDecrypt) {
+    public static String decrypt(String strToDecrypt) {
         try {
             byte[] iv = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
             IvParameterSpec ivspec = new IvParameterSpec(iv);

@@ -74,4 +74,20 @@ public class FurnitureDAO {
         }
         return furnitures;
     }
+
+    public Furniture select(String name) throws Exception {
+        Furniture furniture = null;
+        String SQL_TMP = SQL_SELECT_FURNITURES + " WHERE `name` = ?";
+        try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_TMP)) {
+            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                furniture = new Furniture(rs.getString("name"), rs.getDouble("sell_Price"));
+            }
+        } catch (Exception e) {
+            new InsertUtilities().throwCustomError("Error, al seleccionar mueble, revisa los datos ingresados, " + e.getMessage());
+        }
+        return furniture;
+    }
+    
 }

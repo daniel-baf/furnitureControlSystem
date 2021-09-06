@@ -43,7 +43,7 @@ public class ShowReport extends HttpServlet {
                     sra.getReportSells(request, response, date1, date2, validDates, user, null, null);
                 }
                 case "refunds" -> {
-                    sra.generateReportRefunds(request, response, date1, date2, validDates);
+                    sra.generateReportRefunds(request, response, date1, date2, validDates, null);
                 }
                 case "earnings" -> {
                     sra.generateReportEarnings(request, response, date1, date2, validDates, null);
@@ -60,15 +60,13 @@ public class ShowReport extends HttpServlet {
                     Furniture furn = new FurnitureDAO().getMostOrLessSoldFurniture("less");
                     sra.genearateReportFurniture(request, response, date1, date2, validDates, furn);
                 }
-                case "today-billing" -> {
-                    srs.selectTodayBillings(request, response, date1, date2);
-                }
                 case "show-buys-client-info" -> {
                     Client client = new Client(request.getParameter("client-nit"));
-                    response.getWriter().print("Cliente con nit: " + request.getParameter("client-nit"));
-                    response.getWriter().print("<br> obj: " + client);
-                    response.getWriter().print("<br>nit client obg: " + client.getNit());
                     sra.getReportSells(request, response, date1, date2, validDates, null, null, client);
+                }
+                case "refunds-client" -> {
+                    Client client = new Client(request.getParameter("client-nit"));
+                    sra.generateReportRefunds(request, response, date1, date2, validDates, client);
                 }
             }
         } catch (Exception e) {

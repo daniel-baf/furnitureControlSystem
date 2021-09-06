@@ -1,7 +1,6 @@
 package Database;
 
 import Domain.User;
-import GeneralUse.AES256;
 import GeneralUse.InsertUtilities;
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,9 +14,9 @@ public class UserDAO {
     private final String SQL_SELECT_MOST_EARNS_USER = "SELECT `b`.`user_Name` AS `worker`, SUM(`b`.`ammount` - `f`.`assembly_Price`) AS `profit` FROM `Bill` AS `b` "
             + "INNER JOIN `Furniture_Assembly` AS `f` ON `f`.`id` = `b`.`furniture_Assemby_Id` GROUP BY `b`.`user_Name` ORDER BY `profit` DESC LIMIT 1";
     // INSERT
-    private static final String SQL_INSERT_USER = "INSERT INTO `User` VALUES (?,?,?)"; // name, password, code area
+    private static final String SQL_INSERT_USER = "INSERT INTO `User` VALUES (?,?,?, ?)"; // name, password, code area
     // UPDATE
-    private static final String SQL_UPDATE_USER = "UPDATE `User` SET `password` = ?, `code_Area` = ? WHERE `name` = ?";
+    private static final String SQL_UPDATE_USER = "UPDATE `User` SET `password` = ?, `area_Code` = ?, `authorized` = ? WHERE (`name` = ?)";
     // DELETE
     private static final String SQL_DELETE_USER = "DELETE FROM `User` WHERE `name` = ?";
 
@@ -91,23 +90,20 @@ public class UserDAO {
      * @throws java.lang.Exception
      */
     public int insert(User user) throws Exception {
-        String pswdEncrypted = new AES256().encrypt(user.getPassword());
-        if (pswdEncrypted == null) {
-            return 0;
-        }
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_INSERT_USER)) {
             if (user.getName().trim().equals("") || user.getName() == null) {
                 return 0;
             }
             ps.setString(1, user.getName());
-            ps.setString(2, pswdEncrypted);
+            ps.setString(2, user.getPassword());
             ps.setShort(3, user.getAreaCode());
+            ps.setInt(4, user.getAuthorized());
             return ps.executeUpdate();
         } catch (Exception e) {
             new InsertUtilities().throwCustomError("Error, al insertar usuario, revisa los datos ingresados, " + e.getMessage());
             return 0;
         }
-    }
+}
 
     /**
      * update a User on DB
@@ -120,7 +116,8 @@ public class UserDAO {
         try ( Connection conn = ConnectionDB.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL_UPDATE_USER)) {
             ps.setString(1, user.getPassword());
             ps.setShort(2, user.getAreaCode());
-            ps.setString(3, user.getName());
+            ps.setInt(3, user.getAuthorized());
+            ps.setString(4, user.getName());
             return ps.executeUpdate();
         } catch (Exception e) {
             new InsertUtilities().throwCustomError("Error, al actualizar usuario, revisa los datos ingresados, " + e.getMessage());
@@ -153,6 +150,6 @@ public class UserDAO {
      * @throws SQLException
      */
     private User getUserFromRs(ResultSet rs) throws SQLException {
-        return new User(rs.getString("name"), rs.getString("password"), rs.getShort("area_Code"));
+        return new User(rs.getString("name"), rs.getString("password"), rs.getShort("area_Code"), rs.getInt("authorized"));
     }
 }

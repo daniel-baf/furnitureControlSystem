@@ -94,7 +94,7 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <input id="export-CSV" type="button" value="Descargar reporte en formato compatible con excel(CSV)" class="btn btn-block btn-primary">\
+                                    <input id="export-CSV" type="button" value="Descargar reporte en formato compatible con excel(CSV)" class="btn btn-block btn-primary">
                                 </div>
                             </div>
                             <div class="row">

@@ -40,7 +40,6 @@ tomcat
 *.rar
 *.tar
 *.zip
-*.war
 *.ear
 *.sar
 *.class
@@ -66,7 +65,6 @@ nbactions.xml
 nb-configuration.xml
 
 # Maven 
-target/
 
 # OS
 .DS_Store
